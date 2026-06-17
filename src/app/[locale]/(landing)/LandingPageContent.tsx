@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useTranslations } from "next-intl"; // Import essentiel
 import { Link } from "@/i18n/routing"; // Utilisez votre routage localisé
 import { useProperties } from "@/core/hooks/useProperties";
@@ -24,7 +24,7 @@ export default function LandingPageContent() {
             <main>
                 {/* HERO SECTION */}
                 <section className="relative h-[80vh] flex flex-col items-center justify-center bg-zinc-900 text-white overflow-hidden">
-                    <div className="absolute inset-0 bg-[url('/hero-bg.jpg')] bg-cover bg-center opacity-40"></div>
+                    <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-40"></div>
                     <div className="relative z-10 text-center px-6 max-w-8xl">
                         <motion.h1
                             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}

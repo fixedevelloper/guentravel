@@ -43,9 +43,9 @@ export function Footer() {
                     {/* Contact avec micro-données */}
                     <div className="space-y-4 text-zinc-400">
                         <h3 className="font-bold text-lg text-white mb-4">{t("contact.title")}</h3>
-                        <a href="tel:+237600000000" className="flex items-center gap-3 hover:text-[#1d9e4b]"><Phone className="h-4 w-4" /> +237 600 000 000</a>
-                        <a href="mailto:contact@guenstravel.cm" className="flex items-center gap-3 hover:text-[#1d9e4b]"><Mail className="h-4 w-4" /> contact@guenstravel.cm</a>
-                        <div className="flex items-center gap-3"><Globe className="h-4 w-4" /> Douala, Cameroon</div>
+                        <a href="tel:+237600000000" className="flex items-center gap-3 hover:text-[#1d9e4b]"><Phone className="h-4 w-4" /> +242 06 685 5998</a>
+                        <a href="mailto:contact@guenstravel.com" className="flex items-center gap-3 hover:text-[#1d9e4b]"><Mail className="h-4 w-4" /> contact@guenstravel.com</a>
+                        <div className="flex items-center gap-3"><Globe className="h-4 w-4" /> Brazaville, Congo</div>
                     </div>
                 </div>
             </div>
