@@ -1,0 +1,257 @@
+{
+  "Header": {
+    "properties": "Locations de vacances",
+    "experiences": "Expériences locales",
+    "deals": "Offres spéciales",
+    "help": "Centre d'aide",
+    "login": "Connexion",
+    "book": "Réserver",
+    "becomeHost": "Devenir hôte",
+    "dashboard": "dashboard",  "logout": "Se deconnecter"
+  },
+  "Properties": {
+    "from": "À partir de",
+    "bookNow": "Réserver maintenant"
+  },
+  "PropertiesPage": {
+    "title": "Tous nos hébergements",
+    "description": "Découvrez notre sélection exclusive de logements à travers le monde.",
+    "emptyTitle": "Aucun hébergement disponible",
+    "emptyDescription": "Veuillez revenir plus tard pour découvrir nos nouvelles offres.",
+    "pagination": "{total, plural, =0 {Aucun résultat} =1 {1 résultat trouvé} other {{total} résultats trouvés}}"
+  },
+  "host": {
+    "navigation": {
+      "dashboard": "Tableau de bord",
+      "properties": "Mes hébergements",
+      "bookings": "Réservations",
+      "payouts": "Portefeuille",
+      "settings": "Paramètres",
+      "switchGuest": "Mode Voyageur",
+      "hostSpace": "Espace Hôte"
+    },
+    "properties": {
+      "create": {
+        "pageTitle": "Ajouter un hébergement",
+        "stepIndicator": "Étape {current} sur {total}",
+        "basicInfoTitle": "Informations fondamentales",
+        "labelTitle": "Titre de l'annonce",
+        "labelDescription": "Description",
+        "labelType": "Type de bien",
+        "labelPrice": "Prix par nuit (XAF)",
+        "locationTitle": "Où se situe votre logement ?",
+        "labelCity": "Ville",
+        "labelQuarter": "Quartier",
+        "labelAddress": "Adresse / Indications",
+        "specsTitle": "Capacité & Pièces disponibles",
+        "labelGuests": "Voyageurs Max",
+        "labelBedrooms": "Chambres",
+        "labelBathrooms": "Salles de bain",
+        "btnBack": "Retour",
+        "btnNext": "Continuer",
+        "btnFinish": "Publier le logement",
+        "btnSaving": "Création en cours..."
+      }
+    }
+  },
+  "Landing": {
+    "hero": {
+      "title": "Évadez-vous avec <green>sérénité</green>",
+      "subtitle": "Des locations uniques, vérifiées et sécurisées."
+    },
+    "trust": {
+      "escrow": { "title": "Garantie Escrow", "desc": "Paiement sécurisé : vos fonds sont conservés jusqu'à votre check-in." },
+      "payment": { "title": "Paiement flexible", "desc": "Payez en toute confiance via nos méthodes sécurisées." },
+      "support": { "title": "Support Premium", "desc": "Une conciergerie digitale disponible 24h/24." }
+    },
+    "listings": {
+      "title": "Nos sélections premium",
+      "explore": "Tout explorer"
+    }
+  },
+  "About": {
+    "title": "Redéfinir l'expérience <green>du voyage</green>",
+    "subtitle": "Nous connectons les voyageurs aux établissements les plus authentiques avec une transparence totale.",
+    "mission": { "title": "Notre Mission", "text": "Simplifier la réservation d'hébergements avec une technologie intuitive et humaine." },
+    "trust": { "title": "Confiance Totale", "text": "Chaque établissement est rigoureusement vérifié pour assurer votre confort." },
+    "passion": { "title": "Passion Voyage", "text": "Nous croyons que chaque séjour doit être une expérience mémorable et unique." },
+    "support": { "title": "Service 24/7", "text": "Une équipe dédiée disponible à tout moment pour vous accompagner." },
+    "stats": {
+      "properties": "Établissements",
+      "guests": "Voyageurs satisfaits",
+      "cities": "Destinations"
+    }
+  },
+  "Footer": {
+    "brand": "Guen's travel",
+    "description": "Guen's travel est la plateforme de référence pour la réservation d'hôtels, d'appartements et d'hébergements de luxe au Cameroun et en Afrique. Réservez votre séjour en toute confiance.",
+    "company": {
+      "title": "Entreprise",
+      "about": "À propos de nous",
+      "careers": "Carrières"
+    },
+    "support": {
+      "title": "Support",
+      "help": "Centre d'aide",
+      "terms": "Conditions d'utilisation"
+    },
+    "contact": {
+      "title": "Contact"
+    }
+  },
+  "Help": {
+    "title": "Centre d'aide",
+    "subtitle": "Comment pouvons-nous vous aider aujourd'hui ?",
+    "searchPlaceholder": "Rechercher une question...",
+    "faq": {
+      "q1": "Comment annuler ma réservation ?",
+      "a1": "Vous pouvez annuler votre réservation via votre espace client. Des frais peuvent s'appliquer selon la politique de l'établissement.",
+      "q2": "Comment obtenir une facture ?",
+      "a2": "Une fois votre séjour terminé, votre facture est disponible dans votre historique de réservations.",
+      "q3": "Comment modifier les dates de mon séjour ?",
+      "a3": "La modification dépend de la disponibilité. Contactez directement l'hébergeur ou notre service support."
+    },
+    "contact": {
+      "title": "Vous n'avez pas trouvé de réponse ?",
+      "subtitle": "Notre équipe est disponible 24h/24 pour vous répondre par email.",
+      "button": "Envoyer un email"
+    }
+  },
+  "Terms": {
+    "title": "Conditions générales d'utilisation",
+    "lastUpdated": "Dernière mise à jour",
+    "sections": {
+      "intro": {
+        "title": "1. Introduction",
+        "text": "Bienvenue sur Guen's travel. En utilisant notre plateforme, vous acceptez les conditions suivantes. Veuillez les lire attentivement."
+      },
+      "booking": {
+        "title": "2. Réservations et Paiements",
+        "text": "Toutes les réservations sont soumises à la disponibilité des hébergements. Les prix sont indiqués en FCFA, toutes taxes comprises."
+      },
+      "cancellation": {
+        "title": "3. Politique d'annulation",
+        "text": "Les conditions d'annulation varient selon l'établissement choisi. Veuillez consulter la section spécifique lors de votre réservation."
+      },
+      "liability": {
+        "title": "4. Responsabilité",
+        "text": "Guen's travel agit en tant qu'intermédiaire. Nous ne saurions être tenus responsables des litiges directs entre l'hébergeur et le voyageur."
+      }
+    }
+  },
+  "Privacy": {
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour",
+    "sections": {
+      "data": {
+        "title": "1. Collecte des données",
+        "text": "Nous collectons les informations que vous nous fournissez lors de votre inscription ou réservation (nom, email, téléphone, détails de paiement)."
+      },
+      "usage": {
+        "title": "2. Utilisation des données",
+        "text": "Vos informations sont utilisées pour gérer vos réservations, assurer le support client et vous envoyer des notifications importantes relatives à vos séjours."
+      },
+      "sharing": {
+        "title": "3. Partage des informations",
+        "text": "Nous ne vendons pas vos données. Nous partageons uniquement les informations nécessaires avec les hébergeurs partenaires pour confirmer votre réservation."
+      },
+      "rights": {
+        "title": "4. Vos droits",
+        "text": "Vous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Contactez-nous à privacy@guenstravel.cm pour toute demande."
+      }
+    }
+  },
+  "Careers": {
+    "title": "Rejoignez l'aventure Guen's travel",
+    "subtitle": "Nous construisons le futur du voyage en Afrique. Venez innover avec nous.",
+    "culture": {
+      "team": "Une équipe passionnée et soudée",
+      "impact": "Un impact réel sur le secteur du tourisme",
+      "growth": "Opportunités de carrière et développement"
+    },
+    "jobs": {
+      "title": "Nos offres actuelles",
+      "apply": "Postuler"
+    },
+    "spontaneous": {
+      "title": "Vous ne trouvez pas votre bonheur ?",
+      "text": "Nous sommes toujours à la recherche de nouveaux talents. Envoyez-nous votre CV et votre lettre de motivation."
+    }
+  },
+  "AppPromo": {
+    "badge": "Disponible maintenant",
+    "title": "Voyagez plus léger avec l'application Guen's travel",
+    "description": "Réservez, gérez vos séjours et accédez à vos billets directement depuis votre poche. Scannez le QR code pour télécharger notre application.",
+    "cta": "Télécharger l'app"
+  }
+,
+  "Metadata": { "title": "Réservez votre séjour idéal", "description": "Trouvez les meilleurs hébergements, villas et hôtels." },
+  "GuestCounter": {
+    "label": "Voyageurs",
+    "summary": "{total} pers, {rooms} ch.",
+    "adults": { "label": "Adultes", "sub": "13 ans et +" },
+    "children": { "label": "Enfants", "sub": "2-12 ans" },
+    "rooms": { "label": "Chambres", "sub": "Espaces privés" }
+  },
+  "DateRangePicker": {
+    "label": "Dates",
+    "placeholder": "Ajouter des dates"
+  },
+  "SearchComponent": {
+    "whereTo": "Où aller ?",
+    "searchButton": "Rechercher"
+  },
+  "Auth": {
+    "title": "Portail Client",
+    "subtitle": "Guen's Travel — Gérez vos hébergements, suivez vos réservations et pilotez vos revenus.",
+    "fields": {
+      "email": { "label": "Adresse email", "placeholder": "partenaire@etablissement.com" },
+      "password": { "label": "Mot de passe", "forgot": "Oublié ?" }
+    },
+    "button": { "submit": "Se connecter au tableau de bord", "loading": "Initialisation..." },
+    "noAccount": "Vous n'avez pas encore de compte ?",
+    "register": "S'inscrire au portail client",
+    "securityNote": "Connexion chiffrée et sécurisée. Réservé aux partenaires enregistrés."
+  },
+  "RegisterCustomer": {
+    "title": "Créez votre compte voyageur",
+    "subtitle": "Réservez vos séjours de rêve en quelques clics.",
+    "fields": {
+      "name": "Nom complet",
+      "email": "Adresse email",
+      "password": "Mot de passe"
+    },
+    "submit": "Rejoindre Guen's Travel",
+    "hasAccount": "Déjà membre ?",
+    "login": "Connectez-vous"
+  },
+  "FilterComponent": {
+    "title": "Filtres",
+    "clear": "Effacer",
+    "showMore": "Voir plus",
+    "showLess": "Voir moins",
+    "budget": {
+      "title": "Budget",
+      "options": {
+        "50": "Moins de 50 €",
+        "50-100": "50 € à 100 €",
+        "100-200": "100 € à 200 €",
+        "200": "200 € et plus"
+      }
+    },
+    "rating": {
+      "title": "Note des clients",
+      "options": {
+        "4_5": "Excellent (4.5+)",
+        "4_0": "Très bien (4.0+)",
+        "3_5": "Bien (3.5+)"
+      }
+    },
+    "amenities": {
+      "title": "Équipements",
+      "property": "Logement",
+      "room": "Chambre"
+    }
+  }
+
+}

@@ -1,0 +1,268 @@
+{
+  "Header": {
+    "properties": "Vacation Rentals",
+    "experiences": "Local Experiences",
+    "deals": "Special Offers",
+    "help": "Help Center",
+    "login": "Log in",
+    "book": "Book",
+    "becomeHost": "Become a host",
+    "dashboard": "Dashboard",
+    "logout": "Log out"
+  },
+  "Properties": {
+    "from": "From",
+    "bookNow": "Book now"
+  },
+  "PropertiesPage": {
+    "title": "All our accommodations",
+    "description": "Discover our exclusive selection of properties around the world.",
+    "emptyTitle": "No accommodations available",
+    "emptyDescription": "Please check back later to discover our new offers.",
+    "pagination": "{total, plural, =0 {No results} =1 {1 result found} other {{total} results found}}"
+  },
+  "host": {
+    "navigation": {
+      "dashboard": "Dashboard",
+      "properties": "My properties",
+      "bookings": "Bookings",
+      "payouts": "Wallet",
+      "settings": "Settings",
+      "switchGuest": "Guest Mode",
+      "hostSpace": "Host Space"
+    },
+    "properties": {
+      "create": {
+        "pageTitle": "Add an accommodation",
+        "stepIndicator": "Step {current} of {total}",
+        "basicInfoTitle": "Basic information",
+        "labelTitle": "Listing title",
+        "labelDescription": "Description",
+        "labelType": "Property type",
+        "labelPrice": "Price per night (XAF)",
+        "locationTitle": "Where is your place located?",
+        "labelCity": "City",
+        "labelQuarter": "Neighborhood",
+        "labelAddress": "Address / Directions",
+        "specsTitle": "Capacity & Available rooms",
+        "labelGuests": "Max guests",
+        "labelBedrooms": "Bedrooms",
+        "labelBathrooms": "Bathrooms",
+        "btnBack": "Back",
+        "btnNext": "Continue",
+        "btnFinish": "Publish listing",
+        "btnSaving": "Creating..."
+      }
+    }
+  },
+  "Terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated",
+    "sections": {
+      "intro": {
+        "title": "1. Introduction",
+        "text": "Welcome to Guen's travel. By using our platform, you agree to the following terms. Please read them carefully."
+      },
+      "booking": {
+        "title": "2. Bookings and Payments",
+        "text": "All bookings are subject to accommodation availability. Prices are quoted in FCFA, all taxes included."
+      },
+      "cancellation": {
+        "title": "3. Cancellation Policy",
+        "text": "Cancellation conditions vary depending on the selected establishment. Please refer to the specific section during your booking process."
+      },
+      "liability": {
+        "title": "4. Liability",
+        "text": "Guen's travel acts as an intermediary. We cannot be held responsible for direct disputes between the accommodation provider and the traveler."
+      }
+    }
+  },
+  "Landing": {
+    "hero": {
+      "title": "Escape with <green>peace of mind</green>",
+      "subtitle": "Unique, verified, and secure rentals."
+    },
+    "trust": {
+      "escrow": {
+        "title": "Escrow Guarantee",
+        "desc": "Secure payment: your funds are held until your check-in."
+      },
+      "payment": {
+        "title": "Flexible Payment",
+        "desc": "Pay with confidence using our secure methods."
+      },
+      "support": {
+        "title": "Premium Support",
+        "desc": "A digital concierge available 24/7."
+      }
+    },
+    "listings": {
+      "title": "Our premium selections",
+      "explore": "Explore all"
+    }
+  },
+  "About": {
+    "title": "Redefining the <green>travel experience</green>",
+    "subtitle": "We connect travelers to the most authentic establishments with total transparency.",
+    "mission": { "title": "Our Mission", "text": "To simplify accommodation booking with intuitive and human-centered technology." },
+    "trust": { "title": "Total Trust", "text": "Every establishment is rigorously verified to ensure your comfort." },
+    "passion": { "title": "Travel Passion", "text": "We believe every stay should be a memorable and unique experience." },
+    "support": { "title": "24/7 Support", "text": "A dedicated team available at any time to assist you." },
+    "stats": {
+      "properties": "Properties",
+      "guests": "Satisfied guests",
+      "cities": "Destinations"
+    }
+  },
+  "Footer": {
+    "brand": "Guen's travel",
+    "description": "Guen's travel is the leading platform for booking hotels, apartments, and luxury accommodations in Cameroon and Africa. Book your stay with confidence.",
+    "company": {
+      "title": "Company",
+      "about": "About Us",
+      "careers": "Careers"
+    },
+    "support": {
+      "title": "Support",
+      "help": "Help Center",
+      "terms": "Terms of Service"
+    },
+    "contact": {
+      "title": "Contact"
+    }
+  },
+  "Help": {
+    "title": "Help Center",
+    "subtitle": "How can we help you today?",
+    "searchPlaceholder": "Search for a question...",
+    "faq": {
+      "q1": "How do I cancel my booking?",
+      "a1": "You can cancel your booking via your client account. Fees may apply depending on the establishment's policy.",
+      "q2": "How do I get an invoice?",
+      "a2": "Once your stay is completed, your invoice will be available in your booking history.",
+      "q3": "How do I change my stay dates?",
+      "a3": "Changes are subject to availability. Please contact the host directly or our support team."
+    },
+    "contact": {
+      "title": "Didn't find an answer?",
+      "subtitle": "Our team is available 24/7 to answer you via email.",
+      "button": "Send an email"
+    }
+  },
+  "Privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated",
+    "sections": {
+      "data": {
+        "title": "1. Data Collection",
+        "text": "We collect the information you provide when registering or booking (name, email, phone number, payment details)."
+      },
+      "usage": {
+        "title": "2. Data Usage",
+        "text": "Your information is used to manage your bookings, provide customer support, and send important notifications regarding your stays."
+      },
+      "sharing": {
+        "title": "3. Data Sharing",
+        "text": "We do not sell your data. We only share the necessary information with our partner accommodation providers to confirm your booking."
+      },
+      "rights": {
+        "title": "4. Your Rights",
+        "text": "You have the right to access, rectify, and delete your personal data. Contact us at privacy@guenstravel.cm for any requests."
+      }
+    }
+  },
+  "Careers": {
+    "title": "Join the Guen's travel adventure",
+    "subtitle": "We are building the future of travel in Africa. Come innovate with us.",
+    "culture": {
+      "team": "A passionate and close-knit team",
+      "impact": "Real impact on the tourism sector",
+      "growth": "Career opportunities and development"
+    },
+    "jobs": {
+      "title": "Our current openings",
+      "apply": "Apply"
+    },
+    "spontaneous": {
+      "title": "Can't find the perfect fit?",
+      "text": "We are always looking for new talent. Send us your CV and a cover letter."
+    }
+  },
+  "AppPromo": {
+    "badge": "Available now",
+    "title": "Travel lighter with the Guen's travel app",
+    "description": "Book, manage your stays, and access your tickets right from your pocket. Scan the QR code to download our app.",
+    "cta": "Download the app"
+  },
+  "Metadata": { "title": "Book your ideal stay", "description": "Find the best accommodations, villas, and hotels." },
+  "GuestCounter": {
+    "label": "Guests",
+    "summary": "{total} guests, {rooms} rooms",
+    "adults": { "label": "Adults", "sub": "13+ years" },
+    "children": { "label": "Children", "sub": "2-12 years" },
+    "rooms": { "label": "Rooms", "sub": "Private spaces" }
+  },
+  "DateRangePicker": {
+    "label": "Dates",
+    "placeholder": "Add dates"
+  },
+  "SearchComponent": {
+    "whereTo": "Where to?",
+    "searchButton": "Search"
+  },
+
+  "Auth": {
+    "title": "Client Portal",
+    "subtitle": "Guen's Travel — Manage your properties, track bookings, and drive your revenue.",
+    "fields": {
+      "email": { "label": "Email address", "placeholder": "partner@establishment.com" },
+      "password": { "label": "Password", "forgot": "Forgot?" }
+    },
+    "button": { "submit": "Log in to dashboard", "loading": "Initializing..." },
+    "noAccount": "Don't have an account yet?",
+    "register": "Register for the client portal",
+    "securityNote": "Encrypted and secure connection. Reserved for registered partners."
+
+},
+  "RegisterCustomer": {
+    "title": "Create your traveler account",
+    "subtitle": "Book your dream stays in just a few clicks.",
+    "fields": {
+      "name": "Full name",
+      "email": "Email address",
+      "password": "Password"
+    },
+    "submit": "Join Guen's Travel",
+    "hasAccount": "Already a member?",
+    "login": "Log in"
+  },
+  "FilterComponent": {
+    "title": "Filters",
+    "clear": "Clear",
+    "showMore": "See more",
+    "showLess": "See less",
+    "budget": {
+      "title": "Budget",
+      "options": {
+        "50": "Less than €50",
+        "50-100": "€50 to €100",
+        "100-200": "€100 to €200",
+        "200": "€200 and up"
+      }
+    },
+    "rating": {
+      "title": "Guest rating",
+      "options": {
+        "4_5": "Excellent (4.5+)",
+        "4_0": "Very good (4.0+)",
+        "3_5": "Good (3.5+)"
+      }
+    },
+    "amenities": {
+      "title": "Amenities",
+      "property": "Property",
+      "room": "Room"
+    }
+  }
+
+}
