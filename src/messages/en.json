@@ -1,5 +1,7 @@
 {
   "Header": {
+    "flights": "Flights",
+    "hotels": "Hotels",
     "properties": "Vacation Rentals",
     "experiences": "Local Experiences",
     "deals": "Special Offers",
@@ -262,6 +264,47 @@
       "title": "Amenities",
       "property": "Property",
       "room": "Room"
+    }
+  },
+  "Flight": {
+    "hero": {
+      "title": "Travel the world with <green>simplicity</green>",
+      "subtitle": "Find and book flights to hundreds of destinations at the best guaranteed price.",
+      "search_title": "Find your next flight"
+    },
+    "trust": {
+      "escrow": {
+        "title": "Secure Booking",
+        "desc": "Your payments and bookings are protected at every stage."
+      },
+      "payment": {
+        "title": "Flexible Payment",
+        "desc": "Pay by credit card or via your local mobile solutions."
+      },
+      "support": {
+        "title": "24/7 Support",
+        "desc": "A dedicated team assists you before, during, and after your trip."
+      }
+    },
+    "flights": {
+      "listings": {
+        "title": "Recent searches and flights"
+      }
+    },
+    "searching": "Searching...",
+    "submit": "Search"
+  },
+  "DateRangePicker": {
+    "label": "Departure date",
+    "placeholder": "Select a date"
+  },
+  "GuestCounter": {
+    "label": "Passengers",
+    "summary": "{total, plural, =1 {# Adult} other {# Travelers}}",
+    "adults": {
+      "label": "Adult",
+      "label_plural": "Adults",
+      "sub": "12+ years"
     }
   }
 

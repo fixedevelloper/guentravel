@@ -1,5 +1,7 @@
 {
   "Header": {
+    "flights": "Vols",
+    "hotels": "Hôtels",
     "properties": "Locations de vacances",
     "experiences": "Expériences locales",
     "deals": "Offres spéciales",
@@ -252,6 +254,49 @@
       "property": "Logement",
       "room": "Chambre"
     }
+  },
+
+  "Flight": {
+    "hero": {
+      "title": "Voyagez à travers le monde avec <green>simplicité</green>",
+      "subtitle": "Trouvez et réservez des vols vers des centaines de destinations au meilleur prix garanti.",
+      "search_title": "Trouvez votre prochain vol"
+    },
+    "trust": {
+      "escrow": {
+        "title": "Réservation Sécurisée",
+        "desc": "Vos paiements et réservations sont protégés à chaque étape."
+      },
+      "payment": {
+        "title": "Paiement Flexible",
+        "desc": "Payez par carte bancaire ou via vos solutions mobiles locales."
+      },
+      "support": {
+        "title": "Support 24/7",
+        "desc": "Une équipe dédiée vous accompagne avant, pendant et après votre voyage."
+      }
+    },
+    "flights": {
+      "listings": {
+        "title": "Recherches et vols récents"
+      }
+    },
+    "searching": "Recherche...",
+    "submit": "Rechercher"
+  },
+  "DateRangePicker": {
+    "label": "Date de départ",
+    "placeholder": "Sélectionner une date"
+  },
+  "GuestCounter": {
+    "label": "Passagers",
+    "summary": "{total, plural, =1 {# Adulte} other {# Voyageurs}}",
+    "adults": {
+      "label": "Adultes",
+      "label_plural": "Adultes",
+      "sub": "+12 ans"
+    }
   }
+
 
 }

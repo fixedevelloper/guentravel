@@ -2,20 +2,18 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "@/i18n/navigation";
-import { MapPin, Menu, X, User, LogOut, LayoutDashboard, ChevronDown, Hotel } from "lucide-react";
+import { Link, usePathname } from "@/i18n/navigation"; // Utilisation du pathname i18n
+import { MapPin, Menu, X, LogOut, LayoutDashboard, ChevronDown, Hotel } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SelectLanguage } from "./SelectLanguage";
 import { useTranslations, useLocale } from "next-intl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/core/api/axios-instance";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -31,6 +29,9 @@ export function Header() {
     const queryClient = useQueryClient();
     const locale = useLocale();
 
+    // Récupère le chemin actuel sans le préfixe de la langue (ex: '/flights')
+    const pathname = usePathname();
+
     const logoutMutation = useMutation({
         mutationFn: () => api.post("/logout"),
         onSuccess: () => {
@@ -40,11 +41,10 @@ export function Header() {
         }
     });
 
-    // Structure de navigation pour SEO
+    // Structure de navigation avec détection de l'état actif
     const navLinks = [
-        { key: 'properties', href: '/properties', label: t("properties") },
-        { key: 'experiences', href: '/experiences', label: t("experiences") },
-        { key: 'offers', href: '/offers', label: t("deals") },
+        { key: 'flights', href: '/flights', label: t("flights") },
+        { key: 'hotels', href: '/', label: t("hotels") },
     ];
 
     return (
@@ -55,18 +55,42 @@ export function Header() {
                     {/* LOGO SEO */}
                     <Link href="/" className="flex items-center gap-2" aria-label="Accueil Guen's Travel">
                         <div className="bg-[#1d9e4b] p-2 rounded-lg"><MapPin className="h-6 w-6 text-white" /></div>
-                        <span className="text-2xl font-extrabold text-[#1d9e4b]">Guen's<span className="text-[#f39c28]">Travel</span></span>
+                        <span className="text-2xl font-extrabold text-[#1d9e4b]">Guen&apos;s<span className="text-[#f39c28]">Travel</span></span>
                     </Link>
 
                     {/* NAVIGATION DESKTOP SÉMANTIQUE */}
                     <ul className="hidden md:flex items-center gap-8" role="list">
-                        {navLinks.map((link) => (
-                            <li key={link.key}>
-                                <Link href={link.href} className="font-semibold text-zinc-700 hover:text-[#1d9e4b] transition-colors">
-                                    {link.label}
-                                </Link>
-                            </li>
-                        ))}
+                        {navLinks.map((link) => {
+                            // Si le href est '/', la correspondance doit être exacte.
+                            // Sinon, on vérifie si le chemin commence par le href (ex: /flights/search-results)
+                            const isActive = link.href === "/"
+                                ? pathname === "/"
+                                : pathname.startsWith(link.href);
+
+                            return (
+                                <li key={link.key}>
+                                    <Link
+                                        href={link.href}
+                                        aria-current={isActive ? "page" : undefined}
+                                        className={`font-semibold transition-colors relative py-2 ${
+                                            isActive
+                                                ? "text-[#1d9e4b]"
+                                                : "text-zinc-700 hover:text-[#1d9e4b]"
+                                        }`}
+                                    >
+                                        {link.label}
+
+                                        {/* Ligne animée sous l'onglet actif */}
+                                        {isActive && (
+                                            <motion.div
+                                                layoutId="activeTab"
+                                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1d9e4b] rounded-full"
+                                            />
+                                        )}
+                                    </Link>
+                                </li>
+                            );
+                        })}
                     </ul>
 
                     {/* ACTIONS */}
@@ -112,13 +136,24 @@ export function Header() {
                         className="md:hidden bg-white border-t border-zinc-200 overflow-hidden"
                     >
                         <ul className="flex flex-col p-6 gap-4" role="list">
-                            {navLinks.map((link) => (
-                                <li key={link.key}>
-                                    <Link href={link.href} onClick={() => setIsMenuOpen(false)} className="text-lg font-bold block">
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
+                            {navLinks.map((link) => {
+                                const isActive = pathname.startsWith(link.href);
+
+                                return (
+                                    <li key={link.key}>
+                                        <Link
+                                            href={link.href}
+                                            onClick={() => setIsMenuOpen(false)}
+                                            aria-current={isActive ? "page" : undefined}
+                                            className={`text-lg font-bold block py-2 ${
+                                                isActive ? "text-[#1d9e4b]" : "text-zinc-900"
+                                            }`}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </motion.div>
                 )}
