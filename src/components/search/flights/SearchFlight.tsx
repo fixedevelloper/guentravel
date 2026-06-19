@@ -18,7 +18,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Icons
-import { Plane, Calendar as CalendarIcon, Users, Minus, Plus, Trash2, PlusCircle } from "lucide-react";
+import {Plane, Calendar as CalendarIcon, Users, Minus, Plus, Trash2, PlusCircle, ChevronDown} from "lucide-react";
 
 interface PassengerConfig {
     adults: number;
@@ -109,17 +109,17 @@ export default function SearchFlight() {
     const totalPassengers = passengers.adults + passengers.children + passengers.infants;
 
     return (
-        <div className="w-full max-w-5xl mx-auto p-4 space-y-8 text-left">
-            <Card className="shadow-xl border-t-4 border-[#1d9e4b] bg-white">
-                <CardContent className="p-6 space-y-6">
+        <div className="w-full max-w-5xl mx-auto p-3 sm:p-4 space-y-6 md:space-y-8 text-left mb-20 md:mb-0">
+            <Card className="shadow-xl border-t-4 border-[#1d9e4b] bg-white rounded-2xl overflow-hidden">
+                <CardContent className="p-4 sm:p-6 space-y-6">
 
-                    {/* TYPE DE VOYAGE TABS */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
-                        <Tabs value={tripType} onValueChange={(v) => handleTripTypeChange(v as any)} className="w-full sm:w-auto">
-                            <TabsList className="bg-zinc-100">
-                                <TabsTrigger value="round_trip" className="data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white">Aller-retour</TabsTrigger>
-                                <TabsTrigger value="one_way" className="data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white">Aller simple</TabsTrigger>
-                                <TabsTrigger value="multi_city" className="data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white">Multi-destination</TabsTrigger>
+                    {/* TYPE DE VOYAGE & PASSAGERS */}
+                    <div className="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 border-b pb-4">
+                        <Tabs value={tripType} onValueChange={(v) => handleTripTypeChange(v as any)} className="w-full lg:w-auto">
+                            <TabsList className="bg-zinc-100 w-full justify-start sm:w-auto overflow-x-auto flex">
+                                <TabsTrigger value="round_trip" className="flex-1 sm:flex-initial data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white text-xs sm:text-sm">Aller-retour</TabsTrigger>
+                                <TabsTrigger value="one_way" className="flex-1 sm:flex-initial data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white text-xs sm:text-sm">Aller simple</TabsTrigger>
+                                <TabsTrigger value="multi_city" className="flex-1 sm:flex-initial data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white text-xs sm:text-sm">Multi-ville</TabsTrigger>
                             </TabsList>
                         </Tabs>
 
@@ -130,14 +130,15 @@ export default function SearchFlight() {
                             render={({ field }) => (
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant="outline" className="h-10 justify-start gap-2 text-sm font-medium border-zinc-200">
-                                            <Users className="text-[#1d9e4b] h-4 w-4" />
-                                            <span>
-                                                {totalPassengers} {totalPassengers > 1 ? "Voyageurs" : "Voyageur"}
-                                            </span>
+                                        <Button variant="outline" className="h-11 lg:h-10 justify-between sm:justify-start gap-2 text-sm font-medium border-zinc-200 w-full sm:w-auto rounded-xl sm:rounded-lg">
+                                            <div className="flex items-center gap-2">
+                                                <Users className="text-[#1d9e4b] h-4 w-4" />
+                                                <span>{totalPassengers} {totalPassengers > 1 ? "Voyageurs" : "Voyageur"}</span>
+                                            </div>
+                                            <ChevronDown className="h-4 w-4 text-zinc-400 sm:hidden" />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-72 p-4 space-y-4" align="end">
+                                    <PopoverContent className="w-full sm:w-72 p-4 space-y-4" align="end">
                                         {/* ADULTES */}
                                         <div className="flex items-center justify-between">
                                             <div>
@@ -198,89 +199,63 @@ export default function SearchFlight() {
                     <Form {...form}>
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                             {fields.map((segmentField, index) => (
-                                <div key={segmentField.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-zinc-50/50 p-3 rounded-xl border border-zinc-100 relative">
-                                    {/* ORIGINE */}
-                                    <div className="md:col-span-3">
-                                        <FormField
-                                            control={control}
-                                            name={`segments.${index}.origin`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    {index === 0 && <FormLabel className="text-zinc-500 text-xs uppercase tracking-wider font-semibold">Départ (IATA)</FormLabel>}
-                                                    <FormControl>
-                                                        <Input placeholder="Ex: DLA" maxLength={3} className="uppercase font-semibold h-12 bg-white" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
+                                <div key={segmentField.id} className="flex flex-col lg:grid lg:grid-cols-12 gap-3 sm:gap-4 items-stretch lg:items-end bg-zinc-50/70 p-3 sm:p-4 rounded-xl border border-zinc-100 relative">
 
-                                    {/* DESTINATION */}
-                                    <div className="md:col-span-3">
-                                        <FormField
-                                            control={control}
-                                            name={`segments.${index}.destination`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    {index === 0 && <FormLabel className="text-zinc-500 text-xs uppercase tracking-wider font-semibold">Arrivée (IATA)</FormLabel>}
-                                                    <FormControl>
-                                                        <Input placeholder="Ex: CDG" maxLength={3} className="uppercase font-semibold h-12 bg-white" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-
-                                    {/* DATE DE DÉPART */}
-                                    <div className={tripType === "round_trip" ? "md:col-span-3" : "md:col-span-5"}>
-                                        <FormField
-                                            control={control}
-                                            name={`segments.${index}.departure_date`}
-                                            render={({ field }) => (
-                                                <FormItem className="flex flex-col">
-                                                    {index === 0 && <FormLabel className="text-zinc-500 text-xs uppercase tracking-wider font-semibold mb-1">Date de départ</FormLabel>}
-                                                    <Popover>
-                                                        <PopoverTrigger asChild>
-                                                            <FormControl>
-                                                                <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white ${!field.value && "text-zinc-400"}`}>
-                                                                    <CalendarIcon className="h-4 w-4 text-[#1d9e4b]" />
-                                                                    {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>{tCalendar("placeholder")}</span>}
-                                                                </Button>
-                                                            </FormControl>
-                                                        </PopoverTrigger>
-                                                        <PopoverContent className="w-auto p-0" align="start">
-                                                            <Calendar
-                                                                mode="single"
-                                                                selected={field.value ? new Date(field.value) : undefined}
-                                                                onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")}
-                                                                disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
-                                                                locale={dateFnsLocale}
-                                                            />
-                                                        </PopoverContent>
-                                                    </Popover>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-
-                                    {/* DATE DE RETOUR */}
-                                    {tripType === "round_trip" && index === 0 && (
-                                        <div className="md:col-span-3">
+                                    {/* CONTENEUR ORIGINE / DESTINATION (Côte à côte sur mobile) */}
+                                    <div className="grid grid-cols-2 lg:contents gap-3">
+                                        {/* ORIGINE */}
+                                        <div className="lg:col-span-3">
                                             <FormField
                                                 control={control}
-                                                name="return_date"
+                                                name={`segments.${index}.origin`}
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold">Départ (IATA)</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Ex: DLA" maxLength={3} className="uppercase font-bold h-12 bg-white rounded-xl lg:rounded-lg" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+
+                                        {/* DESTINATION */}
+                                        <div className="lg:col-span-3">
+                                            <FormField
+                                                control={control}
+                                                name={`segments.${index}.destination`}
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold">Arrivée (IATA)</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Ex: CDG" maxLength={3} className="uppercase font-bold h-12 bg-white rounded-xl lg:rounded-lg" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* CONTENEUR DATES (Côte à côte sur mobile pour Aller-Retour) */}
+                                    <div className={`grid ${tripType === "round_trip" ? "grid-cols-2" : "grid-cols-1"} lg:contents gap-3`}>
+                                        {/* DATE DE DÉPART */}
+                                        <div className={tripType === "round_trip" ? "lg:col-span-3" : "lg:col-span-5"}>
+                                            <FormField
+                                                control={control}
+                                                name={`segments.${index}.departure_date`}
                                                 render={({ field }) => (
                                                     <FormItem className="flex flex-col">
-                                                        <FormLabel className="text-zinc-500 text-xs uppercase tracking-wider font-semibold mb-1">Date de retour</FormLabel>
+                                                        <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold mb-1">Départ</FormLabel>
                                                         <Popover>
                                                             <PopoverTrigger asChild>
                                                                 <FormControl>
-                                                                    <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white ${!field.value && "text-zinc-400"}`}>
-                                                                        <CalendarIcon className="h-4 w-4 text-[#1d9e4b]" />
-                                                                        {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir le retour</span>}
+                                                                    <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white rounded-xl lg:rounded-lg ${!field.value && "text-zinc-400"}`}>
+                                                                        <CalendarIcon className="h-4 w-4 text-[#1d9e4b] shrink-0" />
+                                                                        <span className="truncate text-xs sm:text-sm">
+                                                                        {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
+                                                                    </span>
                                                                     </Button>
                                                                 </FormControl>
                                                             </PopoverTrigger>
@@ -289,11 +264,7 @@ export default function SearchFlight() {
                                                                     mode="single"
                                                                     selected={field.value ? new Date(field.value) : undefined}
                                                                     onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")}
-                                                                    disabled={(date) => {
-                                                                        const depDateStr = watch("segments.0.departure_date");
-                                                                        const minDate = depDateStr ? new Date(depDateStr) : new Date();
-                                                                        return date < minDate;
-                                                                    }}
+                                                                    disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
                                                                     locale={dateFnsLocale}
                                                                 />
                                                             </PopoverContent>
@@ -303,13 +274,55 @@ export default function SearchFlight() {
                                                 )}
                                             />
                                         </div>
-                                    )}
+
+                                        {/* DATE DE RETOUR */}
+                                        {tripType === "round_trip" && index === 0 && (
+                                            <div className="lg:col-span-3">
+                                                <FormField
+                                                    control={control}
+                                                    name="return_date"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex flex-col">
+                                                            <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold mb-1">Retour</FormLabel>
+                                                            <Popover>
+                                                                <PopoverTrigger asChild>
+                                                                    <FormControl>
+                                                                        <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white rounded-xl lg:rounded-lg ${!field.value && "text-zinc-400"}`}>
+                                                                            <CalendarIcon className="h-4 w-4 text-[#1d9e4b] shrink-0" />
+                                                                            <span className="truncate text-xs sm:text-sm">
+                                                                            {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
+                                                                        </span>
+                                                                        </Button>
+                                                                    </FormControl>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-auto p-0" align="start">
+                                                                    <Calendar
+                                                                        mode="single"
+                                                                        selected={field.value ? new Date(field.value) : undefined}
+                                                                        onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")}
+                                                                        disabled={(date) => {
+                                                                            const depDateStr = watch("segments.0.departure_date");
+                                                                            const minDate = depDateStr ? new Date(depDateStr) : new Date();
+                                                                            return date < minDate;
+                                                                        }}
+                                                                        locale={dateFnsLocale}
+                                                                    />
+                                                                </PopoverContent>
+                                                            </Popover>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
 
                                     {/* RETRAIT SEGMENT MULTI-CITY */}
                                     {tripType === "multi_city" && fields.length > 1 && (
-                                        <div className="md:col-span-1 flex justify-center pb-2">
-                                            <Button type="button" variant="ghost" size="icon" className="text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => remove(index)}>
-                                                <Trash2 className="h-5 w-5" />
+                                        <div className="lg:col-span-1 flex justify-end lg:justify-center mt-1 lg:mt-0 lg:pb-2">
+                                            <Button type="button" variant="ghost" size="sm" className="text-red-500 hover:text-red-700 hover:bg-red-50 w-full lg:w-auto h-10 lg:h-10 rounded-xl" onClick={() => remove(index)}>
+                                                <Trash2 className="h-4 w-4 mr-2 lg:mr-0" />
+                                                <span className="lg:hidden text-xs">Supprimer cette étape</span>
                                             </Button>
                                         </div>
                                     )}
@@ -321,8 +334,7 @@ export default function SearchFlight() {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    size="sm"
-                                    className="text-[#1d9e4b] border-[#1d9e4b]/30 hover:bg-[#1d9e4b]/10 gap-2 mt-2"
+                                    className="w-full lg:w-auto text-[#1d9e4b] border-[#1d9e4b]/30 hover:bg-[#1d9e4b]/10 gap-2 mt-2 h-11 rounded-xl text-sm font-semibold"
                                     onClick={() => append({ origin: "", destination: "", departure_date: "" })}
                                 >
                                     <PlusCircle className="h-4 w-4" /> Ajouter un vol / une destination
@@ -331,7 +343,7 @@ export default function SearchFlight() {
 
                             {/* BOUTON RECHERCHER */}
                             <div className="flex justify-end pt-4 border-t">
-                                <Button type="submit" className="w-full md:w-48 h-12 bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-semibold transition-colors shadow-md">
+                                <Button type="submit" className="w-full lg:w-48 h-12 bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-bold transition-colors shadow-md rounded-xl text-base">
                                     Rechercher
                                 </Button>
                             </div>

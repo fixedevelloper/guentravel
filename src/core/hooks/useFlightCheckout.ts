@@ -5,9 +5,11 @@ import {toast} from "sonner";
 
 // Typage du payload attendu par ton API Laravel
 interface CheckoutPayload {
+    session_identifier: string | null;
+    booking_type: string; // 'now' ou 'hold'
     selected_flight: any;
     payment_method: string;
-    phone_number: string;
+    phone_number?: string;
     contact_info: {
         email: string;
         phone: string;

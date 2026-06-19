@@ -12,11 +12,13 @@ export interface Passenger {
 export interface FlightCartState {
     selectedFlight: any | null;
     passengers: Passenger[];
+    travelportSessionId: string | null; // 🔥 Stockage de l'ID de session Travelport
     contactInfo: {
         email: string;
         phone: string;
     };
     setFlight: (flight: any) => void;
+    setTravelportSessionId: (id: string | null) => void; // 🔥 Action pour modifier l'ID de session
     initPassengersList: (count: number) => void;
     updatePassenger: (index: number, fields: Partial<Passenger>) => void;
     updateContactInfo: (fields: Partial<{ email: string; phone: string }>) => void;
@@ -28,9 +30,13 @@ export const useCartStore = create<FlightCartState>()(
         (set) => ({
             selectedFlight: null,
             passengers: [],
+            travelportSessionId: null, // Initialisé à null
             contactInfo: { email: "", phone: "" },
 
             setFlight: (flight) => set({ selectedFlight: flight }),
+
+            // 🔥 Implémentation de la méthode de mise à jour
+            setTravelportSessionId: (id) => set({ travelportSessionId: id }),
 
             initPassengersList: (count) => {
                 const emptyPassengers = Array.from({ length: count }, () => ({
@@ -55,10 +61,16 @@ export const useCartStore = create<FlightCartState>()(
                     contactInfo: { ...state.contactInfo, ...fields },
                 })),
 
-            clearCart: () => set({ selectedFlight: null, passengers: [], contactInfo: { email: "", phone: "" } }),
+            // 🔥 Ajout de la remise à zéro du travelportSessionId lors du vidage de panier
+            clearCart: () => set({
+                selectedFlight: null,
+                passengers: [],
+                travelportSessionId: null,
+                contactInfo: { email: "", phone: "" }
+            }),
         }),
         {
-            name: "creativ-flight-cart", // Stockage local automatique pour éviter les pertes au rafraîchissement
+            name: "creativ-flight-cart", // Le middleware persist sauvegarde automatiquement le travelportSessionId dans le localStorage
         }
     )
 );
