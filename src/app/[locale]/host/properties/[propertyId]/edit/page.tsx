@@ -365,7 +365,7 @@ export default function EditPropertyPage() {
     if (isLoading) {
         return (
             <div className="h-96 flex flex-col items-center justify-center gap-3 text-zinc-400">
-                <Loader2 className="h-7 w-7 animate-spin text-[#1d9e4b]" />
+                <Loader2 className="h-7 w-7 animate-spin text-[#15a4e6]" />
                 <p className="text-sm font-medium">Chargement de l'établissement…</p>
             </div>
         );
@@ -394,16 +394,16 @@ export default function EditPropertyPage() {
                         return (
                             <React.Fragment key={s}>
                                 {s > 1 && (
-                                    <div className={`w-5 h-0.5 transition-colors ${visited || active ? "bg-[#1d9e4b]" : "bg-zinc-200"}`} />
+                                    <div className={`w-5 h-0.5 transition-colors ${visited || active ? "bg-[#15a4e6]" : "bg-zinc-200"}`} />
                                 )}
                                 <button
                                     type="button"
                                     onClick={() => goToStep(s)}
                                     aria-label={label}
                                     aria-current={active ? "step" : undefined}
-                                    className={`p-2 rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d9e4b] ${
-                                        active  ? "bg-[#1d9e4b] text-white shadow-sm" :
-                                            visited ? "bg-emerald-50 text-[#1d9e4b]" :
+                                    className={`p-2 rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#15a4e6] ${
+                                        active  ? "bg-[#15a4e6] text-white shadow-sm" :
+                                            visited ? "bg-emerald-50 text-[#15a4e6]" :
                                                 "bg-zinc-100 text-zinc-400"
                                     }`}
                                 >
@@ -434,7 +434,7 @@ export default function EditPropertyPage() {
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Type de structure</label>
-                            <select name="type" value={formData.type} onChange={handleChange} className="w-full h-10 px-3 border border-zinc-200 rounded-xl bg-white text-sm font-medium outline-none focus:ring-2 focus:ring-[#1d9e4b] transition">
+                            <select name="type" value={formData.type} onChange={handleChange} className="w-full h-10 px-3 border border-zinc-200 rounded-xl bg-white text-sm font-medium outline-none focus:ring-2 focus:ring-[#15a4e6] transition">
                                 <option value="hotel">Hôtel classique</option>
                                 <option value="resort">Complexe touristique (Resort)</option>
                                 <option value="villa">Complexe de villas</option>
@@ -452,7 +452,7 @@ export default function EditPropertyPage() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Pays</label>
-                                <select name="country_code" value={formData.country_code} onChange={handleCountryChange} className="w-full h-10 px-3 border border-zinc-200 rounded-xl bg-white text-sm font-medium outline-none focus:ring-2 focus:ring-[#1d9e4b] transition">
+                                <select name="country_code" value={formData.country_code} onChange={handleCountryChange} className="w-full h-10 px-3 border border-zinc-200 rounded-xl bg-white text-sm font-medium outline-none focus:ring-2 focus:ring-[#15a4e6] transition">
                                     {PAYS.map(p => (
                                         <option key={p.alpha2Code} value={p.alpha2Code}>{p.translations?.fr ?? p.name}</option>
                                     ))}
@@ -544,12 +544,12 @@ export default function EditPropertyPage() {
                                     onClick={() => toggleAmenity(item.slug)}
                                     className={`p-4 rounded-xl border text-left transition-all ${
                                         formData.amenities?.includes(item.slug)
-                                            ? "border-[#1d9e4b] bg-[#1d9e4b]/5"
+                                            ? "border-[#15a4e6] bg-[#15a4e6]/5"
                                             : "border-zinc-200 hover:border-zinc-300"
                                     }`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${formData.amenities?.includes(item.slug) ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-500"}`}>
+                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${formData.amenities?.includes(item.slug) ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-500"}`}>
                                             {typeof item.icon === 'string' ? <span className="text-xs">{item.icon}</span> : item.icon}
                                         </div>
                                         <span className="text-sm font-medium text-zinc-700">
@@ -566,8 +566,8 @@ export default function EditPropertyPage() {
                 {step === 5 && (
                     <fieldset className="space-y-4 animate-in fade-in duration-200 border-none p-0 m-0">
                         <legend className="text-lg font-bold text-zinc-800 mb-2">Photos de l'établissement</legend>
-                        <label className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center gap-2 text-center hover:border-[#1d9e4b] hover:bg-emerald-50/30 transition-all cursor-pointer group ${errors.images ? "border-red-400" : "border-zinc-200"}`}>
-                            <ImagePlus className="h-9 w-9 text-zinc-300 group-hover:text-[#1d9e4b] transition-colors" />
+                        <label className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center gap-2 text-center hover:border-[#15a4e6] hover:bg-emerald-50/30 transition-all cursor-pointer group ${errors.images ? "border-red-400" : "border-zinc-200"}`}>
+                            <ImagePlus className="h-9 w-9 text-zinc-300 group-hover:text-[#15a4e6] transition-colors" />
                             <p className="text-sm font-semibold text-zinc-600 group-hover:text-zinc-800">Ajouter des photos</p>
                             <p className="text-xs text-zinc-400">JPG, PNG, WEBP — plusieurs fichiers acceptés</p>
                             <input type="file" multiple accept="image/*" onChange={handleImageAdd} className="sr-only" />
@@ -582,7 +582,7 @@ export default function EditPropertyPage() {
                         {hasImages && (
                             <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
                                 {serverCover && (
-                                    <ImageCard src={serverCover} badge="Couverture" badgeColor="bg-[#1d9e4b]" onRemove={handleServerCoverRemove} />
+                                    <ImageCard src={serverCover} badge="Couverture" badgeColor="bg-[#15a4e6]" onRemove={handleServerCoverRemove} />
                                 )}
                                 {serverGallery.map((url) => (
                                     <ImageCard key={url} src={url} onRemove={() => handleServerGalleryRemove(url)} />
@@ -602,11 +602,11 @@ export default function EditPropertyPage() {
                     </Button>
 
                     {step < TOTAL_STEPS ? (
-                        <Button type="button" onClick={handleNext} className="bg-[#1d9e4b] hover:bg-[#15803c] rounded-xl gap-1.5">
+                        <Button type="button" onClick={handleNext} className="bg-[#15a4e6] hover:bg-[#15803c] rounded-xl gap-1.5">
                             Continuer <ArrowRight className="h-4 w-4" />
                         </Button>
                     ) : (
-                        <Button type="button" onClick={handleSubmit} disabled={mutation.isPending} className="bg-[#f39c28] hover:bg-[#d6841b] text-white rounded-xl gap-1.5 min-w-[200px]">
+                        <Button type="button" onClick={handleSubmit} disabled={mutation.isPending} className="bg-[#7bcd4f] hover:bg-[#d6841b] text-white rounded-xl gap-1.5 min-w-[200px]">
                             {mutation.isPending ? (
                                 <><Loader2 className="h-4 w-4 animate-spin" /> Enregistrement…</>
                             ) : (

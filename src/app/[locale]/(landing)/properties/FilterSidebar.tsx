@@ -14,7 +14,7 @@ export function FilterSidebar({ onFilterChange, currentFilters }: { onFilterChan
 
                 <div className="flex items-center justify-between">
                     <h3 className="font-black text-xl text-zinc-900">Filtres</h3>
-                    <button onClick={() => onFilterChange({ maxPrice: 500000 })} className="text-xs font-bold text-[#1d9e4b] hover:underline">
+                    <button onClick={() => onFilterChange({ maxPrice: 500000 })} className="text-xs font-bold text-[#15a4e6] hover:underline">
                         Tout effacer
                     </button>
                 </div>
@@ -35,7 +35,7 @@ export function FilterSidebar({ onFilterChange, currentFilters }: { onFilterChan
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
                         <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400">Budget max</h4>
-                        <span className="text-xs font-black text-[#1d9e4b]">{currentFilters.maxPrice.toLocaleString()} FCFA</span>
+                        <span className="text-xs font-black text-[#15a4e6]">{currentFilters.maxPrice.toLocaleString()} FCFA</span>
                     </div>
 
                     <Slider

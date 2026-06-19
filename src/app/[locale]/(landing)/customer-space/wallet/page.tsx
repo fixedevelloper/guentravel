@@ -106,7 +106,7 @@ export default function CustomerWalletPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center space-y-4"
                 >
-                    <div className="w-16 h-16 border-4 border-[#1d9e4b] border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-16 h-16 border-4 border-[#15a4e6] border-t-transparent rounded-full animate-spin mx-auto" />
                     <p className="text-sm font-semibold text-zinc-600">{t.loading}</p>
                 </motion.div>
             </div>
@@ -124,8 +124,8 @@ export default function CustomerWalletPage() {
                     className="space-y-2"
                 >
                     <div className="flex items-center gap-3">
-                        <div className="bg-[#1d9e4b]/10 p-3 rounded-xl">
-                            <Wallet className="h-6 w-6 text-[#1d9e4b]" />
+                        <div className="bg-[#15a4e6]/10 p-3 rounded-xl">
+                            <Wallet className="h-6 w-6 text-[#15a4e6]" />
                         </div>
                         <div>
                             <h1 className="text-4xl font-extrabold text-zinc-900 tracking-tight">
@@ -147,7 +147,7 @@ export default function CustomerWalletPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
                     >
-                        <Card className="rounded-3xl border-zinc-100 shadow-xl bg-gradient-to-br from-[#1d9e4b] to-[#167c3a] text-white overflow-hidden">
+                        <Card className="rounded-3xl border-zinc-100 shadow-xl bg-gradient-to-br from-[#15a4e6] to-[#167c3a] text-white overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
                             <CardContent className="p-6 flex flex-col justify-between h-full min-h-[160px] relative">
                                 <div className="flex items-center justify-between">
@@ -164,7 +164,7 @@ export default function CustomerWalletPage() {
                                         {wallet?.currency || "FCFA"}
                                     </div>
                                 </div>
-                                <Button className="bg-white text-[#1d9e4b] hover:bg-white/90 font-bold rounded-xl text-sm mt-4">
+                                <Button className="bg-white text-[#15a4e6] hover:bg-white/90 font-bold rounded-xl text-sm mt-4">
                                     <PlusCircle className="h-4 w-4 mr-2" />
                                     {t.addFunds}
                                 </Button>
@@ -185,7 +185,7 @@ export default function CustomerWalletPage() {
                                         {t.totalRefunds}
                                     </span>
                                     <div className="p-3 bg-green-100 rounded-xl">
-                                        <ArrowDownLeft className="h-5 w-5 text-[#1d9e4b]" />
+                                        <ArrowDownLeft className="h-5 w-5 text-[#15a4e6]" />
                                     </div>
                                 </div>
                                 <div className="space-y-2 mt-4">
@@ -243,8 +243,8 @@ export default function CustomerWalletPage() {
                     >
                         <Card className="rounded-3xl border-zinc-100 shadow-xl bg-white overflow-hidden">
                             <CardHeader className="border-b border-zinc-100 pb-4 flex flex-row items-center gap-3 px-6">
-                                <div className="p-2 bg-[#1d9e4b]/10 rounded-xl">
-                                    <History className="h-5 w-5 text-[#1d9e4b]" />
+                                <div className="p-2 bg-[#15a4e6]/10 rounded-xl">
+                                    <History className="h-5 w-5 text-[#15a4e6]" />
                                 </div>
                                 <div>
                                     <CardTitle className="text-xl font-extrabold text-zinc-900">{t.recentTransactions}</CardTitle>
@@ -278,7 +278,7 @@ export default function CustomerWalletPage() {
                                                     </td>
                                                     <td className="p-4">
                                                         {tx.type === "credit" ? (
-                                                            <span className="text-xs font-bold text-[#1d9e4b] bg-green-50 px-3 py-1 rounded-full">
+                                                            <span className="text-xs font-bold text-[#15a4e6] bg-green-50 px-3 py-1 rounded-full">
                                                                     {t.typeCredit}
                                                                 </span>
                                                         ) : (
@@ -287,7 +287,7 @@ export default function CustomerWalletPage() {
                                                                 </span>
                                                         )}
                                                     </td>
-                                                    <td className={`p-4 font-extrabold ${tx.type === "credit" ? "text-[#1d9e4b]" : "text-zinc-900"}`}>
+                                                    <td className={`p-4 font-extrabold ${tx.type === "credit" ? "text-[#15a4e6]" : "text-zinc-900"}`}>
                                                         {tx.type === "credit" ? "+" : "-"}{tx.amount.toLocaleString()} F
                                                     </td>
                                                     <td className="p-4 pr-6 text-right">
@@ -318,14 +318,14 @@ export default function CustomerWalletPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
                     >
-                        <Card className="rounded-3xl border-zinc-100 shadow-xl bg-gradient-to-br from-[#1d9e4b]/5 to-[#1d9e4b]/10 p-6 flex gap-4 items-start border border-[#1d9e4b]/20">
-                            <div className="p-3 bg-[#1d9e4b]/10 rounded-2xl shrink-0">
-                                <HelpCircle className="h-6 w-6 text-[#1d9e4b]" />
+                        <Card className="rounded-3xl border-zinc-100 shadow-xl bg-gradient-to-br from-[#15a4e6]/5 to-[#15a4e6]/10 p-6 flex gap-4 items-start border border-[#15a4e6]/20">
+                            <div className="p-3 bg-[#15a4e6]/10 rounded-2xl shrink-0">
+                                <HelpCircle className="h-6 w-6 text-[#15a4e6]" />
                             </div>
                             <div className="space-y-2">
                                 <h4 className="text-sm font-extrabold text-zinc-900 flex items-center gap-2">
                                     {t.noticeTitle}
-                                    <Sparkles className="h-4 w-4 text-[#1d9e4b]" />
+                                    <Sparkles className="h-4 w-4 text-[#15a4e6]" />
                                 </h4>
                                 <p className="text-xs text-zinc-600 leading-relaxed font-medium">
                                     {t.noticeDesc}

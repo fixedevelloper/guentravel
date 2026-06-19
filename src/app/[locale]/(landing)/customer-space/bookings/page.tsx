@@ -119,7 +119,7 @@ export default function CustomerBookingsPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center space-y-4"
                 >
-                    <div className="w-16 h-16 border-4 border-[#1d9e4b] border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-16 h-16 border-4 border-[#15a4e6] border-t-transparent rounded-full animate-spin mx-auto" />
                     <p className="text-sm font-semibold text-zinc-600">{t.loading}</p>
                 </motion.div>
             </div>
@@ -166,7 +166,7 @@ export default function CustomerBookingsPage() {
                         variant={activeFilter === "upcoming" ? "default" : "ghost"}
                         className={`rounded-xl text-sm font-bold px-5 transition-all ${
                             activeFilter === "upcoming"
-                                ? "bg-[#1d9e4b] text-white shadow-lg shadow-[#1d9e4b]/30"
+                                ? "bg-[#15a4e6] text-white shadow-lg shadow-[#15a4e6]/30"
                                 : "text-zinc-600 hover:bg-zinc-100"
                         }`}
                         onClick={() => setActiveFilter("upcoming")}
@@ -227,7 +227,7 @@ export default function CustomerBookingsPage() {
                                                     {t.ref}: {booking.reference}
                                                 </div>
                                                 {booking.rating && (
-                                                    <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#f39c28] text-white px-3 py-1 rounded-full">
+                                                    <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#7bcd4f] text-white px-3 py-1 rounded-full">
                                                         <Star className="h-3 w-3 fill-white" />
                                                         <span className="font-bold text-sm">{booking.rating}</span>
                                                     </div>
@@ -245,7 +245,7 @@ export default function CustomerBookingsPage() {
                                                     {booking.property_name}
                                                 </h3>
                                                 <p className="text-sm text-zinc-500 flex items-center gap-2">
-                                                    <MapPin className="h-4 w-4 text-[#1d9e4b]" />
+                                                    <MapPin className="h-4 w-4 text-[#15a4e6]" />
                                                     {booking.property_address}
                                                 </p>
                                                 <p className="text-xs text-zinc-400 flex items-center gap-1">
@@ -257,7 +257,7 @@ export default function CustomerBookingsPage() {
                                             {/* Colonne 2: Dates */}
                                             <div className="space-y-3 border-l border-zinc-100 pl-0 md:pl-6">
                                                 <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wide">
-                                                    <Calendar className="h-4 w-4 text-[#1d9e4b]" />
+                                                    <Calendar className="h-4 w-4 text-[#15a4e6]" />
                                                     <span>Séjour</span>
                                                 </div>
                                                 <div className="text-sm font-bold text-zinc-900 flex items-center gap-2">
@@ -271,14 +271,14 @@ export default function CustomerBookingsPage() {
                                             <div className="flex flex-col items-start md:items-end justify-between gap-4 pt-4 border-t md:border-t-0 md:border-l border-zinc-100">
                                                 <div className="md:text-right">
                                                     <p className="text-xs font-bold text-zinc-400 uppercase">{t.totalPaid}</p>
-                                                    <p className="text-2xl font-extrabold text-[#1d9e4b]">{booking.total_price.toLocaleString()} FCFA</p>
+                                                    <p className="text-2xl font-extrabold text-[#15a4e6]">{booking.total_price.toLocaleString()} FCFA</p>
                                                 </div>
 
                                                 <div className="flex items-center gap-2">
                                                     {booking.host_phone && booking.status === "confirmed" && (
                                                         <a
                                                             href={`tel:${booking.host_phone}`}
-                                                            className="inline-flex items-center justify-center p-3 rounded-xl bg-[#1d9e4b]/10 text-[#1d9e4b] hover:bg-[#1d9e4b] hover:text-white transition-all shadow-sm"
+                                                            className="inline-flex items-center justify-center p-3 rounded-xl bg-[#15a4e6]/10 text-[#15a4e6] hover:bg-[#15a4e6] hover:text-white transition-all shadow-sm"
                                                             title={t.callHost}
                                                         >
                                                             <Phone className="h-5 w-5" />

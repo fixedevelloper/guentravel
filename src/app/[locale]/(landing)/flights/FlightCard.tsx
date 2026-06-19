@@ -55,7 +55,7 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                                             </span>
                                             <div className="relative flex items-center justify-center my-1.5">
                                                 <div className="w-full border-t-2 border-zinc-200 group-hover:border-zinc-300 transition-colors"></div>
-                                                <Plane className="absolute text-zinc-400 group-hover:text-[#1d9e4b] h-3.5 w-3.5 bg-white px-0.5 transition-colors rotate-45" />
+                                                <Plane className="absolute text-zinc-400 group-hover:text-[#15a4e6] h-3.5 w-3.5 bg-white px-0.5 transition-colors rotate-45" />
                                             </div>
                                             <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
                                                 journey.stops_count === 0 ? "text-emerald-600 bg-emerald-50" : "text-amber-600 bg-amber-50"
@@ -183,7 +183,7 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                         <div className="flex justify-end border-t pt-4 border-zinc-100">
                             <Button
                                 onClick={() => handleSelectFlight(flight)}
-                                className="w-full sm:w-auto bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-black h-12 px-8 shadow-md transition-all rounded-xl text-sm uppercase tracking-wider"
+                                className="w-full sm:w-auto bg-[#15a4e6] hover:bg-[#167f3c] text-white font-black h-12 px-8 shadow-md transition-all rounded-xl text-sm uppercase tracking-wider"
                             >
                                 Réserver ce vol maintenant
                             </Button>

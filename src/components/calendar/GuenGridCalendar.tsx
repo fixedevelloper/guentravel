@@ -124,7 +124,7 @@ export const GuenGridCalendar = ({ data, onSelectRange }: GuenGridCalendarProps)
                 </button>
 
                 <div className="flex items-center gap-2 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-                    <CalendarIcon className="w-4 h-4 text-[#1d9e4b]" />
+                    <CalendarIcon className="w-4 h-4 text-[#15a4e6]" />
                     <span>
             {format(months[0], 'MMM yyyy', { locale: fr })} → {format(months[1], 'MMM yyyy', { locale: fr })}
           </span>
@@ -139,7 +139,7 @@ export const GuenGridCalendar = ({ data, onSelectRange }: GuenGridCalendarProps)
                 </button>
 
                 {selectedRange && (
-                    <span className="ml-auto text-sm text-[#1d9e4b] font-medium">
+                    <span className="ml-auto text-sm text-[#15a4e6] font-medium">
             {format(selectedRange.from, 'd MMM', { locale: fr })} → {format(selectedRange.to, 'd MMM', { locale: fr })}
           </span>
                 )}
@@ -173,7 +173,7 @@ export const GuenGridCalendar = ({ data, onSelectRange }: GuenGridCalendarProps)
                             )}
                         >
                             {i === 0 && (
-                                <span className="text-[10px] font-bold text-[#1d9e4b] uppercase tracking-wide bg-[#1d9e4b]/10 px-2 py-0.5 rounded">
+                                <span className="text-[10px] font-bold text-[#15a4e6] uppercase tracking-wide bg-[#15a4e6]/10 px-2 py-0.5 rounded">
                   {format(months[0], 'MMM yyyy', { locale: fr })}
                 </span>
                             )}
@@ -184,7 +184,7 @@ export const GuenGridCalendar = ({ data, onSelectRange }: GuenGridCalendarProps)
                     {Array.from({ length: 7 }).map((_, i) => (
                         <div key={`m2-${i}`} className="py-2 text-center">
                             {i === 0 && (
-                                <span className="text-[10px] font-bold text-[#1d9e4b] uppercase tracking-wide bg-[#1d9e4b]/10 px-2 py-0.5 rounded">
+                                <span className="text-[10px] font-bold text-[#15a4e6] uppercase tracking-wide bg-[#15a4e6]/10 px-2 py-0.5 rounded">
                   {format(months[1], 'MMM yyyy', { locale: fr })}
                 </span>
                             )}

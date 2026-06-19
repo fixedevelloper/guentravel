@@ -51,7 +51,7 @@ export function PropertyBookingWidget({
                 className="sticky top-24 p-6 border border-zinc-200 rounded-3xl shadow-xl bg-white space-y-6"
             >
                 <div className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-[#1d9e4b]" />
+                    <Calendar className="h-5 w-5 text-[#15a4e6]" />
                     <h3 className="font-extrabold text-xl text-zinc-900">Réservation</h3>
                 </div>
 
@@ -74,13 +74,13 @@ export function PropertyBookingWidget({
 
                         <div className="pt-4 border-t flex justify-between items-center">
                             <span className="font-bold text-lg">Total</span>
-                            <span className="text-2xl font-extrabold text-[#1d9e4b]">{total.toLocaleString()} FCFA</span>
+                            <span className="text-2xl font-extrabold text-[#15a4e6]">{total.toLocaleString()} FCFA</span>
                         </div>
 
                         <Button
                             onClick={onSubmit}
                             disabled={!isReady || isPending}
-                            className="w-full bg-[#1d9e4b] hover:bg-[#167c3a] py-6 font-bold rounded-xl shadow-lg transition-all"
+                            className="w-full bg-[#15a4e6] hover:bg-[#167c3a] py-6 font-bold rounded-xl shadow-lg transition-all"
                         >
                             {isPending ? "Traitement..." : "Confirmer la réservation"}
                         </Button>

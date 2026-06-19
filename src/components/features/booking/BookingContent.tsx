@@ -166,7 +166,7 @@ export function BookingContent({
                                 <div className="grid md:grid-cols-2 gap-4 pt-2">
                                     <div className="bg-white rounded-2xl p-5 border border-zinc-200/80">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <Calendar className="h-5 w-5 text-[#1d9e4b]" />
+                                            <Calendar className="h-5 w-5 text-[#15a4e6]" />
                                             <span className="font-semibold text-zinc-800">Dates</span>
                                         </div>
                                         <p className="text-zinc-700 font-medium">{formatDate(checkIn)}</p>
@@ -175,7 +175,7 @@ export function BookingContent({
 
                                     <div className="bg-white rounded-2xl p-5 border border-zinc-200/80">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <Users className="h-5 w-5 text-[#1d9e4b]" />
+                                            <Users className="h-5 w-5 text-[#15a4e6]" />
                                             <span className="font-semibold text-zinc-800">Voyageurs</span>
                                         </div>
                                         <p className="text-zinc-700 font-medium">
@@ -189,7 +189,7 @@ export function BookingContent({
                             </div>
 
                             <Button
-                                className="w-full bg-[#1d9e4b] hover:bg-[#167c3a] py-6 rounded-xl font-bold"
+                                className="w-full bg-[#15a4e6] hover:bg-[#167c3a] py-6 rounded-xl font-bold"
                                 onClick={() => setCurrentStep(2)}
                             >
                                 Continuer
@@ -211,7 +211,7 @@ export function BookingContent({
                                     type="button"
                                     className={`flex-1 pb-4 font-bold transition-all ${
                                         authMode === "login"
-                                            ? "border-b-2 border-[#1d9e4b] text-[#1d9e4b]"
+                                            ? "border-b-2 border-[#15a4e6] text-[#15a4e6]"
                                             : "text-zinc-400"
                                     }`}
                                     onClick={() => { setAuthMode("login"); setAuthError(null); }}
@@ -222,7 +222,7 @@ export function BookingContent({
                                     type="button"
                                     className={`flex-1 pb-4 font-bold transition-all ${
                                         authMode === "register"
-                                            ? "border-b-2 border-[#1d9e4b] text-[#1d9e4b]"
+                                            ? "border-b-2 border-[#15a4e6] text-[#15a4e6]"
                                             : "text-zinc-400"
                                     }`}
                                     onClick={() => { setAuthMode("register"); setAuthError(null); }}
@@ -242,7 +242,7 @@ export function BookingContent({
                                 {authMode === "register" && (
                                     <input
                                         required
-                                        className="w-full p-4 border rounded-xl bg-transparent outline-none focus:border-[#1d9e4b]"
+                                        className="w-full p-4 border rounded-xl bg-transparent outline-none focus:border-[#15a4e6]"
                                         placeholder="Nom complet"
                                         value={authData.fullName}
                                         onChange={(e) => setAuthData((prev) => ({ ...prev, fullName: e.target.value }))}
@@ -251,7 +251,7 @@ export function BookingContent({
                                 <input
                                     required
                                     type="email"
-                                    className="w-full p-4 border rounded-xl bg-transparent outline-none focus:border-[#1d9e4b]"
+                                    className="w-full p-4 border rounded-xl bg-transparent outline-none focus:border-[#15a4e6]"
                                     placeholder="Adresse email"
                                     value={authData.email}
                                     onChange={(e) => setAuthData((prev) => ({ ...prev, email: e.target.value }))}
@@ -259,7 +259,7 @@ export function BookingContent({
                                 <input
                                     required
                                     type="password"
-                                    className="w-full p-4 border rounded-xl bg-transparent outline-none focus:border-[#1d9e4b]"
+                                    className="w-full p-4 border rounded-xl bg-transparent outline-none focus:border-[#15a4e6]"
                                     placeholder="Mot de passe"
                                     value={authData.password}
                                     onChange={(e) => setAuthData((prev) => ({ ...prev, password: e.target.value }))}
@@ -268,7 +268,7 @@ export function BookingContent({
 
                             <Button
                                 type="submit"
-                                className="w-full bg-[#1d9e4b] hover:bg-[#167c3a] py-6 rounded-xl font-bold flex justify-center items-center gap-2"
+                                className="w-full bg-[#15a4e6] hover:bg-[#167c3a] py-6 rounded-xl font-bold flex justify-center items-center gap-2"
                                 disabled={!authData.email || !authData.password || isAuthLoading}
                             >
                                 {isAuthLoading && <Loader2 className="h-5 w-5 animate-spin" />}
@@ -276,7 +276,7 @@ export function BookingContent({
                             </Button>
 
                             <p className="text-center text-xs text-zinc-400 flex justify-center items-center gap-2">
-                                <Shield className="h-4 w-4 text-[#1d9e4b]" />
+                                <Shield className="h-4 w-4 text-[#15a4e6]" />
                                 Vos informations sont sécurisées.
                             </p>
                         </form>
@@ -288,7 +288,7 @@ export function BookingContent({
                             <div>
                                 <h2 className="text-3xl font-extrabold text-zinc-900">Paiement</h2>
                                 <p className="text-zinc-500 mt-2">
-                                    Total à régler : <strong className="text-[#1d9e4b] text-xl ml-1">{finalTotal.toLocaleString()} FCFA</strong>
+                                    Total à régler : <strong className="text-[#15a4e6] text-xl ml-1">{finalTotal.toLocaleString()} FCFA</strong>
                                 </p>
                             </div>
 
@@ -303,14 +303,14 @@ export function BookingContent({
                                         <div
                                             key={method.id}
                                             onClick={() => setPaymentMethod(method.id)}
-                                            className={`p-5 border rounded-2xl cursor-pointer transition-all hover:border-[#1d9e4b]/60 ${
+                                            className={`p-5 border rounded-2xl cursor-pointer transition-all hover:border-[#15a4e6]/60 ${
                                                 paymentMethod === method.id
-                                                    ? "border-[#1d9e4b] bg-green-50/60 shadow-sm"
+                                                    ? "border-[#15a4e6] bg-green-50/60 shadow-sm"
                                                     : "border-zinc-200 bg-white"
                                             }`}
                                         >
                                             <div className="flex items-center gap-4">
-                                                <Icon className={`h-6 w-6 ${paymentMethod === method.id ? "text-[#1d9e4b]" : "text-zinc-500"}`} />
+                                                <Icon className={`h-6 w-6 ${paymentMethod === method.id ? "text-[#15a4e6]" : "text-zinc-500"}`} />
                                                 <span className="font-semibold text-zinc-800">{method.title}</span>
                                             </div>
                                         </div>
@@ -319,7 +319,7 @@ export function BookingContent({
                             </div>
 
                             <Button
-                                className="w-full bg-[#1d9e4b] hover:bg-[#167c3a] py-6 rounded-xl font-bold text-lg shadow-md flex justify-center items-center gap-2"
+                                className="w-full bg-[#15a4e6] hover:bg-[#167c3a] py-6 rounded-xl font-bold text-lg shadow-md flex justify-center items-center gap-2"
                                 disabled={!paymentMethod || isProcessing}
                                 onClick={onConfirm}
                             >

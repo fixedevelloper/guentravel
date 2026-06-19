@@ -66,12 +66,12 @@ export function PropertyCard({ property, index }: PropertyCardProps) {
 
             {/* --- Section Contenu --- */}
             <div className="p-6 flex flex-col flex-grow">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#1d9e4b] bg-[#1d9e4b]/5 px-2 py-0.5 rounded w-fit mb-3">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#15a4e6] bg-[#15a4e6]/5 px-2 py-0.5 rounded w-fit mb-3">
                     {property.type}
                 </span>
 
                 <Link href={`/properties/${property.uuid}`}>
-                    <h3 className="text-lg font-black text-zinc-900 leading-tight group-hover:text-[#1d9e4b] transition-colors line-clamp-1 mb-2">
+                    <h3 className="text-lg font-black text-zinc-900 leading-tight group-hover:text-[#15a4e6] transition-colors line-clamp-1 mb-2">
                         {property.name?.[locale] || property.name?.['fr']}
                     </h3>
                 </Link>
@@ -89,12 +89,12 @@ export function PropertyCard({ property, index }: PropertyCardProps) {
                 <div className="flex items-center justify-between pt-4 border-t border-zinc-50">
                     <div>
                         <p className="text-[10px] text-zinc-400 uppercase font-bold">{t("from")}</p>
-                        <p className="text-[#1d9e4b] font-black text-lg">
+                        <p className="text-[#15a4e6] font-black text-lg">
                             {formattedPrice} <span className="text-[10px] font-normal text-zinc-600">FCFA</span>
                         </p>
                     </div>
 
-                    <Button  size="sm" className="bg-zinc-900 hover:bg-[#1d9e4b] text-white rounded-xl px-5 font-bold transition-all">
+                    <Button  size="sm" className="bg-zinc-900 hover:bg-[#15a4e6] text-white rounded-xl px-5 font-bold transition-all">
                         {t("bookNow")}
                     </Button>
                 </div>

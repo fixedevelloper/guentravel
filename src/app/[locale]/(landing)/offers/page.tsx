@@ -34,7 +34,7 @@ export default function RoomsOffersPage() {
 
     if (isLoading) return (
         <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-            <Loader2 className="h-10 w-10 animate-spin text-[#1d9e4b]" />
+            <Loader2 className="h-10 w-10 animate-spin text-[#15a4e6]" />
             <p className="text-zinc-500 font-medium">Recherche des meilleures offres...</p>
         </div>
     );
@@ -46,7 +46,7 @@ export default function RoomsOffersPage() {
             <main className="max-w-7xl mx-auto px-6 py-16">
                 {/* SEO: Header de section */}
                 <header className="mb-16 text-center">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1d9e4b]/10 text-[#1d9e4b] text-xs font-bold uppercase tracking-widest mb-4">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#15a4e6]/10 text-[#15a4e6] text-xs font-bold uppercase tracking-widest mb-4">
                         <Sparkles className="h-3 w-3" /> Offres Exclusives
                     </span>
                     <h1 className="text-4xl md:text-5xl font-black text-zinc-900 mb-6">
@@ -68,10 +68,10 @@ export default function RoomsOffersPage() {
                                 <Card className="h-full rounded-3xl border-zinc-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white hover:-translate-y-2">
                                     <div className="h-48 bg-zinc-200" /> {/* Placeholder pour l'image */}
                                     <CardContent className="p-7">
-                                        <div className="flex items-center gap-1 text-[11px] font-bold text-[#1d9e4b] mb-3 bg-[#1d9e4b]/5 px-2 py-1 rounded-md w-fit uppercase">
+                                        <div className="flex items-center gap-1 text-[11px] font-bold text-[#15a4e6] mb-3 bg-[#15a4e6]/5 px-2 py-1 rounded-md w-fit uppercase">
                                             <MapPin className="h-3 w-3" /> {room.property.city}
                                         </div>
-                                        <h2 className="text-xl font-bold text-zinc-900 mb-2 group-hover:text-[#1d9e4b] transition-colors">
+                                        <h2 className="text-xl font-bold text-zinc-900 mb-2 group-hover:text-[#15a4e6] transition-colors">
                                             {room.name[locale]}
                                         </h2>
                                         <p className="text-sm text-zinc-500 mb-6 line-clamp-2 h-10">
@@ -85,7 +85,7 @@ export default function RoomsOffersPage() {
                                                     {Number(room.default_price_per_night).toLocaleString('fr-FR')} FCFA
                                                 </span>
                                             </div>
-                                            <Link href={`/offers/${room.id}`} className="bg-zinc-900 text-white p-3 rounded-full hover:bg-[#1d9e4b] transition-colors">
+                                            <Link href={`/offers/${room.id}`} className="bg-zinc-900 text-white p-3 rounded-full hover:bg-[#15a4e6] transition-colors">
                                                 <ArrowRight className="h-5 w-5" />
                                             </Link>
                                         </div>

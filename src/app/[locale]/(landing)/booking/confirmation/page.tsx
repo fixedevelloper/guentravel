@@ -24,13 +24,13 @@ export default function BookingConfirmationPage() {
         >
             <div className="bg-white p-10 rounded-3xl shadow-xl border border-zinc-100 text-center max-w-lg w-full">
                 <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle2 className="h-10 w-10 text-[#1d9e4b]" />
+                    <CheckCircle2 className="h-10 w-10 text-[#15a4e6]" />
                 </div>
                 <h1 className="text-3xl font-extrabold text-zinc-900 mb-2">Réservation confirmée !</h1>
                 <p className="text-zinc-500 mb-8">Un email de confirmation vous a été envoyé avec tous les détails de votre séjour.</p>
 
                 <div className="flex gap-4">
-                    <Button onClick={() => router.push('/')} className="flex-1 bg-[#1d9e4b] hover:bg-[#167c3a] py-6">
+                    <Button onClick={() => router.push('/')} className="flex-1 bg-[#15a4e6] hover:bg-[#167c3a] py-6">
                         <Home className="mr-2 h-4 w-4" /> Retour accueil
                     </Button>
                     <Button variant="outline" className="flex-1 py-6">

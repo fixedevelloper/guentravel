@@ -105,11 +105,11 @@ export function BookingLayout({
 
                     </div>
 
-                    <div className="flex items-center gap-2 bg-[#1d9e4b]/10 px-4 py-2 rounded-full">
+                    <div className="flex items-center gap-2 bg-[#15a4e6]/10 px-4 py-2 rounded-full">
 
-                        <Heart className="h-4 w-4 text-[#1d9e4b] fill-[#1d9e4b]" />
+                        <Heart className="h-4 w-4 text-[#15a4e6] fill-[#15a4e6]" />
 
-                        <span className="font-bold text-[#1d9e4b]">
+                        <span className="font-bold text-[#15a4e6]">
                             {totalGuests} voyageur{totalGuests > 1 ? "s" : ""}
                         </span>
 
@@ -132,7 +132,7 @@ export function BookingLayout({
 
                         {/* Progression */}
                         <div
-                            className="absolute top-1/2 left-0 h-0.5 bg-[#1d9e4b] -translate-y-1/2 transition-all duration-500 z-0"
+                            className="absolute top-1/2 left-0 h-0.5 bg-[#15a4e6] -translate-y-1/2 transition-all duration-500 z-0"
                             style={{
                                 width: `${(
                                     (currentStep - 1) /
@@ -168,9 +168,9 @@ export function BookingLayout({
 
                                             ${
                                             isCompleted
-                                                ? "bg-[#1d9e4b] border-[#1d9e4b] text-white"
+                                                ? "bg-[#15a4e6] border-[#15a4e6] text-white"
                                                 : isActive
-                                                ? "bg-white border-[#1d9e4b] text-[#1d9e4b]"
+                                                ? "bg-white border-[#15a4e6] text-[#15a4e6]"
                                                 : "bg-white border-zinc-200 text-zinc-400"
                                         }
                                         `}

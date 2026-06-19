@@ -12,7 +12,7 @@ export function OffersSection() {
         <section className="py-20 bg-white">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="flex items-center gap-3 mb-10">
-                    <div className="h-10 w-1.5 bg-[#f39c28] rounded-full" />
+                    <div className="h-10 w-1.5 bg-[#7bcd4f] rounded-full" />
                     <h2 className="text-3xl font-extrabold">Offres à durée limitée</h2>
                 </div>
 
@@ -24,17 +24,17 @@ export function OffersSection() {
                             </div>
                             <div className="p-6 flex flex-col justify-between">
                                 <div>
-                                    <span className="text-[#f39c28] font-bold text-xs uppercase tracking-widest">
+                                    <span className="text-[#7bcd4f] font-bold text-xs uppercase tracking-widest">
                                         -20% de réduction
                                     </span>
                                     <h3 className="text-xl font-bold mt-1">{offer.name.fr}</h3>
                                     <p className="text-zinc-500 text-sm mt-2 line-clamp-2">{offer.description.fr}</p>
                                 </div>
                                 <div className="flex items-center justify-between mt-4">
-                                    <span className="font-bold text-[#1d9e4b] text-lg">
+                                    <span className="font-bold text-[#15a4e6] text-lg">
                                         {offer.commission_rate} FCFA
                                     </span>
-                                    <Button size="sm" className="bg-[#f39c28] hover:bg-[#d68910]">
+                                    <Button size="sm" className="bg-[#7bcd4f] hover:bg-[#d68910]">
                                         Réserver
                                     </Button>
                                 </div>

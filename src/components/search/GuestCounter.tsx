@@ -38,7 +38,7 @@ export function GuestCounter({ guests, setGuests }: any) {
         <Popover>
             <PopoverTrigger asChild>
                 <div className="flex-1 flex items-center px-4 py-3 hover:bg-zinc-50 rounded-lg transition-colors cursor-pointer">
-                    <Users className="text-[#1d9e4b] mr-3 h-5 w-5" />
+                    <Users className="text-[#15a4e6] mr-3 h-5 w-5" />
                     <div className="text-left">
                         <span className="text-zinc-500 text-sm block">{t("label")}</span>
                         <span className="text-zinc-900 font-medium text-sm">

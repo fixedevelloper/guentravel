@@ -38,7 +38,7 @@ export function PropertyRoomCard({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className={`border-2 rounded-3xl transition-all ${
-                quantity > 0 ? "border-[#1d9e4b] bg-green-50 shadow-md" : "border-zinc-200 bg-white"
+                quantity > 0 ? "border-[#15a4e6] bg-green-50 shadow-md" : "border-zinc-200 bg-white"
             }`}
         >
             <div className="p-6">
@@ -48,13 +48,13 @@ export function PropertyRoomCard({
                         <p className="text-zinc-500 mb-4">{room.description.fr}</p>
                         {/* Infos chambre */}
                         <div className="flex gap-6 text-sm text-zinc-600">
-                            <span className="flex items-center gap-2"><Users className="h-5 w-5 text-[#1d9e4b]" /> {room.max_occupancy} pers.</span>
-                            <span className="flex items-center gap-2"><Check className="h-5 w-5 text-[#1d9e4b]" /> {room.total_inventory} dispo.</span>
+                            <span className="flex items-center gap-2"><Users className="h-5 w-5 text-[#15a4e6]" /> {room.max_occupancy} pers.</span>
+                            <span className="flex items-center gap-2"><Check className="h-5 w-5 text-[#15a4e6]" /> {room.total_inventory} dispo.</span>
                         </div>
                     </div>
 
                     <div className="text-right flex flex-col items-end gap-2">
-                        <p className="text-2xl font-extrabold text-[#1d9e4b]">{room.default_price_per_night.toLocaleString()} FCFA</p>
+                        <p className="text-2xl font-extrabold text-[#15a4e6]">{room.default_price_per_night.toLocaleString()} FCFA</p>
 
                         {/* Sélecteur de quantité */}
                         <div className="flex items-center gap-3 bg-white border rounded-lg p-1">
@@ -74,7 +74,7 @@ export function PropertyRoomCard({
                                 {showModal && (
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <button className="text-[#1d9e4b] font-semibold text-sm hover:underline">
+                                            <button className="text-[#15a4e6] font-semibold text-sm hover:underline">
                                                 Voir tout ({amenities.length})
                                             </button>
                                         </DialogTrigger>
@@ -85,7 +85,7 @@ export function PropertyRoomCard({
                                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                                                 {amenities.map((amenity: any) => (
                                                     <div key={amenity.id} className="flex items-center gap-3 p-3 border rounded-xl">
-                                                        <AmenityIcon amenity={amenity} className="h-5 w-5 text-[#1d9e4b]" />
+                                                        <AmenityIcon amenity={amenity} className="h-5 w-5 text-[#15a4e6]" />
                                                         <span className="text-sm">{amenity.name.fr}</span>
                                                     </div>
                                                 ))}
@@ -98,7 +98,7 @@ export function PropertyRoomCard({
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {amenities.slice(0, 15).map((amenity: any) => (
                                     <div key={amenity.id} className="flex items-center gap-3 p-3 bg-white border rounded-xl">
-                                        <AmenityIcon amenity={amenity} className="h-5 w-5 text-[#1d9e4b]" />
+                                        <AmenityIcon amenity={amenity} className="h-5 w-5 text-[#15a4e6]" />
                                         <span className="text-sm">{amenity.name.fr}</span>
                                     </div>
                                 ))}
@@ -107,7 +107,7 @@ export function PropertyRoomCard({
                     )}
                 </AnimatePresence>
 
-                <button onClick={onToggleExpand} className="mt-4 flex items-center gap-2 text-[#1d9e4b] font-semibold hover:underline">
+                <button onClick={onToggleExpand} className="mt-4 flex items-center gap-2 text-[#15a4e6] font-semibold hover:underline">
                     {isExpanded ? <><ChevronUp className="h-4 w-4" /> Masquer</> : <><ChevronDown className="h-4 w-4" /> Voir services</>}
                 </button>
             </div>

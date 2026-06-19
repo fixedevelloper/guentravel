@@ -157,7 +157,7 @@ export default function HostPayoutsPage() {
     if (isLoading) {
         return (
             <div className="min-h-[50vh] flex flex-col items-center justify-center gap-2">
-                <Loader2 className="h-8 w-8 animate-spin text-[#1d9e4b]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#15a4e6]" />
                 <p className="text-sm font-medium text-zinc-500">Chargement de vos comptes comptables...</p>
             </div>
         );
@@ -195,7 +195,7 @@ export default function HostPayoutsPage() {
                 {/* MODAL VIA SHADCN DIALOG */}
                 <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                     <DialogTrigger asChild>
-                        <Button className="bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5">
+                        <Button className="bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5">
                             <Wallet className="h-4 w-4" />
                             {t.withdrawBtn}
                         </Button>
@@ -249,7 +249,7 @@ export default function HostPayoutsPage() {
                             <DialogFooter>
                                 <Button
                                     type="submit"
-                                    className="w-full bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl font-bold h-10 text-xs gap-1.5"
+                                    className="w-full bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl font-bold h-10 text-xs gap-1.5"
                                     disabled={createWithdrawalMutation.isPending}
                                 >
                                     {createWithdrawalMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
@@ -271,7 +271,7 @@ export default function HostPayoutsPage() {
                                 {formatCurrency(user?.wallet_balance || 0)}
                             </h3>
                         </div>
-                        <div className="h-12 w-12 rounded-2xl bg-green-50 text-[#1d9e4b] border border-green-100 flex items-center justify-center shrink-0">
+                        <div className="h-12 w-12 rounded-2xl bg-green-50 text-[#15a4e6] border border-green-100 flex items-center justify-center shrink-0">
                             <Wallet className="h-6 w-6" />
                         </div>
                     </CardContent>
@@ -297,17 +297,17 @@ export default function HostPayoutsPage() {
             <div className="flex border-b border-zinc-200 gap-6 text-sm font-bold">
                 <button
                     onClick={() => setActiveTab("withdrawals")}
-                    className={`pb-3 transition-all relative ${activeTab === "withdrawals" ? "text-[#1d9e4b]" : "text-zinc-400 hover:text-zinc-600"}`}
+                    className={`pb-3 transition-all relative ${activeTab === "withdrawals" ? "text-[#15a4e6]" : "text-zinc-400 hover:text-zinc-600"}`}
                 >
                     {t.tabWithdrawals}
-                    {activeTab === "withdrawals" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#1d9e4b]" />}
+                    {activeTab === "withdrawals" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#15a4e6]" />}
                 </button>
                 <button
                     onClick={() => setActiveTab("ledger")}
-                    className={`pb-3 transition-all relative ${activeTab === "ledger" ? "text-[#1d9e4b]" : "text-zinc-400 hover:text-zinc-600"}`}
+                    className={`pb-3 transition-all relative ${activeTab === "ledger" ? "text-[#15a4e6]" : "text-zinc-400 hover:text-zinc-600"}`}
                 >
                     {t.tabLedger}
-                    {activeTab === "ledger" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#1d9e4b]" />}
+                    {activeTab === "ledger" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#15a4e6]" />}
                 </button>
             </div>
 

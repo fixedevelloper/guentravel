@@ -94,7 +94,7 @@ export default function CustomerFavoritesPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center space-y-4"
                 >
-                    <div className="w-16 h-16 border-4 border-[#1d9e4b] border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-16 h-16 border-4 border-[#15a4e6] border-t-transparent rounded-full animate-spin mx-auto" />
                     <p className="text-sm font-semibold text-zinc-600">{t.loading}</p>
                 </motion.div>
             </div>
@@ -112,8 +112,8 @@ export default function CustomerFavoritesPage() {
                     className="space-y-2"
                 >
                     <div className="flex items-center gap-3">
-                        <div className="bg-[#f39c28]/10 p-3 rounded-xl">
-                            <Heart className="h-6 w-6 text-[#f39c28]" />
+                        <div className="bg-[#7bcd4f]/10 p-3 rounded-xl">
+                            <Heart className="h-6 w-6 text-[#7bcd4f]" />
                         </div>
                         <div>
                             <h1 className="text-4xl font-extrabold text-zinc-900 tracking-tight">
@@ -165,7 +165,7 @@ export default function CustomerFavoritesPage() {
                                             {/* Rating badge */}
                                             {item.rating > 0 && (
                                                 <div className="absolute top-4 left-4 flex items-center gap-1 bg-white px-3 py-1.5 rounded-full shadow-lg">
-                                                    <Star className="h-4 w-4 text-[#f39c28] fill-[#f39c28]" />
+                                                    <Star className="h-4 w-4 text-[#7bcd4f] fill-[#7bcd4f]" />
                                                     <span className="font-bold text-sm text-zinc-900">{item.rating}</span>
                                                     <span className="text-xs text-zinc-500 font-medium">({item.review_count})</span>
                                                 </div>
@@ -176,10 +176,10 @@ export default function CustomerFavoritesPage() {
                                         <CardContent className="p-6 flex-1 flex flex-col justify-between space-y-4">
                                             <div className="space-y-3">
                                                 <div className="flex items-center gap-2 text-sm font-medium text-zinc-500">
-                                                    <MapPin className="h-4 w-4 text-[#1d9e4b]" />
+                                                    <MapPin className="h-4 w-4 text-[#15a4e6]" />
                                                     <span>{item.location}</span>
                                                 </div>
-                                                <h3 className="text-lg font-extrabold text-zinc-900 tracking-tight leading-snug group-hover:text-[#1d9e4b] transition-colors">
+                                                <h3 className="text-lg font-extrabold text-zinc-900 tracking-tight leading-snug group-hover:text-[#15a4e6] transition-colors">
                                                     {item.title}
                                                 </h3>
                                             </div>
@@ -187,7 +187,7 @@ export default function CustomerFavoritesPage() {
                                             {/* Price & Action */}
                                             <div className="pt-4 border-t border-zinc-100 flex items-center justify-between gap-3">
                                                 <div>
-                                                    <p className="text-2xl font-extrabold text-[#1d9e4b]">
+                                                    <p className="text-2xl font-extrabold text-[#15a4e6]">
                                                         {item.price_per_night.toLocaleString()} FCFA
                                                     </p>
                                                     <p className="text-xs font-bold text-zinc-400 uppercase tracking-wide mt-0.5">
@@ -221,9 +221,9 @@ export default function CustomerFavoritesPage() {
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ delay: 0.2 }}
-                                className="bg-[#f39c28]/10 w-20 h-20 rounded-full flex items-center justify-center mb-6"
+                                className="bg-[#7bcd4f]/10 w-20 h-20 rounded-full flex items-center justify-center mb-6"
                             >
-                                <Heart className="h-10 w-10 text-[#f39c28]" />
+                                <Heart className="h-10 w-10 text-[#7bcd4f]" />
                             </motion.div>
                             <div className="space-y-3">
                                 <p className="text-sm font-bold text-zinc-900">{t.noFavorites}</p>
@@ -231,7 +231,7 @@ export default function CustomerFavoritesPage() {
                             </div>
                             <Button
                                 onClick={() => router.push(`/${locale}/search`)}
-                                className="bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-sm font-bold h-11 px-6 shadow-lg shadow-[#1d9e4b]/30 mt-6"
+                                className="bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-sm font-bold h-11 px-6 shadow-lg shadow-[#15a4e6]/30 mt-6"
                             >
                                 <Compass className="h-4 w-4 mr-2" /> {t.exploreBtn}
                             </Button>

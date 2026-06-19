@@ -168,8 +168,8 @@ export default function CustomerSettingsPage() {
                         <Card className="rounded-3xl border-zinc-100 shadow-xl bg-white overflow-hidden">
                             <CardHeader className="border-b border-zinc-100 pb-6 px-6">
                                 <div className="flex items-center gap-3">
-                                    <div className="bg-[#1d9e4b]/10 p-3 rounded-xl">
-                                        <Lock className="h-5 w-5 text-[#1d9e4b]" />
+                                    <div className="bg-[#15a4e6]/10 p-3 rounded-xl">
+                                        <Lock className="h-5 w-5 text-[#15a4e6]" />
                                     </div>
                                     <div>
                                         <CardTitle className="text-xl font-extrabold text-zinc-900">
@@ -193,14 +193,14 @@ export default function CustomerSettingsPage() {
                                         transition={{ delay: 0.2 }}
                                     >
                                         <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 flex items-center gap-2">
-                                            <Key className="h-3 w-3 text-[#1d9e4b]" />
+                                            <Key className="h-3 w-3 text-[#15a4e6]" />
                                             {t.currentPassword}
                                         </label>
                                         <div className="relative">
                                             <input
                                                 type={showCurrent ? "text" : "password"}
                                                 {...register("current_password")}
-                                                className="block w-full rounded-xl border border-zinc-200 px-4 py-3 text-sm outline-none focus:border-[#1d9e4b] focus:ring-2 focus:ring-[#1d9e4b]/20 transition-all"
+                                                className="block w-full rounded-xl border border-zinc-200 px-4 py-3 text-sm outline-none focus:border-[#15a4e6] focus:ring-2 focus:ring-[#15a4e6]/20 transition-all"
                                             />
                                             <button
                                                 type="button"
@@ -233,14 +233,14 @@ export default function CustomerSettingsPage() {
                                     >
                                         <div className="space-y-2">
                                             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 flex items-center gap-2">
-                                                <Key className="h-3 w-3 text-[#1d9e4b]" />
+                                                <Key className="h-3 w-3 text-[#15a4e6]" />
                                                 {t.newPassword}
                                             </label>
                                             <div className="relative">
                                                 <input
                                                     type={showNew ? "text" : "password"}
                                                     {...register("new_password")}
-                                                    className="block w-full rounded-xl border border-zinc-200 px-4 py-3 text-sm outline-none focus:border-[#1d9e4b] focus:ring-2 focus:ring-[#1d9e4b]/20 transition-all"
+                                                    className="block w-full rounded-xl border border-zinc-200 px-4 py-3 text-sm outline-none focus:border-[#15a4e6] focus:ring-2 focus:ring-[#15a4e6]/20 transition-all"
                                                 />
                                                 <button
                                                     type="button"
@@ -266,13 +266,13 @@ export default function CustomerSettingsPage() {
 
                                         <div className="space-y-2">
                                             <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 flex items-center gap-2">
-                                                <CheckCircle2 className="h-3 w-3 text-[#1d9e4b]" />
+                                                <CheckCircle2 className="h-3 w-3 text-[#15a4e6]" />
                                                 {t.confirmPassword}
                                             </label>
                                             <input
                                                 type={showNew ? "text" : "password"}
                                                 {...register("confirm_password")}
-                                                className="block w-full rounded-xl border border-zinc-200 px-4 py-3 text-sm outline-none focus:border-[#1d9e4b] focus:ring-2 focus:ring-[#1d9e4b]/20 transition-all"
+                                                className="block w-full rounded-xl border border-zinc-200 px-4 py-3 text-sm outline-none focus:border-[#15a4e6] focus:ring-2 focus:ring-[#15a4e6]/20 transition-all"
                                             />
                                             <AnimatePresence>
                                                 {errors.confirm_password && (
@@ -297,7 +297,7 @@ export default function CustomerSettingsPage() {
                                     >
                                         <Button
                                             type="submit"
-                                            className="bg-[#1d9e4b] hover:bg-[#167c3a] font-bold rounded-xl text-sm py-4 px-6 shadow-lg shadow-[#1d9e4b]/30 transition-all hover:shadow-[#1d9e4b]/50 disabled:bg-zinc-200 disabled:cursor-not-allowed"
+                                            className="bg-[#15a4e6] hover:bg-[#167c3a] font-bold rounded-xl text-sm py-4 px-6 shadow-lg shadow-[#15a4e6]/30 transition-all hover:shadow-[#15a4e6]/50 disabled:bg-zinc-200 disabled:cursor-not-allowed"
                                             disabled={changePasswordMutation.isPending}
                                         >
                                             {changePasswordMutation.isPending ? (
@@ -327,8 +327,8 @@ export default function CustomerSettingsPage() {
                         <Card className="rounded-3xl border-zinc-100 shadow-xl bg-white overflow-hidden">
                             <CardHeader className="border-b border-zinc-100 pb-6 px-6">
                                 <div className="flex items-center gap-3">
-                                    <div className="bg-[#1d9e4b]/10 p-3 rounded-xl">
-                                        <Bell className="h-5 w-5 text-[#1d9e4b]" />
+                                    <div className="bg-[#15a4e6]/10 p-3 rounded-xl">
+                                        <Bell className="h-5 w-5 text-[#15a4e6]" />
                                     </div>
                                     <div>
                                         <CardTitle className="text-xl font-extrabold text-zinc-900">
@@ -366,7 +366,7 @@ export default function CustomerSettingsPage() {
                                             onChange={(e) => setEmailNotif(e.target.checked)}
                                             className="sr-only peer"
                                         />
-                                        <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1d9e4b]"></div>
+                                        <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#15a4e6]"></div>
                                     </label>
                                 </motion.div>
 
@@ -393,7 +393,7 @@ export default function CustomerSettingsPage() {
                                             onChange={(e) => setSmsNotif(e.target.checked)}
                                             className="sr-only peer"
                                         />
-                                        <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1d9e4b]"></div>
+                                        <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#15a4e6]"></div>
                                     </label>
                                 </motion.div>
 
@@ -405,7 +405,7 @@ export default function CustomerSettingsPage() {
                                 >
                                     <Button
                                         onClick={handleSavePreferences}
-                                        className="bg-[#1d9e4b] hover:bg-[#167c3a] font-bold rounded-xl text-sm py-4 px-6 shadow-lg shadow-[#1d9e4b]/30 disabled:bg-zinc-200 disabled:cursor-not-allowed"
+                                        className="bg-[#15a4e6] hover:bg-[#167c3a] font-bold rounded-xl text-sm py-4 px-6 shadow-lg shadow-[#15a4e6]/30 disabled:bg-zinc-200 disabled:cursor-not-allowed"
                                         disabled={isSavingPrefs}
                                     >
                                         {isSavingPrefs ? (

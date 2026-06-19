@@ -35,7 +35,7 @@ export default function HelpPage() {
                     <input
                         type="text"
                         placeholder={t("searchPlaceholder")}
-                        className="w-full pl-12 pr-4 py-3 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-[#1d9e4b]/20"
+                        className="w-full pl-12 pr-4 py-3 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-[#15a4e6]/20"
                     />
                 </div>
 
@@ -55,7 +55,7 @@ export default function HelpPage() {
                 <div className="mt-16 bg-zinc-50 rounded-2xl p-8 text-center border border-zinc-100">
                     <h3 className="font-bold text-lg mb-2">{t("contact.title")}</h3>
                     <p className="text-zinc-500 mb-6 text-sm">{t("contact.subtitle")}</p>
-                    <a href="mailto:support@guenstravel.cm" className="inline-flex items-center gap-2 bg-[#1d9e4b] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#198a3e] transition">
+                    <a href="mailto:support@guenstravel.cm" className="inline-flex items-center gap-2 bg-[#15a4e6] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#198a3e] transition">
                         <Mail className="h-5 w-5" /> {t("contact.button")}
                     </a>
                 </div>

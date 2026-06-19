@@ -37,7 +37,7 @@ export default function AboutPage() {
                 >
                     <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-zinc-900">
                         {t.rich("title", {
-                            green: (chunks) => <span className="text-[#1d9e4b]">{chunks}</span>
+                            green: (chunks) => <span className="text-[#15a4e6]">{chunks}</span>
                         })}
                     </h1>
                     <p className="text-xl text-zinc-600 max-w-2xl mx-auto">{t("subtitle")}</p>
@@ -54,7 +54,7 @@ export default function AboutPage() {
                             className="flex gap-4 p-6 rounded-2xl hover:bg-zinc-50 transition-colors"
                         >
                             <div className="p-3 bg-green-50 rounded-2xl h-fit">
-                                <item.icon className="w-6 h-6 text-[#1d9e4b]" />
+                                <item.icon className="w-6 h-6 text-[#15a4e6]" />
                             </div>
                             <div>
                                 <h3 className="text-lg font-bold mb-2 text-zinc-900">{t(`${item.key}.title`)}</h3>

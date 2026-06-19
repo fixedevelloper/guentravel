@@ -35,7 +35,7 @@ export default function ExperiencesPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-[#1d9e4b]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#15a4e6]" />
             </div>
         );
     }
@@ -72,7 +72,7 @@ export default function ExperiencesPage() {
                                             <span className="text-[11px] font-bold flex items-center bg-zinc-100 px-2.5 py-1 rounded-full text-zinc-600">
                                                 <Clock className="h-3 w-3 mr-1" /> {exp.duration} min
                                             </span>
-                                            <span className="font-black text-[#1d9e4b]">
+                                            <span className="font-black text-[#15a4e6]">
                                                 {new Intl.NumberFormat('fr-FR').format(exp.price)} FCFA
                                             </span>
                                         </div>

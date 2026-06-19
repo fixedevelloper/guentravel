@@ -129,7 +129,7 @@ export default function HostSettingsPage() {
     if (isLoading) {
         return (
             <div className="min-h-[50vh] flex flex-col items-center justify-center gap-2">
-                <Loader2 className="h-8 w-8 animate-spin text-[#1d9e4b]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#15a4e6]" />
                 <p className="text-sm font-medium text-zinc-500">Chargement de votre espace de configuration...</p>
             </div>
         );
@@ -148,22 +148,22 @@ export default function HostSettingsPage() {
             <div className="flex border-b border-zinc-200 gap-6 text-sm font-bold">
                 <button
                     onClick={() => setActiveTab("profile")}
-                    className={`pb-3 transition-all relative ${activeTab === "profile" ? "text-[#1d9e4b]" : "text-zinc-400 hover:text-zinc-600"}`}
+                    className={`pb-3 transition-all relative ${activeTab === "profile" ? "text-[#15a4e6]" : "text-zinc-400 hover:text-zinc-600"}`}
                 >
                     <span className="flex items-center gap-2">
                         <User className="h-4 w-4" /> {t.tabProfile}
                     </span>
-                    {activeTab === "profile" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#1d9e4b]" />}
+                    {activeTab === "profile" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#15a4e6]" />}
                 </button>
 
                 <button
                     onClick={() => setActiveTab("payout")}
-                    className={`pb-3 transition-all relative ${activeTab === "payout" ? "text-[#1d9e4b]" : "text-zinc-400 hover:text-zinc-600"}`}
+                    className={`pb-3 transition-all relative ${activeTab === "payout" ? "text-[#15a4e6]" : "text-zinc-400 hover:text-zinc-600"}`}
                 >
                     <span className="flex items-center gap-2">
                         <CreditCard className="h-4 w-4" /> {t.tabPayoutMethods}
                     </span>
-                    {activeTab === "payout" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#1d9e4b]" />}
+                    {activeTab === "payout" && <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#15a4e6]" />}
                 </button>
             </div>
 
@@ -222,7 +222,7 @@ export default function HostSettingsPage() {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    className="bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5"
+                                    className="bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5"
                                     disabled={updateProfileMutation.isPending}
                                 >
                                     {updateProfileMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
@@ -271,7 +271,7 @@ export default function HostSettingsPage() {
                             </div>
 
                             <div className="bg-zinc-50 border border-zinc-150 rounded-xl p-4 flex gap-3 text-xs text-zinc-500 font-medium items-start">
-                                <ShieldCheck className="h-5 w-5 text-[#1d9e4b] shrink-0 mt-0.5" />
+                                <ShieldCheck className="h-5 w-5 text-[#15a4e6] shrink-0 mt-0.5" />
                                 <p>
                                     Ces configurations servent de modèle par défaut. Chaque demande de retrait fera l'objet d'un instantané de sécurité figé pour prémunir votre compte contre toute modification malveillante de dernière minute.
                                 </p>
@@ -280,7 +280,7 @@ export default function HostSettingsPage() {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    className="bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5"
+                                    className="bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5"
                                     disabled={updatePayoutMutation.isPending}
                                 >
                                     {updatePayoutMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}

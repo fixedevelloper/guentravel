@@ -74,7 +74,7 @@ export default function CustomerDashboardPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center space-y-4"
                 >
-                    <div className="w-16 h-16 border-4 border-[#1d9e4b] border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-16 h-16 border-4 border-[#15a4e6] border-t-transparent rounded-full animate-spin mx-auto" />
                     <p className="text-sm font-semibold text-zinc-600">Préparation de vos voyages...</p>
                 </motion.div>
             </div>
@@ -96,7 +96,7 @@ export default function CustomerDashboardPage() {
                 >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div className="flex items-center gap-6">
-                            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#1d9e4b] to-[#167c3a] flex items-center justify-center text-white font-extrabold text-3xl shadow-lg shadow-[#1d9e4b]/30">
+                            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#15a4e6] to-[#167c3a] flex items-center justify-center text-white font-extrabold text-3xl shadow-lg shadow-[#15a4e6]/30">
                                 {user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-8 w-8" />}
                             </div>
                             <div>
@@ -107,14 +107,14 @@ export default function CustomerDashboardPage() {
                                     Gère tes réservations, télécharge tes reçus et prépare tes séjours.
                                 </p>
                                 <div className="flex items-center gap-2 mt-3">
-                                    <Mail className="h-4 w-4 text-[#1d9e4b]" />
+                                    <Mail className="h-4 w-4 text-[#15a4e6]" />
                                     <span className="text-sm text-zinc-600 font-semibold">{user?.email}</span>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 bg-[#1d9e4b]/10 px-5 py-3 rounded-full">
-                            <Shield className="h-5 w-5 text-[#1d9e4b]" />
-                            <span className="font-bold text-[#1d9e4b]">Compte vérifié</span>
+                        <div className="flex items-center gap-2 bg-[#15a4e6]/10 px-5 py-3 rounded-full">
+                            <Shield className="h-5 w-5 text-[#15a4e6]" />
+                            <span className="font-bold text-[#15a4e6]">Compte vérifié</span>
                         </div>
                     </div>
                 </motion.div>
@@ -170,17 +170,17 @@ export default function CustomerDashboardPage() {
                         className="bg-white border border-zinc-100 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
                     >
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="bg-[#1d9e4b]/10 p-4 rounded-2xl">
-                                <Wallet className="h-6 w-6 text-[#1d9e4b]" />
+                            <div className="bg-[#15a4e6]/10 p-4 rounded-2xl">
+                                <Wallet className="h-6 w-6 text-[#15a4e6]" />
                             </div>
                             <div>
                                 <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Total investi</p>
-                                <p className="text-3xl font-extrabold text-[#1d9e4b] mt-1">{(dashboard?.stats?.amount_spent || 0).toLocaleString()}</p>
+                                <p className="text-3xl font-extrabold text-[#15a4e6] mt-1">{(dashboard?.stats?.amount_spent || 0).toLocaleString()}</p>
                                 <p className="text-xs text-zinc-400 font-semibold mt-1">FCFA</p>
                             </div>
                         </div>
-                        <div className="bg-[#1d9e4b]/10 px-4 py-2 rounded-xl">
-                            <p className="text-xs text-[#1d9e4b] font-semibold flex items-center gap-1">
+                        <div className="bg-[#15a4e6]/10 px-4 py-2 rounded-xl">
+                            <p className="text-xs text-[#15a4e6] font-semibold flex items-center gap-1">
                                 <TrendingUp className="h-3 w-3" /> Dépenses totales
                             </p>
                         </div>
@@ -198,7 +198,7 @@ export default function CustomerDashboardPage() {
                             onClick={() => setActiveTab("upcoming")}
                             className={`pb-3 px-6 font-bold text-sm border-b-2 transition-all ${
                                 activeTab === "upcoming"
-                                    ? "border-[#1d9e4b] text-[#1d9e4b]"
+                                    ? "border-[#15a4e6] text-[#15a4e6]"
                                     : "border-transparent text-zinc-400 hover:text-zinc-600"
                             }`}
                         >
@@ -208,7 +208,7 @@ export default function CustomerDashboardPage() {
                             onClick={() => setActiveTab("past")}
                             className={`pb-3 px-6 font-bold text-sm border-b-2 transition-all ${
                                 activeTab === "past"
-                                    ? "border-[#1d9e4b] text-[#1d9e4b]"
+                                    ? "border-[#15a4e6] text-[#15a4e6]"
                                     : "border-transparent text-zinc-400 hover:text-zinc-600"
                             }`}
                         >
@@ -246,7 +246,7 @@ export default function CustomerDashboardPage() {
                                                                 Réf: {booking.reference}
                                                             </div>
                                                             {booking.rating && (
-                                                                <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#f39c28] text-white px-3 py-1 rounded-full">
+                                                                <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#7bcd4f] text-white px-3 py-1 rounded-full">
                                                                     <Star className="h-3 w-3 fill-white" />
                                                                     <span className="font-bold text-sm">{booking.rating}</span>
                                                                 </div>
@@ -264,11 +264,11 @@ export default function CustomerDashboardPage() {
 
                                                         <div className="space-y-3 text-sm font-medium text-zinc-600">
                                                             <div className="flex items-center gap-3 p-3 bg-zinc-50 rounded-xl">
-                                                                <MapPin className="h-5 w-5 text-[#1d9e4b] shrink-0" />
+                                                                <MapPin className="h-5 w-5 text-[#15a4e6] shrink-0" />
                                                                 <span className="truncate">{booking.property_address}</span>
                                                             </div>
                                                             <div className="flex items-center gap-3 p-3 bg-zinc-50 rounded-xl">
-                                                                <Calendar className="h-5 w-5 text-[#1d9e4b] shrink-0" />
+                                                                <Calendar className="h-5 w-5 text-[#15a4e6] shrink-0" />
                                                                 <span className="flex items-center gap-2">
                                                                     {formatDate(booking.check_in)} au {formatDate(booking.check_out)}
 </span>
@@ -284,9 +284,9 @@ export default function CustomerDashboardPage() {
                                                             {booking.host_phone && booking.status === "confirmed" && (
                                                                 <a
                                                                     href={`tel:${booking.host_phone}`}
-                                                                    className="inline-flex items-center gap-2 text-sm font-bold text-zinc-700 bg-zinc-50 border hover:bg-zinc-100 transition-all px-4 py-3 rounded-xl group-hover:bg-[#1d9e4b] group-hover:text-white"
+                                                                    className="inline-flex items-center gap-2 text-sm font-bold text-zinc-700 bg-zinc-50 border hover:bg-zinc-100 transition-all px-4 py-3 rounded-xl group-hover:bg-[#15a4e6] group-hover:text-white"
                                                                 >
-                                                                    <Phone className="h-4 w-4 text-[#1d9e4b] group-hover:text-white" /> Appeler l'hôte
+                                                                    <Phone className="h-4 w-4 text-[#15a4e6] group-hover:text-white" /> Appeler l'hôte
                                                                 </a>
                                                             )}
                                                         </div>
@@ -306,7 +306,7 @@ export default function CustomerDashboardPage() {
                                         </div>
                                         <p className="text-sm font-medium text-zinc-500 mb-2">Aucun voyage prévu pour le moment.</p>
                                         <p className="text-xs text-zinc-400 mb-6">Découvre nos hébergements et commence à voyager!</p>
-                                        <Button asChild className="bg-[#1d9e4b] hover:bg-[#167c3a] font-bold rounded-xl">
+                                        <Button asChild className="bg-[#15a4e6] hover:bg-[#167c3a] font-bold rounded-xl">
                                             <Link href="/">
                                                 <Compass className="mr-2 h-4 w-4" /> Parcourir les hébergements
                                             </Link>
@@ -349,7 +349,7 @@ export default function CustomerDashboardPage() {
                                                         </td>
                                                         <td className="p-4 text-zinc-500 text-sm">
                                                             <div className="flex items-center gap-2">
-                                                                <Calendar className="h-4 w-4 text-[#1d9e4b]" />
+                                                                <Calendar className="h-4 w-4 text-[#15a4e6]" />
                                                                 {formatDate(past.check_in)} au {formatDate(past.check_out)}
                                                             </div>
                                                         </td>
@@ -357,7 +357,7 @@ export default function CustomerDashboardPage() {
                                                             {past.total_price?.toLocaleString()} FCFA
                                                         </td>
                                                         <td className="p-4 pr-6 text-right">
-                                                            <Button variant="ghost" className="text-sm font-bold text-zinc-500 hover:text-[#1d9e4b] hover:bg-green-50/50 rounded-xl gap-2">
+                                                            <Button variant="ghost" className="text-sm font-bold text-zinc-500 hover:text-[#15a4e6] hover:bg-green-50/50 rounded-xl gap-2">
                                                                 <Receipt className="h-4 w-4" /> Reçu PDF
                                                                 <Download className="h-3 w-3" />
                                                             </Button>

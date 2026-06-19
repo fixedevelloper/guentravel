@@ -45,8 +45,8 @@ export default function RegisterPage() {
             <div className="w-full max-w-md space-y-8 rounded-3xl border border-zinc-200/80 bg-white p-8 md:p-10 shadow-xl transition-all">
 
                 <div className="space-y-3 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#1d9e4b]/10 mb-2">
-                        <User className="w-8 h-8 text-[#1d9e4b]" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#15a4e6]/10 mb-2">
+                        <User className="w-8 h-8 text-[#15a4e6]" />
                     </div>
                     <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 md:text-3xl">
                         {t("title")}
@@ -103,14 +103,14 @@ export default function RegisterPage() {
                         {errors.password && <p className="text-xs text-red-600">{errors.password.message}</p>}
                     </div>
 
-                    <Button type="submit" className="w-full bg-[#1d9e4b] hover:bg-[#198a3e] py-6 rounded-xl font-bold text-white" disabled={isPending || isSubmitting}>
+                    <Button type="submit" className="w-full bg-[#15a4e6] hover:bg-[#198a3e] py-6 rounded-xl font-bold text-white" disabled={isPending || isSubmitting}>
                         {isPending || isSubmitting ? <Loader2 className="animate-spin" /> : <>{t("submit")} <ArrowRight className="ml-2 h-4 w-4" /></>}
                     </Button>
                 </form>
 
                 <div className="text-center pt-2 border-t border-zinc-100">
                     <p className="text-sm text-zinc-600">
-                        {t("hasAccount")} <Link href="/login" className="text-[#1d9e4b] font-semibold hover:underline">{t("login")}</Link>
+                        {t("hasAccount")} <Link href="/login" className="text-[#15a4e6] font-semibold hover:underline">{t("login")}</Link>
                     </p>
                 </div>
             </div>

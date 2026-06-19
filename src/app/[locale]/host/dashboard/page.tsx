@@ -95,7 +95,7 @@ export default function HostDashboardPage() {
     if (isLoading) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2">
-                <Loader2 className="h-8 w-8 animate-spin text-[#1d9e4b]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#15a4e6]" />
                 <p className="text-sm font-medium text-zinc-500">Chargement de votre espace...</p>
             </div>
         );
@@ -150,7 +150,7 @@ export default function HostDashboardPage() {
                             {t.requestPayout}
                         </Link>
                     </Button>
-                    <Button asChild className="bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5">
+                    <Button asChild className="bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5">
                         <Link href={`/host/properties/create`}>
                             <Plus className="h-4 w-4" />
                             {t.addProperty}
@@ -171,7 +171,7 @@ export default function HostDashboardPage() {
                                 {formatCurrency(metrics.total_earnings)}
                             </h3>
                         </div>
-                        <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-xl text-[#1d9e4b]">
+                        <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-xl text-[#15a4e6]">
                             <DollarSign className="h-5 w-5 md:h-6 md:w-6" />
                         </div>
                     </CardContent>
@@ -186,7 +186,7 @@ export default function HostDashboardPage() {
                                 {metrics.total_bookings}
                             </h3>
                         </div>
-                        <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-xl text-[#f39c28]">
+                        <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-xl text-[#7bcd4f]">
                             <CalendarCheck className="h-5 w-5 md:h-6 md:w-6" />
                         </div>
                     </CardContent>
@@ -236,14 +236,14 @@ export default function HostDashboardPage() {
                             <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#1d9e4b" stopOpacity={0.15}/>
-                                        <stop offset="95%" stopColor="#1d9e4b" stopOpacity={0}/>
+                                        <stop offset="5%" stopColor="#15a4e6" stopOpacity={0.15}/>
+                                        <stop offset="95%" stopColor="#15a4e6" stopOpacity={0}/>
                                     </linearGradient>
                                 </defs>
                                 <XAxis dataKey="name" stroke="#a1a1aa" fontSize={11} tickLine={false} axisLine={false} />
                                 <YAxis stroke="#a1a1aa" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                                 <Tooltip formatter={(value: any) => [formatCurrency(value), ""]} />
-                                <Area type="monotone" dataKey="amount" stroke="#1d9e4b" strokeWidth={2.5} fillOpacity={1} fill="url(#colorEarnings)" />
+                                <Area type="monotone" dataKey="amount" stroke="#15a4e6" strokeWidth={2.5} fillOpacity={1} fill="url(#colorEarnings)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </CardContent>
@@ -260,7 +260,7 @@ export default function HostDashboardPage() {
                                 <XAxis dataKey="name" stroke="#a1a1aa" fontSize={11} tickLine={false} axisLine={false} />
                                 <YAxis stroke="#a1a1aa" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${v}%`} domain={[0, 100]} />
                                 <Tooltip formatter={(value) => [`${value}%`, ""]} />
-                                <Bar dataKey="rate" fill="#f39c28" radius={[6, 6, 0, 0]} barSize={24} />
+                                <Bar dataKey="rate" fill="#7bcd4f" radius={[6, 6, 0, 0]} barSize={24} />
                             </BarChart>
                         </ResponsiveContainer>
                     </CardContent>
@@ -273,7 +273,7 @@ export default function HostDashboardPage() {
                     <div>
                         <CardTitle className="text-base font-black text-zinc-900 tracking-tight">{t.recentBookings}</CardTitle>
                     </div>
-                    <Button asChild variant="ghost" className="text-xs font-bold text-[#1d9e4b] hover:text-[#167c3a] hover:bg-zinc-50 rounded-xl h-8 px-3 gap-1">
+                    <Button asChild variant="ghost" className="text-xs font-bold text-[#15a4e6] hover:text-[#167c3a] hover:bg-zinc-50 rounded-xl h-8 px-3 gap-1">
                         <Link href={`/${locale}/host/bookings`}>
                             {t.seeAllBookings}
                             <ArrowUpRight className="h-3.5 w-3.5" />

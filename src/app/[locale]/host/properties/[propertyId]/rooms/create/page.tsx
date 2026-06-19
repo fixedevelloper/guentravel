@@ -259,15 +259,15 @@ export default function CreateRoomPage() {
                         <div
                             className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-medium ${
                                 step === s
-                                    ? "bg-[#1d9e4b] text-white"
+                                    ? "bg-[#15a4e6] text-white"
                                     : step > s
-                                    ? "bg-[#1d9e4b]/10 text-[#1d9e4b]"
+                                    ? "bg-[#15a4e6]/10 text-[#15a4e6]"
                                     : "bg-zinc-100 text-zinc-400"
                             }`}
                         >
                             {step > s ? <CheckCircle2 className="w-4 h-4" /> : s}
                         </div>
-                        {s < 3 && <div className={`flex-1 h-0.5 ${step > s ? "bg-[#1d9e4b]" : "bg-zinc-200"}`} />}
+                        {s < 3 && <div className={`flex-1 h-0.5 ${step > s ? "bg-[#15a4e6]" : "bg-zinc-200"}`} />}
                     </React.Fragment>
                 ))}
             </div>
@@ -422,14 +422,14 @@ export default function CreateRoomPage() {
                                     onClick={() => toggleAmenity(item.slug)}
                                     className={`p-4 rounded-xl border text-left transition-all ${
                                         formData.amenities.includes(item.slug)
-                                            ? "border-[#1d9e4b] bg-[#1d9e4b]/5"
+                                            ? "border-[#15a4e6] bg-[#15a4e6]/5"
                                             : "border-zinc-200 hover:border-zinc-300"
                                     }`}
                                 >
                                     <div className="flex items-center gap-3">
                                         <div
                                             className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                                                formData.amenities.includes(item.slug) ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-500"
+                                                formData.amenities.includes(item.slug) ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-500"
                                             }`}
                                         >
                                             {typeof item.icon === "string" ? <span className="text-xs">{item.icon}</span> : item.icon}

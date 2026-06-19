@@ -275,19 +275,19 @@ export default function CreatePropertyPage() {
                     <p className="text-sm text-zinc-500">Étape {step} sur 5</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <button type="button" onClick={() => step > 1 && setStep(1)} className={`p-2 rounded-xl transition-all ${step === 1 ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-400"}`}><Building2 className="h-4 w-4" /></button>
-                    <div className={`w-4 h-0.5 ${step >= 2 ? "bg-[#1d9e4b]" : "bg-zinc-200"}`} />
+                    <button type="button" onClick={() => step > 1 && setStep(1)} className={`p-2 rounded-xl transition-all ${step === 1 ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-400"}`}><Building2 className="h-4 w-4" /></button>
+                    <div className={`w-4 h-0.5 ${step >= 2 ? "bg-[#15a4e6]" : "bg-zinc-200"}`} />
 
-                    <button type="button" onClick={() => step > 2 && setStep(2)} className={`p-2 rounded-xl transition-all ${step === 2 ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-400"}`}><MapPin className="h-4 w-4" /></button>
-                    <div className={`w-4 h-0.5 ${step >= 3 ? "bg-[#1d9e4b]" : "bg-zinc-200"}`} />
+                    <button type="button" onClick={() => step > 2 && setStep(2)} className={`p-2 rounded-xl transition-all ${step === 2 ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-400"}`}><MapPin className="h-4 w-4" /></button>
+                    <div className={`w-4 h-0.5 ${step >= 3 ? "bg-[#15a4e6]" : "bg-zinc-200"}`} />
 
-                    <button type="button" onClick={() => step > 3 && setStep(3)} className={`p-2 rounded-xl transition-all ${step === 3 ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-400"}`}><Clock className="h-4 w-4" /></button>
-                    <div className={`w-4 h-0.5 ${step >= 4 ? "bg-[#1d9e4b]" : "bg-zinc-200"}`} />
+                    <button type="button" onClick={() => step > 3 && setStep(3)} className={`p-2 rounded-xl transition-all ${step === 3 ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-400"}`}><Clock className="h-4 w-4" /></button>
+                    <div className={`w-4 h-0.5 ${step >= 4 ? "bg-[#15a4e6]" : "bg-zinc-200"}`} />
 
-                    <button type="button" onClick={() => step > 4 && setStep(4)} className={`p-2 rounded-xl transition-all ${step === 4 ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-400"}`}><Sliders className="h-4 w-4" /></button>
-                    <div className={`w-4 h-0.5 ${step === 5 ? "bg-[#1d9e4b]" : "bg-zinc-200"}`} />
+                    <button type="button" onClick={() => step > 4 && setStep(4)} className={`p-2 rounded-xl transition-all ${step === 4 ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-400"}`}><Sliders className="h-4 w-4" /></button>
+                    <div className={`w-4 h-0.5 ${step === 5 ? "bg-[#15a4e6]" : "bg-zinc-200"}`} />
 
-                    <button type="button" onClick={() => step > 5 && setStep(5)} className={`p-2 rounded-xl transition-all ${step === 5 ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-400"}`}><ImagePlus className="h-4 w-4" /></button>
+                    <button type="button" onClick={() => step > 5 && setStep(5)} className={`p-2 rounded-xl transition-all ${step === 5 ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-400"}`}><ImagePlus className="h-4 w-4" /></button>
                 </div>
             </div>
 
@@ -409,12 +409,12 @@ export default function CreatePropertyPage() {
                                     onClick={() => toggleAmenity(item.slug)}
                                     className={`p-4 rounded-xl border text-left transition-all ${
                                         formData.amenities?.includes(item.slug)
-                                            ? "border-[#1d9e4b] bg-[#1d9e4b]/5"
+                                            ? "border-[#15a4e6] bg-[#15a4e6]/5"
                                             : "border-zinc-200 hover:border-zinc-300"
                                     }`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${formData.amenities?.includes(item.slug) ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-500"}`}>
+                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${formData.amenities?.includes(item.slug) ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-500"}`}>
                                             {typeof item.icon === 'string' ? <span className="text-xs">{item.icon}</span> : item.icon}
                                         </div>
                                         <span className="text-sm font-medium text-zinc-700">
@@ -431,7 +431,7 @@ export default function CreatePropertyPage() {
                 {step === 5 && (
                     <div className="space-y-4 animate-in fade-in duration-200">
                         <h3 className="text-lg font-bold text-zinc-800">Photos officielles</h3>
-                        <div className={`border-2 border-dashed rounded-xl p-8 text-center hover:border-[#1d9e4b] transition-all relative bg-zinc-50/50 ${errors.images ? "border-red-400" : "border-zinc-200"}`}>
+                        <div className={`border-2 border-dashed rounded-xl p-8 text-center hover:border-[#15a4e6] transition-all relative bg-zinc-50/50 ${errors.images ? "border-red-400" : "border-zinc-200"}`}>
                             <input type="file" multiple accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
                             <ImagePlus className="h-10 w-10 text-zinc-400 mx-auto mb-2" />
                             <p className="text-sm font-semibold text-zinc-700">Glissez les photos ici</p>
@@ -462,11 +462,11 @@ export default function CreatePropertyPage() {
                     </Button>
 
                     {step < 5 ? (
-                        <Button type="button" onClick={handleNextStep} className="bg-[#1d9e4b] hover:bg-[#15803c] rounded-xl">
+                        <Button type="button" onClick={handleNextStep} className="bg-[#15a4e6] hover:bg-[#15803c] rounded-xl">
                             Continuer <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                     ) : (
-                        <Button type="submit" disabled={createPropertyMutation.isPending} className="bg-[#f39c28] hover:bg-[#d6841b] text-white rounded-xl">
+                        <Button type="submit" disabled={createPropertyMutation.isPending} className="bg-[#7bcd4f] hover:bg-[#d6841b] text-white rounded-xl">
                             {createPropertyMutation.isPending ? <span className="h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full" /> : <CheckCircle2 className="h-4 w-4 mr-2" />}
                             Enregistrer l'établissement
                         </Button>

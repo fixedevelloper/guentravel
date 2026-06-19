@@ -159,7 +159,7 @@ export default function EditRoomPage() {
     if (isLoading) {
         return (
             <div className="flex h-64 flex-col items-center justify-center gap-2 text-zinc-500">
-                <Loader2 className="h-6 w-6 animate-spin text-[#1d9e4b]" />
+                <Loader2 className="h-6 w-6 animate-spin text-[#15a4e6]" />
                 <span className="text-xs font-medium">Récupération des paramètres...</span>
             </div>
         );
@@ -177,7 +177,7 @@ export default function EditRoomPage() {
                     </Link>
                     <div>
                         <h1 className="text-lg font-black text-zinc-900 tracking-tight">Modifier la chambre</h1>
-                        <p className="text-xs text-zinc-500">Edition en langue : <span className="uppercase font-bold text-[#1d9e4b]">{currentLocale}</span></p>
+                        <p className="text-xs text-zinc-500">Edition en langue : <span className="uppercase font-bold text-[#15a4e6]">{currentLocale}</span></p>
                     </div>
                 </div>
             </div>
@@ -260,7 +260,7 @@ export default function EditRoomPage() {
                 {/* ÉTAPE 2 : GESTION HYBRIDE DES PHOTOS */}
                 {step === 2 && (
                     <div className="space-y-4 animate-in fade-in-50 duration-200">
-                        <div className="border-2 border-dashed border-zinc-200 rounded-2xl p-8 text-center hover:border-[#1d9e4b] transition-all relative bg-zinc-50/50">
+                        <div className="border-2 border-dashed border-zinc-200 rounded-2xl p-8 text-center hover:border-[#15a4e6] transition-all relative bg-zinc-50/50">
                             <input type="file" multiple accept="image/*" onChange={handleNewImageChange} className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
                             <ImagePlus className="h-8 w-8 text-zinc-400 mx-auto mb-2" />
                             <p className="text-sm font-semibold text-zinc-700">Ajouter de nouvelles photos</p>
@@ -310,14 +310,14 @@ export default function EditRoomPage() {
                     </Button>
 
                     {step === 1 ? (
-                        <Button type="submit" className="bg-[#1d9e4b] hover:bg-[#15803c] rounded-xl text-xs font-bold gap-1">
+                        <Button type="submit" className="bg-[#15a4e6] hover:bg-[#15803c] rounded-xl text-xs font-bold gap-1">
                             Suivant : Galerie <ChevronRight className="h-4 w-4" />
                         </Button>
                     ) : (
                         <Button
                             type="submit"
                             disabled={updateRoomMutation.isPending}
-                            className="bg-[#f39c28] hover:bg-[#d6841b] text-white rounded-xl text-xs font-bold gap-1.5"
+                            className="bg-[#7bcd4f] hover:bg-[#d6841b] text-white rounded-xl text-xs font-bold gap-1.5"
                         >
                             {updateRoomMutation.isPending ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />

@@ -19,7 +19,7 @@ export function BookingLoader() {
                             absolute inset-0
                             rounded-full
                             border-4
-                            border-[#1d9e4b]
+                            border-[#15a4e6]
                             border-t-transparent
                             animate-spin
                         "

@@ -86,12 +86,12 @@ export default function HostPortalLogin() {
 
             {/* PANNEAU DE GAUCHE : MARKETING & PROPOSITION DE VALEUR */}
             <div className="hidden lg:flex lg:col-span-5 bg-zinc-900 p-12 flex-col justify-between relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1d9e4b]/20 to-transparent z-0" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#15a4e6]/20 to-transparent z-0" />
 
                 <div className="relative z-10">
                     <div className="flex items-center gap-2 text-white">
-                        <Hotel className="h-6 w-6 text-[#1d9e4b]" />
-                        <span className="text-xl font-black tracking-tight">Guen's <span className="text-[#f39c28]">Host</span></span>
+                        <Hotel className="h-6 w-6 text-[#15a4e6]" />
+                        <span className="text-xl font-black tracking-tight">Guen's <span className="text-[#7bcd4f]">Host</span></span>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@ export default function HostPortalLogin() {
 
                     <div className="space-y-4 pt-4 border-t border-zinc-800">
                         <div className="flex gap-3 items-start">
-                            <div className="p-2 bg-zinc-800 border border-zinc-700 text-[#1d9e4b] rounded-xl shrink-0">
+                            <div className="p-2 bg-zinc-800 border border-zinc-700 text-[#15a4e6] rounded-xl shrink-0">
                                 <ShieldCheck className="h-4 w-4" />
                             </div>
                             <div>
@@ -112,7 +112,7 @@ export default function HostPortalLogin() {
                         </div>
 
                         <div className="flex gap-3 items-start">
-                            <div className="p-2 bg-zinc-800 border border-zinc-700 text-[#f39c28] rounded-xl shrink-0">
+                            <div className="p-2 bg-zinc-800 border border-zinc-700 text-[#7bcd4f] rounded-xl shrink-0">
                                 <ShieldCheck className="h-4 w-4" />
                             </div>
                             <div>
@@ -186,7 +186,7 @@ export default function HostPortalLogin() {
                             {/* Bouton de Soumission */}
                             <Button
                                 type="submit"
-                                className="w-full bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-11 shadow-sm gap-1.5 transition-all pt-1 mt-2"
+                                className="w-full bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-11 shadow-sm gap-1.5 transition-all pt-1 mt-2"
                                 disabled={isPending}
                             >
                                 {isPending ? (
@@ -201,7 +201,7 @@ export default function HostPortalLogin() {
                         {/* REDIRECTION VERS L'INSCRIPTION HÔTE */}
                         <div className="pt-4 border-t border-zinc-100 text-center text-xs font-semibold text-zinc-500">
                             <span>{t.noAccount} </span>
-                            <Link href="/host-portal/register" className="text-[#1d9e4b] hover:underline font-bold">
+                            <Link href="/host-portal/register" className="text-[#15a4e6] hover:underline font-bold">
                                 {t.registerBtn}
                             </Link>
                         </div>

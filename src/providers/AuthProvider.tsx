@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-zinc-50">
                 <div className="text-center space-y-3">
-                    <Loader2 className="h-9 w-9 animate-spin text-[#1d9e4b] mx-auto" />
+                    <Loader2 className="h-9 w-9 animate-spin text-[#15a4e6] mx-auto" />
                     <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">
                         Vérification de la session...
                     </p>

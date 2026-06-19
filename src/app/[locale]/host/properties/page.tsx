@@ -143,7 +143,7 @@ export default function HostPropertiesPage() {
                     <h1 className="text-2xl font-black text-zinc-900 tracking-tight">{t.title}</h1>
                     <p className="text-sm font-medium text-zinc-500">{t.subtitle}</p>
                 </div>
-                <Button asChild className="bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5 self-start sm:self-auto">
+                <Button asChild className="bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-10 shadow-sm gap-1.5 self-start sm:self-auto">
                     <Link href={`/host/properties/create`}>
                         <Plus className="h-4 w-4" />
                         {t.addBtn}
@@ -298,7 +298,7 @@ export default function HostPropertiesPage() {
                                                                 </>
                                                             ) : (
                                                                 <>
-                                                                    <Eye className="h-4 w-4 text-[#1d9e4b]" />
+                                                                    <Eye className="h-4 w-4 text-[#15a4e6]" />
                                                                     <span>{t.toggleOnline}</span>
                                                                 </>
                                                             )}

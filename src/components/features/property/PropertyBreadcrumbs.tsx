@@ -37,7 +37,7 @@ export function PropertyBreadcrumbs({ city, propertyName }: PropertyBreadcrumbsP
                 >
                     <Heart
                         className={`h-5 w-5 transition-colors ${
-                            isLiked ? "fill-[#1d9e4b] text-[#1d9e4b]" : "text-zinc-600"
+                            isLiked ? "fill-[#15a4e6] text-[#15a4e6]" : "text-zinc-600"
                         }`}
                     />
                 </button>

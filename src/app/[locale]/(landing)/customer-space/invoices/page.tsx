@@ -114,7 +114,7 @@ export default function CustomerInvoicesPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center space-y-4"
                 >
-                    <div className="w-16 h-16 border-4 border-[#1d9e4b] border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-16 h-16 border-4 border-[#15a4e6] border-t-transparent rounded-full animate-spin mx-auto" />
                     <p className="text-sm font-semibold text-zinc-600">{t.loading}</p>
                 </motion.div>
             </div>
@@ -132,8 +132,8 @@ export default function CustomerInvoicesPage() {
                     className="space-y-2"
                 >
                     <div className="flex items-center gap-3">
-                        <div className="bg-[#1d9e4b]/10 p-3 rounded-xl">
-                            <Receipt className="h-6 w-6 text-[#1d9e4b]" />
+                        <div className="bg-[#15a4e6]/10 p-3 rounded-xl">
+                            <Receipt className="h-6 w-6 text-[#15a4e6]" />
                         </div>
                         <div>
                             <h1 className="text-4xl font-extrabold text-zinc-900 tracking-tight">
@@ -174,7 +174,7 @@ export default function CustomerInvoicesPage() {
                                                 <div className="md:col-span-2 space-y-3">
                                                     <div className="flex items-center gap-2 flex-wrap">
                                                         <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider bg-zinc-50 border border-zinc-100 px-3 py-1 rounded-full flex items-center gap-1.5">
-                                                            <FileText className="h-3.5 w-3.5 text-[#1d9e4b]" />
+                                                            <FileText className="h-3.5 w-3.5 text-[#15a4e6]" />
                                                             {t.invoiceNum} {invoice.number}
                                                         </span>
                                                         <span className="text-xs font-bold text-zinc-400 bg-zinc-50 px-3 py-1 rounded-full">
@@ -182,13 +182,13 @@ export default function CustomerInvoicesPage() {
                                                         </span>
                                                         <InvoiceStatusBadge status={invoice.status} t={t} />
                                                     </div>
-                                                    <h3 className="text-xl font-extrabold text-zinc-900 tracking-tight leading-tight group-hover:text-[#1d9e4b] transition-colors">
+                                                    <h3 className="text-xl font-extrabold text-zinc-900 tracking-tight leading-tight group-hover:text-[#15a4e6] transition-colors">
                                                         {invoice.property_name}
                                                     </h3>
 
                                                     <div className="flex items-center gap-4 text-xs font-semibold text-zinc-400 pt-1">
                                                         <span className="flex items-center gap-1.5 bg-zinc-50 px-3 py-1.5 rounded-full">
-                                                            <Calendar className="h-3.5 w-3.5 text-[#1d9e4b]" />
+                                                            <Calendar className="h-3.5 w-3.5 text-[#15a4e6]" />
                                                             {t.issuedOn} {invoice.issue_date}
                                                         </span>
                                                         {invoice.status !== "paid" && (
@@ -203,10 +203,10 @@ export default function CustomerInvoicesPage() {
                                                 {/* Colonne 2: Montants */}
                                                 <div className="space-y-3 border-l border-zinc-100 pl-0 md:pl-6">
                                                     <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-wide">
-                                                        <Coins className="h-4 w-4 text-[#1d9e4b]" />
+                                                        <Coins className="h-4 w-4 text-[#15a4e6]" />
                                                         <span>{t.totalAmount}</span>
                                                     </div>
-                                                    <div className="text-2xl font-extrabold text-[#1d9e4b]">
+                                                    <div className="text-2xl font-extrabold text-[#15a4e6]">
                                                         {invoice.total_amount.toLocaleString()} FCFA
                                                     </div>
                                                     {invoice.amount_paid > 0 && (
@@ -238,7 +238,7 @@ export default function CustomerInvoicesPage() {
                                                         {downloadingId === invoice.id ? (
                                                             <Loader2 className="h-4 w-4 animate-spin text-zinc-500" />
                                                         ) : (
-                                                            <Download className="h-4 w-4 text-[#1d9e4b]" />
+                                                            <Download className="h-4 w-4 text-[#15a4e6]" />
                                                         )}
                                                         {t.downloadBtn}
                                                     </Button>

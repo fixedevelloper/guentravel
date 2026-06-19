@@ -35,8 +35,8 @@ export default function CustomerPortalLogin() {
             <div className="w-full max-w-md space-y-8 rounded-3xl border border-zinc-200/80 bg-white p-8 md:p-10 shadow-xl transition-all">
 
                 <div className="space-y-3 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#f39c28]/10 mb-2">
-                        <ShieldAlert className="w-8 h-8 text-[#f39c28]" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#7bcd4f]/10 mb-2">
+                        <ShieldAlert className="w-8 h-8 text-[#7bcd4f]" />
                     </div>
                     <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 md:text-3xl">
                         {t("title")}
@@ -82,13 +82,13 @@ export default function CustomerPortalLogin() {
                         </div>
                     </div>
 
-                    <Button type="submit" className="w-full bg-[#f39c28] hover:bg-[#1d9e4b] py-6 rounded-xl text-sm font-bold text-white" disabled={isPending}>
+                    <Button type="submit" className="w-full bg-[#7bcd4f] hover:bg-[#15a4e6] py-6 rounded-xl text-sm font-bold text-white" disabled={isPending}>
                         {isPending ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t("button.loading")}</> : t("button.submit")}
                     </Button>
 
                     <div className="text-center pt-2">
                         <p className="text-sm text-zinc-600 mb-3">{t("noAccount")}</p>
-                        <Link href="/register" className="inline-flex items-center gap-2 text-sm font-semibold text-[#f39c28] hover:text-[#1d9e4b]">
+                        <Link href="/register" className="inline-flex items-center gap-2 text-sm font-semibold text-[#7bcd4f] hover:text-[#15a4e6]">
                             <UserPlus className="w-4 h-4" /> {t("register")}
                         </Link>
                     </div>

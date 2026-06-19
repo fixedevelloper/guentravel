@@ -32,10 +32,10 @@ export function SearchComponent() {
     };
 
     return (
-        <div className="bg-white p-3 rounded-xl shadow-2xl flex flex-col md:flex-row gap-3 max-w-7xl mx-auto border-2 border-[#1d9e4b]">
+        <div className="bg-white p-3 rounded-xl shadow-2xl flex flex-col md:flex-row gap-3 max-w-7xl mx-auto border-2 border-[#15a4e6]">
             {/* Input Location */}
             <div className="flex-1 flex items-center px-4 py-3 border-r border-zinc-200 hover:bg-zinc-50 rounded-lg transition-colors cursor-pointer">
-                <MapPin className="text-[#1d9e4b] mr-3 h-5 w-5" />
+                <MapPin className="text-[#15a4e6] mr-3 h-5 w-5" />
                 <input
                     className="w-full text-zinc-900 outline-none placeholder:text-zinc-400 font-medium bg-transparent"
                     placeholder={t("whereTo")}
@@ -46,7 +46,7 @@ export function SearchComponent() {
 
             {/* Date Picker */}
             <div className="flex-1 flex items-center px-4 py-3 border-r border-zinc-200 hover:bg-zinc-50 rounded-lg transition-colors cursor-pointer">
-                <Calendar className="text-[#1d9e4b] mr-3 h-5 w-5" />
+                <Calendar className="text-[#15a4e6] mr-3 h-5 w-5" />
                 <DateRangePicker date={date} setDate={setDate} />
             </div>
 
@@ -58,7 +58,7 @@ export function SearchComponent() {
             {/* Button */}
             <Button
                 onClick={handleSearch}
-                className="bg-[#f39c28] hover:bg-[#d68910] text-white px-10 py-6 font-bold uppercase tracking-wider text-lg shadow-lg rounded-lg"
+                className="bg-[#7bcd4f] hover:bg-[#d68910] text-white px-10 py-6 font-bold uppercase tracking-wider text-lg shadow-lg rounded-lg"
             >
                 {t("searchButton")}
             </Button>

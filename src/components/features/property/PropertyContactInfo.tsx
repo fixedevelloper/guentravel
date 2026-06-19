@@ -18,21 +18,21 @@ export function PropertyContactInfo({ phone, website, city }: PropertyContactInf
         >
             <div className="grid md:grid-cols-3 gap-4">
                 <div className="bg-zinc-50 p-6 rounded-2xl flex items-center gap-4">
-                    <Phone className="h-6 w-6 text-[#1d9e4b]" />
+                    <Phone className="h-6 w-6 text-[#15a4e6]" />
                     <div>
                         <p className="text-sm text-zinc-500">Téléphone</p>
                         <p className="font-semibold">{phone || "+237 6XX XX XX XX"}</p>
                     </div>
                 </div>
                 <div className="bg-zinc-50 p-6 rounded-2xl flex items-center gap-4">
-                    <Globe className="h-6 w-6 text-[#1d9e4b]" />
+                    <Globe className="h-6 w-6 text-[#15a4e6]" />
                     <div>
                         <p className="text-sm text-zinc-500">Site web</p>
                         <p className="font-semibold">{website || "bookit.cm"}</p>
                     </div>
                 </div>
                 <div className="bg-zinc-50 p-6 rounded-2xl flex items-center gap-4">
-                    <MapPin className="h-6 w-6 text-[#1d9e4b]" />
+                    <MapPin className="h-6 w-6 text-[#15a4e6]" />
                     <div>
                         <p className="text-sm text-zinc-500">Adresse</p>
                         <p className="font-semibold">{city}</p>

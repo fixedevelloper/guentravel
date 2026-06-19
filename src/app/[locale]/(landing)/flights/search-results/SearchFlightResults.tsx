@@ -176,8 +176,8 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
         return (
             <div className="flex flex-col items-center justify-center p-12 sm:p-24 space-y-6 bg-zinc-50 min-h-[60vh]">
                 <div className="relative flex items-center justify-center">
-                    <div className="h-16 w-16 animate-spin rounded-full border-4 border-zinc-200 border-t-[#1d9e4b]" />
-                    <Plane className="h-6 w-6 text-[#1d9e4b] absolute animate-pulse" />
+                    <div className="h-16 w-16 animate-spin rounded-full border-4 border-zinc-200 border-t-[#15a4e6]" />
+                    <Plane className="h-6 w-6 text-[#15a4e6] absolute animate-pulse" />
                 </div>
                 <div className="text-center space-y-2 px-4">
                     <h3 className="text-lg sm:text-xl font-bold text-zinc-900">Analyse des offres en cours...</h3>
@@ -193,13 +193,13 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                 <h4 className="font-semibold text-xs text-zinc-500 uppercase tracking-wide">Nombre d&apos;escales</h4>
                 <div className="space-y-3">
                     <label className="flex items-center gap-3 text-sm font-medium text-zinc-700 cursor-pointer">
-                        <Checkbox id="direct" className="rounded-md border-zinc-300 data-[state=checked]:bg-[#1d9e4b] data-[state=checked]:border-[#1d9e4b]" /> <span>Vols directs</span>
+                        <Checkbox id="direct" className="rounded-md border-zinc-300 data-[state=checked]:bg-[#15a4e6] data-[state=checked]:border-[#15a4e6]" /> <span>Vols directs</span>
                     </label>
                     <label className="flex items-center gap-3 text-sm font-medium text-zinc-700 cursor-pointer">
-                        <Checkbox id="1stop" className="rounded-md border-zinc-300 data-[state=checked]:bg-[#1d9e4b] data-[state=checked]:border-[#1d9e4b]" /> <span>1 escale</span>
+                        <Checkbox id="1stop" className="rounded-md border-zinc-300 data-[state=checked]:bg-[#15a4e6] data-[state=checked]:border-[#15a4e6]" /> <span>1 escale</span>
                     </label>
                     <label className="flex items-center gap-3 text-sm font-medium text-zinc-700 cursor-pointer">
-                        <Checkbox id="2stops" className="rounded-md border-zinc-300 data-[state=checked]:bg-[#1d9e4b] data-[state=checked]:border-[#1d9e4b]" /> <span>2 escales ou plus</span>
+                        <Checkbox id="2stops" className="rounded-md border-zinc-300 data-[state=checked]:bg-[#15a4e6] data-[state=checked]:border-[#15a4e6]" /> <span>2 escales ou plus</span>
                     </label>
                 </div>
             </div>
@@ -230,7 +230,7 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                     ) : (
                         uniqueAirlines.map((airline, idx) => (
                             <label key={idx} className="flex items-center gap-3 text-sm font-medium text-zinc-700 cursor-pointer">
-                                <Checkbox id={`airline-${idx}`} className="rounded-md border-zinc-300 data-[state=checked]:bg-[#1d9e4b] data-[state=checked]:border-[#1d9e4b]" /> <span className="truncate">{airline}</span>
+                                <Checkbox id={`airline-${idx}`} className="rounded-md border-zinc-300 data-[state=checked]:bg-[#15a4e6] data-[state=checked]:border-[#15a4e6]" /> <span className="truncate">{airline}</span>
                             </label>
                         ))
                     )}
@@ -246,7 +246,7 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
             <Card className="bg-zinc-900 text-white border-none shadow-md rounded-2xl overflow-hidden">
                 <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div className="flex items-center gap-3 sm:gap-4">
-                        <div className="p-2.5 sm:p-3 bg-white/10 rounded-xl text-[#1d9e4b] shrink-0">
+                        <div className="p-2.5 sm:p-3 bg-white/10 rounded-xl text-[#15a4e6] shrink-0">
                             <Plane className="h-5 w-5 sm:h-6 sm:w-6 rotate-45" />
                         </div>
                         <div>
@@ -302,9 +302,9 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                 <aside className="hidden lg:block lg:col-span-3 bg-white rounded-2xl border border-zinc-200 p-5 space-y-6 sticky top-20 shadow-sm">
                     <div className="flex justify-between items-center border-b pb-3">
                         <h3 className="font-bold text-zinc-900 flex items-center gap-2 text-sm uppercase tracking-wider">
-                            <SlidersHorizontal className="h-4 w-4 text-[#1d9e4b]" /> Filtres
+                            <SlidersHorizontal className="h-4 w-4 text-[#15a4e6]" /> Filtres
                         </h3>
-                        <button className="text-xs font-semibold text-zinc-400 hover:text-[#1d9e4b] transition-colors">Effacer tout</button>
+                        <button className="text-xs font-semibold text-zinc-400 hover:text-[#15a4e6] transition-colors">Effacer tout</button>
                     </div>
                     <FilterContent />
                 </aside>
@@ -320,7 +320,7 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                             <Sheet open={isMobileFilterOpen} onOpenChange={setIsMobileFilterOpen}>
                                 <SheetTrigger asChild>
                                     <Button variant="outline" size="sm" className="lg:hidden flex items-center gap-2 h-9 text-xs font-semibold px-3 border-zinc-200 rounded-xl bg-white text-zinc-700">
-                                        <SlidersHorizontal className="h-3.5 w-3.5 text-[#1d9e4b]" />
+                                        <SlidersHorizontal className="h-3.5 w-3.5 text-[#15a4e6]" />
                                         Filtres
                                     </Button>
                                 </SheetTrigger>
@@ -328,9 +328,9 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                                 <SheetContent side="bottom" className="rounded-t-3xl h-[85vh] p-0 bg-white border-t flex flex-col overflow-hidden">
                                     <SheetHeader className="flex flex-row justify-between items-center p-4 sm:p-6 pb-4 border-b border-zinc-100 shrink-0">
                                         <SheetTitle className="text-base font-bold text-zinc-900 flex items-center gap-2 uppercase tracking-wide">
-                                            <SlidersHorizontal className="h-4 w-4 text-[#1d9e4b]" /> Filtres de recherche
+                                            <SlidersHorizontal className="h-4 w-4 text-[#15a4e6]" /> Filtres de recherche
                                         </SheetTitle>
-                                        <button type="button" className="text-xs font-bold text-zinc-400 hover:text-[#1d9e4b] mr-6">Effacer tout</button>
+                                        <button type="button" className="text-xs font-bold text-zinc-400 hover:text-[#15a4e6] mr-6">Effacer tout</button>
                                     </SheetHeader>
 
                                     <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
@@ -338,7 +338,7 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                                     </div>
 
                                     <div className="p-4 border-t border-zinc-100 bg-white shrink-0 pb-safe-bottom">
-                                        <Button className="w-full bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-bold h-12 rounded-xl" onClick={() => setIsMobileFilterOpen(false)}>
+                                        <Button className="w-full bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold h-12 rounded-xl" onClick={() => setIsMobileFilterOpen(false)}>
                                             Appliquer les filtres
                                         </Button>
                                     </div>

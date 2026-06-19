@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, usePathname } from "@/i18n/navigation";
 import { MapPin, LogOut, LayoutDashboard, ChevronDown, Hotel, Plane, Bed, User } from "lucide-react";
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "../../core/hooks/useAuth";
 import { useAuthStore } from "../../core/store/useAuthStore";
-
+import Image from "next/image";
 export function Header() {
     const t = useTranslations("Header");
     const { user } = useAuthStore();
@@ -59,10 +59,15 @@ export function Header() {
                 <div className="max-w-7xl mx-auto px-6">
                     <nav className="flex items-center justify-between h-16" aria-label="Navigation principale">
 
-                        {/* LOGO SEO */}
-                        <Link href="/" className="flex items-center gap-2" aria-label="Accueil Guen's Travel">
-                            <div className="bg-[#1d9e4b] p-2 rounded-lg"><MapPin className="h-6 w-6 text-white" /></div>
-                            <span className="text-2xl font-extrabold text-[#1d9e4b]">Guen&apos;s<span className="text-[#f39c28]">Travel</span></span>
+                        <Link href="/" className="flex items-center gap-2" aria-label="Accueil GUEN'S TRAVEL & TOURS">
+                            <Image
+                                src="/images/logo.png"
+                                alt="Logo Officiel GUEN'S TRAVEL & TOURS"
+                                width={180} // Ajustez la largeur selon vos besoins réels
+                                height={50} // Ajustez la hauteur selon vos besoins réels
+                                priority // 🔥 Charge le logo immédiatement (LCP optimization)
+                                className="object-contain"
+                            />
                         </Link>
 
                         {/* NAVIGATION DESKTOP SÉMANTIQUE */}
@@ -76,14 +81,14 @@ export function Header() {
                                             href={link.href}
                                             aria-current={isActive ? "page" : undefined}
                                             className={`font-semibold transition-colors relative py-2 ${
-                                                isActive ? "text-[#1d9e4b]" : "text-zinc-700 hover:text-[#1d9e4b]"
+                                                isActive ? "text-[#15a4e6]" : "text-zinc-700 hover:text-[#15a4e6]"
                                             }`}
                                         >
                                             {link.label}
                                             {isActive && (
                                                 <motion.div
                                                     layoutId="activeTab"
-                                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1d9e4b] rounded-full"
+                                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#15a4e6] rounded-full"
                                                 />
                                             )}
                                         </Link>
@@ -94,15 +99,15 @@ export function Header() {
 
                         {/* ACTIONS DESKTOP */}
                         <div className="hidden md:flex items-center gap-4">
-                            <Link href="/host-portal/register" className="text-sm font-bold border border-zinc-200 px-4 py-1.5 rounded-full flex items-center gap-2 hover:border-[#1d9e4b]/30">
-                                <Hotel className="h-4 w-4 text-[#1d9e4b]" /> {t("becomeHost")}
+                            <Link href="/host-portal/register" className="text-sm font-bold border border-zinc-200 px-4 py-1.5 rounded-full flex items-center gap-2 hover:border-[#15a4e6]/30">
+                                <Hotel className="h-4 w-4 text-[#15a4e6]" /> {t("becomeHost")}
                             </Link>
                             <SelectLanguage />
 
                             {user ? (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className="flex items-center gap-2 bg-zinc-50 border rounded-full pl-2 pr-4 py-1" aria-label="Menu utilisateur">
-                                        <div className="h-7 w-7 rounded-full bg-[#1d9e4b]/10 flex items-center justify-center font-bold text-xs">{user.name?.substring(0, 2)}</div>
+                                        <div className="h-7 w-7 rounded-full bg-[#15a4e6]/10 flex items-center justify-center font-bold text-xs">{user.name?.substring(0, 2)}</div>
                                         <ChevronDown className="h-3 w-3" />
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
@@ -112,7 +117,7 @@ export function Header() {
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             ) : (
-                                <Button className="bg-[#1d9e4b] hover:bg-[#167c3a] rounded-xl" onClick={() => router.push(`/${locale}/login`)}>
+                                <Button className="bg-[#15a4e6] hover:bg-[#167c3a] rounded-xl" onClick={() => router.push(`/${locale}/login`)}>
                                     {t("login")}
                                 </Button>
                             )}
@@ -140,10 +145,10 @@ export function Header() {
                                     aria-current={isActive ? "page" : undefined}
                                     className="flex flex-col items-center justify-center h-full gap-1 text-center transition-colors"
                                 >
-                                    <div className={`relative p-1 rounded-xl transition-transform ${isActive ? "text-[#1d9e4b] scale-105" : "text-zinc-500"}`}>
+                                    <div className={`relative p-1 rounded-xl transition-transform ${isActive ? "text-[#15a4e6] scale-105" : "text-zinc-500"}`}>
                                         <Icon className="h-5 w-5" />
                                     </div>
-                                    <span className={`text-[11px] font-medium tracking-wide ${isActive ? "text-[#1d9e4b] font-bold" : "text-zinc-500"}`}>
+                                    <span className={`text-[11px] font-medium tracking-wide ${isActive ? "text-[#15a4e6] font-bold" : "text-zinc-500"}`}>
                                         {link.label}
                                     </span>
                                 </Link>

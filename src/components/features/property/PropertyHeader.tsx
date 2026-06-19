@@ -23,14 +23,14 @@ export function PropertyHeader({ name, rating, city, countryCode, address }: Pro
                 <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-900 leading-tight">
                     {name}
                 </h1>
-                <div className="flex items-center gap-1 bg-[#f39c28] text-white px-3 py-1 rounded-full">
+                <div className="flex items-center gap-1 bg-[#7bcd4f] text-white px-3 py-1 rounded-full">
                     <Star className="h-4 w-4 fill-white" />
                     <span className="font-bold">9.{rating || 4}</span>
                     <span className="text-xs ml-1">Excellent</span>
                 </div>
             </div>
             <p className="flex items-center gap-2 text-zinc-500 text-lg">
-                <MapPin size={20} className="text-[#1d9e4b]" />
+                <MapPin size={20} className="text-[#15a4e6]" />
                 {city}, {countryCode}
                 <span className="ml-2 text-sm bg-zinc-100 px-3 py-1 rounded-full">
                     📍 {address}

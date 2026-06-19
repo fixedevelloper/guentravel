@@ -5,12 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-brand-green: #1d9e4b;
-  --color-brand-orange: #f39c28;
+  --color-brand-green: #15a4e6;
+  --color-brand-orange: #7bcd4f;
 
   /* Si vous voulez que "primary" utilise le vert par défaut */
-  --color-primary: #1d9e4b;
-  --color-accent: #f39c28;
+  --color-primary: #15a4e6;
+  --color-accent: #7bcd4f;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -53,17 +53,17 @@
 }
 
 :root {
-  /* Vert Guen's Travel (#1d9e4b) */
-  --primary: 0.60 0.18 150; /* Approximation OKLCH pour #1d9e4b */
+  /* Vert Guen's Travel (#15a4e6) */
+  --primary: 0.60 0.18 150; /* Approximation OKLCH pour #15a4e6 */
   --primary-foreground: 1 0 0;
 
-  /* Orange Guen's Travel (#f39c28) */
-  --accent: 0.70 0.16 65;   /* Approximation OKLCH pour #f39c28 */
+  /* Orange Guen's Travel (#7bcd4f) */
+  --accent: 0.70 0.16 65;   /* Approximation OKLCH pour #7bcd4f */
   --accent-foreground: 0.145 0 0;
 
   /* Vous pouvez aussi ajouter des couleurs personnalisées directement */
-  --brand-green: #1d9e4b;
-  --brand-orange: #f39c28;
+  --brand-green: #15a4e6;
+  --brand-orange: #7bcd4f;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

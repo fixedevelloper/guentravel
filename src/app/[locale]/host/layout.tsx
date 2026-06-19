@@ -46,14 +46,14 @@ export default function HostLayout({ children }: { children: React.ReactNode }) 
         return (
             <div className="flex flex-col h-full bg-zinc-900 text-zinc-300">
                 <div className="h-16 flex items-center px-6 border-b border-zinc-800 gap-2 shrink-0">
-                    <div className="bg-[#1d9e4b] p-1.5 rounded-lg text-white"><MapPin className="h-5 w-5" /></div>
-                    {showText && <span className="font-black text-lg text-white">Guen's <span className="text-[#f39c28]">Host</span></span>}
+                    <div className="bg-[#15a4e6] p-1.5 rounded-lg text-white"><MapPin className="h-5 w-5" /></div>
+                    {showText && <span className="font-black text-lg text-white">Guen's <span className="text-[#7bcd4f]">Host</span></span>}
                 </div>
                 <nav className="flex-1 py-6 px-4 space-y-1.5">
                     {hostNavigationItems.map((item) => {
                         const isActive = pathname.includes(item.href);
                         return (
-                            <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-3.5 py-3 rounded-xl font-semibold text-sm transition-all ${isActive ? "bg-[#1d9e4b] text-white" : "hover:bg-zinc-800 text-zinc-400"}`}>
+                            <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-3.5 py-3 rounded-xl font-semibold text-sm transition-all ${isActive ? "bg-[#15a4e6] text-white" : "hover:bg-zinc-800 text-zinc-400"}`}>
                                 <item.icon className="h-5 w-5 shrink-0" />
                                 {showText && <span>{t(item.id)}</span>}
                             </Link>
@@ -91,7 +91,7 @@ export default function HostLayout({ children }: { children: React.ReactNode }) 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <button className="flex items-center gap-2 hover:bg-zinc-50 p-1 rounded-xl outline-none transition-all">
-                                        <div className="h-8 w-8 rounded-xl bg-[#f39c28]/10 text-[#f39c28] flex items-center justify-center font-bold text-xs uppercase">
+                                        <div className="h-8 w-8 rounded-xl bg-[#7bcd4f]/10 text-[#7bcd4f] flex items-center justify-center font-bold text-xs uppercase">
                                             {user?.name?.charAt(0) || "H"}
                                         </div>
                                         <ChevronDown className="h-3 w-3 text-zinc-400" />

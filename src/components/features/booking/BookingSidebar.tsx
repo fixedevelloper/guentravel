@@ -105,17 +105,17 @@ export function BookingSidebar({
                         <span className="text-2xl font-extrabold text-zinc-900">
                             Total
                         </span>
-                        <span className="text-3xl font-extrabold text-[#1d9e4b]">
+                        <span className="text-3xl font-extrabold text-[#15a4e6]">
                             {finalTotal.toLocaleString()} FCFA
                         </span>
                     </div>
                 </div>
 
-                <div className="bg-[#1d9e4b]/10 rounded-2xl p-4">
+                <div className="bg-[#15a4e6]/10 rounded-2xl p-4">
                     <div className="flex items-start gap-3">
-                        <Shield className="h-5 w-5 text-[#1d9e4b] mt-0.5" />
+                        <Shield className="h-5 w-5 text-[#15a4e6] mt-0.5" />
                         <div>
-                            <p className="text-sm font-semibold text-[#1d9e4b]">
+                            <p className="text-sm font-semibold text-[#15a4e6]">
                                 Réservation sécurisée
                             </p>
                             <p className="text-xs text-zinc-600 mt-1">

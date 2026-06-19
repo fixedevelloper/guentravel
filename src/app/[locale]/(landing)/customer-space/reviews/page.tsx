@@ -131,7 +131,7 @@ export default function CustomerReviewsPage() {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
                 <div className="text-center space-y-3">
-                    <Loader2 className="h-8 w-8 animate-spin text-[#1d9e4b] mx-auto" />
+                    <Loader2 className="h-8 w-8 animate-spin text-[#15a4e6] mx-auto" />
                     <p className="text-sm font-semibold text-zinc-500">{t.loading}</p>
                 </div>
             </div>
@@ -179,7 +179,7 @@ export default function CustomerReviewsPage() {
                                         </div>
                                         {selectedBookingId !== item.booking_id && (
                                             <Button
-                                                className="bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-9 shadow-sm"
+                                                className="bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-xl text-xs font-bold h-9 shadow-sm"
                                                 onClick={() => setSelectedBookingId(item.booking_id)}
                                             >
                                                 <MessageSquare className="h-3.5 w-3.5 mr-1.5" /> Écrire un avis
@@ -205,7 +205,7 @@ export default function CustomerReviewsPage() {
                                                             onMouseLeave={() => setHoveredRating(null)}
                                                         >
                                                             <Star
-                                                                className={`h-6 w-6 ${(hoveredRating ?? rating) >= star ? "text-[#f39c28] fill-[#f39c28]" : "text-zinc-200"}`}
+                                                                className={`h-6 w-6 ${(hoveredRating ?? rating) >= star ? "text-[#7bcd4f] fill-[#7bcd4f]" : "text-zinc-200"}`}
                                                             />
                                                         </button>
                                                     ))}
@@ -253,7 +253,7 @@ export default function CustomerReviewsPage() {
                         ))
                     ) : (
                         <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-zinc-200 p-8">
-                            <CheckCircle2 className="h-7 w-7 text-[#1d9e4b] mx-auto mb-2" />
+                            <CheckCircle2 className="h-7 w-7 text-[#15a4e6] mx-auto mb-2" />
                             <p className="text-sm font-medium text-zinc-400">{t.noPending}</p>
                         </div>
                     )}
@@ -275,7 +275,7 @@ export default function CustomerReviewsPage() {
                                             {[1, 2, 3, 4, 5].map((star) => (
                                                 <Star
                                                     key={star}
-                                                    className={`h-4 w-4 ${review.rating >= star ? "text-[#f39c28] fill-[#f39c28]" : "text-zinc-100"}`}
+                                                    className={`h-4 w-4 ${review.rating >= star ? "text-[#7bcd4f] fill-[#7bcd4f]" : "text-zinc-100"}`}
                                                 />
                                             ))}
                                         </div>

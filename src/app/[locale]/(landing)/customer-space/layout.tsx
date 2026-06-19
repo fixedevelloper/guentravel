@@ -58,31 +58,31 @@ const sidebarItems = [
         icon: Home,
         translationKey: "home" as const,
         href: "/customer-space/dashboard", // Page d'accueil racine
-        color: "text-[#1d9e4b]"
+        color: "text-[#15a4e6]"
     },
     {
         icon: Calendar,
         translationKey: "bookings" as const,
         href: "/customer-space/bookings",
-        color: "text-[#1d9e4b]"
+        color: "text-[#15a4e6]"
     },
     {
         icon: User,
         translationKey: "profile" as const,
         href: "/customer-space/profile",
-        color: "text-[#1d9e4b]"
+        color: "text-[#15a4e6]"
     },
 /*    {
         icon: Receipt,
         translationKey: "invoices" as const,
         href: "/customer-space/invoices",
-        color: "text-[#1d9e4b]"
+        color: "text-[#15a4e6]"
     },*/
     {
         icon: Heart,
         translationKey: "favorites" as const,
         href: "/customer-space/favorites",
-        color: "text-[#f39c28]"
+        color: "text-[#7bcd4f]"
     },
     {
         icon: Wallet,
@@ -94,7 +94,7 @@ const sidebarItems = [
         icon: Star,
         translationKey: "reviews" as const,
         href: "/customer-space/reviews",
-        color: "text-[#f39c28]"
+        color: "text-[#7bcd4f]"
     },
     {
         icon: Settings,
@@ -160,7 +160,7 @@ export default function CustomerLayout({ children }: CustomerLayoutProps) {
                                         href={localizedHref}
                                         className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                                             isActive
-                                                ? "bg-[#1d9e4b]/10 text-[#1d9e4b] font-bold"
+                                                ? "bg-[#15a4e6]/10 text-[#15a4e6] font-bold"
                                                 : "text-zinc-600 hover:bg-zinc-100"
                                         }`}
                                     >
@@ -169,7 +169,7 @@ export default function CustomerLayout({ children }: CustomerLayoutProps) {
                                             <span>{t[item.translationKey]}</span>
                                         )}
                                         {isActive && isSidebarOpen && (
-                                            <div className="ml-auto w-1.5 h-1.5 bg-[#1d9e4b] rounded-full" />
+                                            <div className="ml-auto w-1.5 h-1.5 bg-[#15a4e6] rounded-full" />
                                         )}
                                     </Link>
                                 );

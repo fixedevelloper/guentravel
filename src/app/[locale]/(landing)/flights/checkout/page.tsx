@@ -90,7 +90,7 @@ export default function FlightCheckoutPage() {
         return (
             <div className="p-12 text-center space-y-4">
                 <p className="text-zinc-500 font-bold">Aucun vol n&apos;a été sélectionné.</p>
-                <Button onClick={() => router.push("/")} className="bg-[#1d9e4b]">Retourner à l&apos;accueil</Button>
+                <Button onClick={() => router.push("/")} className="bg-[#15a4e6]">Retourner à l&apos;accueil</Button>
             </div>
         );
     }
@@ -173,7 +173,7 @@ export default function FlightCheckoutPage() {
                         ].map((s) => (
                             <div key={s.id} className="flex items-center gap-2">
                                 <div className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                                    step >= s.id ? "bg-[#1d9e4b] text-white" : "bg-zinc-100 text-zinc-400"
+                                    step >= s.id ? "bg-[#15a4e6] text-white" : "bg-zinc-100 text-zinc-400"
                                 }`}>
                                     {step > s.id ? <CheckCircle2 className="h-4 w-4" /> : s.id}
                                 </div>
@@ -193,7 +193,7 @@ export default function FlightCheckoutPage() {
                                     <Card key={index} className="border-zinc-200 shadow-sm">
                                         <CardHeader className="border-b border-zinc-100 bg-zinc-50/50">
                                             <CardTitle className="text-sm font-bold uppercase tracking-wider text-zinc-800 flex items-center gap-2">
-                                                <User className="h-4 w-4 text-[#1d9e4b]" /> Informations Voyageur ({index + 1})
+                                                <User className="h-4 w-4 text-[#15a4e6]" /> Informations Voyageur ({index + 1})
                                             </CardTitle>
                                         </CardHeader>
                                         <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,7 +202,7 @@ export default function FlightCheckoutPage() {
                                                 <select
                                                     value={passenger.civility}
                                                     onChange={(e) => updatePassenger(index, { civility: e.target.value })}
-                                                    className="w-full h-10 px-3 rounded-lg border border-zinc-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1d9e4b]"
+                                                    className="w-full h-10 px-3 rounded-lg border border-zinc-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#15a4e6]"
                                                 >
                                                     <option value="M.">M.</option>
                                                     <option value="Mme">Mme</option>
@@ -249,7 +249,7 @@ export default function FlightCheckoutPage() {
                                 <Button
                                     onClick={() => submitPassengers()}
                                     disabled={isPassengersPending}
-                                    className="w-full md:w-auto bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-bold px-8 h-12 rounded-xl float-right flex items-center gap-2"
+                                    className="w-full md:w-auto bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold px-8 h-12 rounded-xl float-right flex items-center gap-2"
                                 >
                                     {isPassengersPending ? (
                                         <>
@@ -299,7 +299,7 @@ export default function FlightCheckoutPage() {
 
                                 <div className="flex justify-between items-center pt-4">
                                     <Button variant="outline" onClick={() => setStep(1)} className="h-12 px-6 rounded-xl text-zinc-600">Retour</Button>
-                                    <Button onClick={() => setStep(3)} className="bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-bold px-8 h-12 rounded-xl">Procéder au paiement</Button>
+                                    <Button onClick={() => setStep(3)} className="bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold px-8 h-12 rounded-xl">Procéder au paiement</Button>
                                 </div>
                             </motion.div>
                         )}
@@ -322,7 +322,7 @@ export default function FlightCheckoutPage() {
                                             onValueChange={(val) => setBookingType(val)}
                                             className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                         >
-                                            <label className={`flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-all ${bookingType === "now" ? "border-[#1d9e4b] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
+                                            <label className={`flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-all ${bookingType === "now" ? "border-[#15a4e6] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
                                                 <RadioGroupItem value="now" id="pay_now" className="mt-1" />
                                                 <div>
                                                     <span className="font-bold text-sm block text-zinc-900">Payer la totalité maintenant</span>
@@ -330,7 +330,7 @@ export default function FlightCheckoutPage() {
                                                 </div>
                                             </label>
 
-                                            <label className={`flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-all ${bookingType === "hold" ? "border-[#1d9e4b] bg-amber-50/10 shadow-sm" : "border-zinc-200"}`}>
+                                            <label className={`flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-all ${bookingType === "hold" ? "border-[#15a4e6] bg-amber-50/10 shadow-sm" : "border-zinc-200"}`}>
                                                 <RadioGroupItem value="hold" id="pay_hold" className="mt-1" />
                                                 <div>
                                                     <span className="font-bold text-sm block text-amber-600">Bloquer ce tarif & Réserver (+{RESERVATION_HOLD_FEE.toLocaleString()} XAF)</span>
@@ -347,7 +347,7 @@ export default function FlightCheckoutPage() {
                                 <Card className="border-zinc-200 shadow-sm">
                                     <CardHeader className="border-b border-zinc-100 bg-zinc-50/50">
                                         <CardTitle className="text-sm font-bold uppercase tracking-wider text-zinc-800 flex items-center gap-2">
-                                            <CreditCard className="h-4 w-4 text-[#1d9e4b]" />
+                                            <CreditCard className="h-4 w-4 text-[#15a4e6]" />
                                             {bookingType === "hold"
                                                 ? `Règlement des frais de réservation (${RESERVATION_HOLD_FEE.toLocaleString()} XAF)`
                                                 : "Méthode de Paiement Sécurisée"
@@ -356,14 +356,14 @@ export default function FlightCheckoutPage() {
                                     </CardHeader>
                                     <CardContent className="p-6 space-y-6">
                                         <RadioGroup defaultValue="momo" onValueChange={(val) => setPaymentMethod(val)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === "momo" ? "border-[#1d9e4b] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
+                                            <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === "momo" ? "border-[#15a4e6] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
                                                 <RadioGroupItem value="momo" id="momo" />
                                                 <div>
                                                     <span className="font-bold text-sm block text-zinc-900">Mobile Money (MTN / Orange)</span>
                                                     <span className="text-xs text-zinc-400">Débit via USSD</span>
                                                 </div>
                                             </label>
-                                            <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === "card" ? "border-[#1d9e4b] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
+                                            <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === "card" ? "border-[#15a4e6] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
                                                 <RadioGroupItem value="card" id="card" />
                                                 <div>
                                                     <span className="font-bold text-sm block text-zinc-900">Carte Bancaire (Visa / Mastercard)</span>
@@ -410,7 +410,7 @@ export default function FlightCheckoutPage() {
                                     <Button
                                         onClick={handleFinalCheckout}
                                         disabled={isCheckoutPending}
-                                        className={`bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-bold px-10 h-12 rounded-xl shadow-md flex items-center gap-2`}
+                                        className={`bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold px-10 h-12 rounded-xl shadow-md flex items-center gap-2`}
                                     >
                                         {isCheckoutPending
                                             ? "Traitement en cours..."
@@ -427,7 +427,7 @@ export default function FlightCheckoutPage() {
                 <aside className="lg:col-span-4 space-y-4 sticky top-6">
                     <Card className="border-zinc-200 shadow-sm overflow-hidden bg-white">
                         <div className="bg-zinc-900 text-white p-4">
-                            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#1d9e4b]">
+                            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#15a4e6]">
                                 <span>Résumé du Vol</span>
                                 <span className="bg-white/10 px-2 py-0.5 rounded text-white font-medium">
                     {selectedFlight.airline_code} {selectedFlight.flight_number}
@@ -445,7 +445,7 @@ export default function FlightCheckoutPage() {
                         <Clock className="h-3 w-3" /> {formatDuration(selectedFlight.duration)}
                     </span>
                                     <div className="w-full border-t border-dashed border-white/20 my-1 relative">
-                                        <Plane className="h-3 w-3 absolute -top-1.5 left-1/2 -translate-x-1/2 rotate-45 text-[#1d9e4b]" />
+                                        <Plane className="h-3 w-3 absolute -top-1.5 left-1/2 -translate-x-1/2 rotate-45 text-[#15a4e6]" />
                                     </div>
                                 </div>
                                 <div>
@@ -522,7 +522,7 @@ export default function FlightCheckoutPage() {
                                 <div className="flex justify-between items-baseline pt-1">
                                     <span className="font-bold text-zinc-900">Montant total à payer</span>
                                     <div className="text-right">
-                        <span className="text-2xl font-black text-[#1d9e4b] tracking-tight">
+                        <span className="text-2xl font-black text-[#15a4e6] tracking-tight">
                             {finalTotalPrice.toLocaleString()}
                         </span>
                                         <span className="text-xs font-bold text-zinc-500 uppercase ml-1">

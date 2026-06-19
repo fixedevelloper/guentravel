@@ -89,7 +89,7 @@ export default function PropertyRoomsPage() {
                 </div>
 
                 <Link href={`/host/properties/${propertyId}/rooms/create`}>
-                    <Button className="bg-[#1d9e4b] hover:bg-[#15803c] rounded-xl gap-2 text-xs font-bold self-start md:self-auto transition-all active:scale-95">
+                    <Button className="bg-[#15a4e6] hover:bg-[#15803c] rounded-xl gap-2 text-xs font-bold self-start md:self-auto transition-all active:scale-95">
                         <Plus className="h-4 w-4" />
                         Ajouter une chambre
                     </Button>
@@ -176,7 +176,7 @@ export default function PropertyRoomsPage() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                     <Link href={`/host/properties/${propertyId}/rooms/${room.id}/calendar`}>
-                                        <Button variant="outline" size="sm" className="rounded-xl h-8 text-xs font-bold border-zinc-200 hover:bg-[#f39c28]/10 hover:text-[#f39c28]">
+                                        <Button variant="outline" size="sm" className="rounded-xl h-8 text-xs font-bold border-zinc-200 hover:bg-[#7bcd4f]/10 hover:text-[#7bcd4f]">
                                             <Calendar className="h-3.5 w-3.5 mr-1.5" />
                                             Calendrier
                                         </Button>

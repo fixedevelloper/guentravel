@@ -106,7 +106,7 @@ export default function HostBookingsPage() {
     if (isLoading) {
         return (
             <div className="min-h-[50vh] flex flex-col items-center justify-center gap-2">
-                <Loader2 className="h-8 w-8 animate-spin text-[#1d9e4b]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#15a4e6]" />
                 <p className="text-sm font-medium text-zinc-500">Chargement de vos dossiers voyageurs...</p>
             </div>
         );
@@ -280,7 +280,7 @@ export default function HostBookingsPage() {
                                                     <Button
                                                         size="sm"
                                                         onClick={() => updateStatusMutation.mutate({ bookingId: booking.id, status: "confirmed" })}
-                                                        className="h-8 bg-[#1d9e4b] hover:bg-[#167c3a] text-white rounded-lg text-xs font-bold px-2.5 shadow-sm gap-1"
+                                                        className="h-8 bg-[#15a4e6] hover:bg-[#167c3a] text-white rounded-lg text-xs font-bold px-2.5 shadow-sm gap-1"
                                                         disabled={updateStatusMutation.isPending}
                                                     >
                                                         <Check className="h-3.5 w-3.5" />

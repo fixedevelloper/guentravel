@@ -114,7 +114,7 @@ export default function CustomerProfilePage() {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
                 <div className="text-center space-y-3">
-                    <Loader2 className="h-8 w-8 animate-spin text-[#1d9e4b] mx-auto" />
+                    <Loader2 className="h-8 w-8 animate-spin text-[#15a4e6] mx-auto" />
                     <p className="text-sm font-semibold text-zinc-500">{t.loading}</p>
                 </div>
             </div>
@@ -148,8 +148,8 @@ export default function CustomerProfilePage() {
                     <Card className="rounded-3xl border-zinc-100 shadow-xl bg-white overflow-hidden">
                         <CardHeader className="border-b border-zinc-100 pb-6 px-6">
                             <div className="flex items-center gap-3">
-                                <div className="bg-[#1d9e4b]/10 p-3 rounded-xl">
-                                    <User className="h-5 w-5 text-[#1d9e4b]" />
+                                <div className="bg-[#15a4e6]/10 p-3 rounded-xl">
+                                    <User className="h-5 w-5 text-[#15a4e6]" />
                                 </div>
                                 <div>
                                     <CardTitle className="text-xl font-extrabold text-zinc-900">
@@ -180,7 +180,7 @@ export default function CustomerProfilePage() {
                                             type="text"
                                             {...register("name")}
                                             className={`block w-full rounded-xl border pl-10 pr-4 py-3 text-sm shadow-sm outline-none transition-all duration-200
-                                        ${errors.name ? "border-red-400 bg-red-50/50" : "border-zinc-200 focus:border-[#1d9e4b] focus:ring-2 focus:ring-[#1d9e4b]/20"}`}
+                                        ${errors.name ? "border-red-400 bg-red-50/50" : "border-zinc-200 focus:border-[#15a4e6] focus:ring-2 focus:ring-[#15a4e6]/20"}`}
                                         />
                                         <User className="absolute left-3.5 top-3.5 h-4 w-4 text-zinc-400" />
                                     </div>
@@ -204,7 +204,7 @@ export default function CustomerProfilePage() {
                                 >
                                     <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 flex items-center gap-2">
                                         {t.emailLabel}
-                                        <ShieldCheck className="h-3 w-3 text-[#1d9e4b]" />
+                                        <ShieldCheck className="h-3 w-3 text-[#15a4e6]" />
                                     </label>
                                     <div className="relative">
                                         <input
@@ -236,7 +236,7 @@ export default function CustomerProfilePage() {
                                             {...register("phone")}
                                             placeholder={t.phonePlaceholder}
                                             className={`block w-full rounded-xl border pl-10 pr-4 py-3 text-sm shadow-sm outline-none transition-all duration-200
-                                        ${errors.phone ? "border-red-400 bg-red-50/50" : "border-zinc-200 focus:border-[#1d9e4b] focus:ring-2 focus:ring-[#1d9e4b]/20"}`}
+                                        ${errors.phone ? "border-red-400 bg-red-50/50" : "border-zinc-200 focus:border-[#15a4e6] focus:ring-2 focus:ring-[#15a4e6]/20"}`}
                                         />
                                         <Phone className="absolute left-3.5 top-3.5 h-4 w-4 text-zinc-400" />
                                     </div>
@@ -260,7 +260,7 @@ export default function CustomerProfilePage() {
                                 >
                                     <Button
                                         type="submit"
-                                        className="bg-[#1d9e4b] hover:bg-[#167c3a] font-bold rounded-xl text-sm py-4 px-6 shadow-lg shadow-[#1d9e4b]/30 transition-all hover:shadow-[#1d9e4b]/50 active:scale-[0.98] disabled:bg-zinc-200 disabled:cursor-not-allowed"
+                                        className="bg-[#15a4e6] hover:bg-[#167c3a] font-bold rounded-xl text-sm py-4 px-6 shadow-lg shadow-[#15a4e6]/30 transition-all hover:shadow-[#15a4e6]/50 active:scale-[0.98] disabled:bg-zinc-200 disabled:cursor-not-allowed"
                                         disabled={updateProfileMutation.isPending}
                                     >
                                         {updateProfileMutation.isPending ? (
@@ -288,14 +288,14 @@ export default function CustomerProfilePage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
                 >
-                    <Card className="rounded-3xl border-zinc-100 shadow-lg bg-gradient-to-br from-[#1d9e4b]/5 to-[#1d9e4b]/10 p-6 flex gap-4 items-start border border-[#1d9e4b]/20">
-                        <div className="p-3 bg-[#1d9e4b]/10 rounded-2xl shrink-0">
-                            <ShieldCheck className="h-6 w-6 text-[#1d9e4b]" />
+                    <Card className="rounded-3xl border-zinc-100 shadow-lg bg-gradient-to-br from-[#15a4e6]/5 to-[#15a4e6]/10 p-6 flex gap-4 items-start border border-[#15a4e6]/20">
+                        <div className="p-3 bg-[#15a4e6]/10 rounded-2xl shrink-0">
+                            <ShieldCheck className="h-6 w-6 text-[#15a4e6]" />
                         </div>
                         <div className="space-y-2">
                             <h4 className="text-sm font-extrabold text-zinc-900 flex items-center gap-2">
                                 {t.securityNotice}
-                                <ShieldCheck className="h-4 w-4 text-[#1d9e4b]" />
+                                <ShieldCheck className="h-4 w-4 text-[#15a4e6]" />
                             </h4>
                             <p className="text-xs text-zinc-600 leading-relaxed font-medium">
                                 {t.securityDesc}

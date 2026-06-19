@@ -83,7 +83,7 @@ function SearchResultsContent() {
 
                         <div className="border border-zinc-200 rounded-2xl p-5 bg-zinc-50/50 space-y-3">
                             <h4 className="text-xs font-bold text-zinc-900 flex items-center gap-2">
-                                <ShieldCheck className="w-4 h-4 text-[#1d9e4b]" /> Réserver en confiance
+                                <ShieldCheck className="w-4 h-4 text-[#15a4e6]" /> Réserver en confiance
                             </h4>
                             <ul className="text-[11px] text-zinc-600 space-y-2">
                                 <li>• Annulation gratuite sur la plupart des logements.</li>

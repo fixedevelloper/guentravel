@@ -30,7 +30,7 @@ export function EmptyBooking() {
 
                 <Button
                     onClick={() => router.push("/")}
-                    className="mt-8 bg-[#1d9e4b] hover:bg-[#167c3a]"
+                    className="mt-8 bg-[#15a4e6] hover:bg-[#167c3a]"
                 >
                     Retour à l'accueil
                 </Button>

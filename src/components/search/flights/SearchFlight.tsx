@@ -109,17 +109,17 @@ export default function SearchFlight() {
     const totalPassengers = passengers.adults + passengers.children + passengers.infants;
 
     return (
-        <div className="w-full max-w-5xl mx-auto p-3 sm:p-4 space-y-6 md:space-y-8 text-left mb-20 md:mb-0">
-            <Card className="shadow-xl border-t-4 border-[#1d9e4b] bg-white rounded-2xl overflow-hidden">
+        <div className="w-full max-w-7xl mx-auto p-3 sm:p-4 space-y-6 md:space-y-8 text-left mb-20 md:mb-0">
+            <Card className="shadow-xl border-t-4 border-[#15a4e6] bg-white rounded-2xl overflow-hidden">
                 <CardContent className="p-4 sm:p-6 space-y-6">
 
                     {/* TYPE DE VOYAGE & PASSAGERS */}
                     <div className="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 border-b pb-4">
                         <Tabs value={tripType} onValueChange={(v) => handleTripTypeChange(v as any)} className="w-full lg:w-auto">
                             <TabsList className="bg-zinc-100 w-full justify-start sm:w-auto overflow-x-auto flex">
-                                <TabsTrigger value="round_trip" className="flex-1 sm:flex-initial data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white text-xs sm:text-sm">Aller-retour</TabsTrigger>
-                                <TabsTrigger value="one_way" className="flex-1 sm:flex-initial data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white text-xs sm:text-sm">Aller simple</TabsTrigger>
-                                <TabsTrigger value="multi_city" className="flex-1 sm:flex-initial data-[state=active]:bg-[#1d9e4b] data-[state=active]:text-white text-xs sm:text-sm">Multi-ville</TabsTrigger>
+                                <TabsTrigger value="round_trip" className="flex-1 sm:flex-initial data-[state=active]:bg-[#15a4e6] data-[state=active]:text-white text-xs sm:text-sm">Aller-retour</TabsTrigger>
+                                <TabsTrigger value="one_way" className="flex-1 sm:flex-initial data-[state=active]:bg-[#15a4e6] data-[state=active]:text-white text-xs sm:text-sm">Aller simple</TabsTrigger>
+                                <TabsTrigger value="multi_city" className="flex-1 sm:flex-initial data-[state=active]:bg-[#15a4e6] data-[state=active]:text-white text-xs sm:text-sm">Multi-ville</TabsTrigger>
                             </TabsList>
                         </Tabs>
 
@@ -132,7 +132,7 @@ export default function SearchFlight() {
                                     <PopoverTrigger asChild>
                                         <Button variant="outline" className="h-11 lg:h-10 justify-between sm:justify-start gap-2 text-sm font-medium border-zinc-200 w-full sm:w-auto rounded-xl sm:rounded-lg">
                                             <div className="flex items-center gap-2">
-                                                <Users className="text-[#1d9e4b] h-4 w-4" />
+                                                <Users className="text-[#15a4e6] h-4 w-4" />
                                                 <span>{totalPassengers} {totalPassengers > 1 ? "Voyageurs" : "Voyageur"}</span>
                                             </div>
                                             <ChevronDown className="h-4 w-4 text-zinc-400 sm:hidden" />
@@ -252,7 +252,7 @@ export default function SearchFlight() {
                                                             <PopoverTrigger asChild>
                                                                 <FormControl>
                                                                     <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white rounded-xl lg:rounded-lg ${!field.value && "text-zinc-400"}`}>
-                                                                        <CalendarIcon className="h-4 w-4 text-[#1d9e4b] shrink-0" />
+                                                                        <CalendarIcon className="h-4 w-4 text-[#15a4e6] shrink-0" />
                                                                         <span className="truncate text-xs sm:text-sm">
                                                                         {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
                                                                     </span>
@@ -288,7 +288,7 @@ export default function SearchFlight() {
                                                                 <PopoverTrigger asChild>
                                                                     <FormControl>
                                                                         <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white rounded-xl lg:rounded-lg ${!field.value && "text-zinc-400"}`}>
-                                                                            <CalendarIcon className="h-4 w-4 text-[#1d9e4b] shrink-0" />
+                                                                            <CalendarIcon className="h-4 w-4 text-[#15a4e6] shrink-0" />
                                                                             <span className="truncate text-xs sm:text-sm">
                                                                             {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
                                                                         </span>
@@ -334,7 +334,7 @@ export default function SearchFlight() {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    className="w-full lg:w-auto text-[#1d9e4b] border-[#1d9e4b]/30 hover:bg-[#1d9e4b]/10 gap-2 mt-2 h-11 rounded-xl text-sm font-semibold"
+                                    className="w-full lg:w-auto text-[#15a4e6] border-[#15a4e6]/30 hover:bg-[#15a4e6]/10 gap-2 mt-2 h-11 rounded-xl text-sm font-semibold"
                                     onClick={() => append({ origin: "", destination: "", departure_date: "" })}
                                 >
                                     <PlusCircle className="h-4 w-4" /> Ajouter un vol / une destination
@@ -343,7 +343,7 @@ export default function SearchFlight() {
 
                             {/* BOUTON RECHERCHER */}
                             <div className="flex justify-end pt-4 border-t">
-                                <Button type="submit" className="w-full lg:w-48 h-12 bg-[#1d9e4b] hover:bg-[#167f3c] text-white font-bold transition-colors shadow-md rounded-xl text-base">
+                                <Button type="submit" className="w-full lg:w-48 h-12 bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold transition-colors shadow-md rounded-xl text-base">
                                     Rechercher
                                 </Button>
                             </div>

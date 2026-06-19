@@ -88,7 +88,7 @@ export const PropertyItem: React.FC<PropertyItemProps> = ({ property, locale }) 
 
                     {/* Tags d'avantages style Hotels.com */}
                     <div className="mt-4 flex flex-wrap gap-1.5">
-                        <span className="text-[11px] font-semibold px-2 py-0.5 bg-emerald-50 text-[#1d9e4b] rounded">
+                        <span className="text-[11px] font-semibold px-2 py-0.5 bg-emerald-50 text-[#15a4e6] rounded">
                             Annulation gratuite
                         </span>
                         <span className="text-[11px] font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded">
@@ -106,7 +106,7 @@ export const PropertyItem: React.FC<PropertyItemProps> = ({ property, locale }) 
                             <p className="text-xs font-bold text-zinc-900">Excellent</p>
                             <p className="text-[10px] text-zinc-400">45 avis</p>
                         </div>
-                        <span className="bg-[#1d9e4b] text-white text-xs font-bold px-2 py-1 rounded-lg">
+                        <span className="bg-[#15a4e6] text-white text-xs font-bold px-2 py-1 rounded-lg">
                             9.2
                         </span>
                     </div>
