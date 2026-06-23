@@ -9,16 +9,75 @@ export interface Passenger {
     passport_number: string;
 }
 
+export interface ProductBrandOffering {
+    brand_ref: string;
+    product_refs: string[];
+    terms_and_conditions_ref: string;
+}
+
+export interface TravelportData {
+    transaction_id: string | null;
+    offering_id: string | null;
+    gds_authority_value: string | null;
+    catalog_offerings_identifier: string; // Parfaitement aligné sur le Payload de ton API
+    available_brands?: string[];
+    product_brand_offerings?: ProductBrandOffering[];
+    products?: string[];
+    flight_refs?: string[];
+    raw_offering?: any;
+}
+
+export interface FlightOffer {
+    id: string;
+    travelport: TravelportData;
+    price_details: {
+        base_price: number;
+        taxes: number;
+        agency_fees: number;
+        final_price_to_pay: number;
+        currency: string;
+    };
+    itinerary: Array<{
+        direction: "outbound" | "inbound";
+        offering_id: string | null;
+        brand_value: string | null;
+        travelport?: {
+            brand_value: string | null;
+        };
+        stops_count: number;
+        segments: Array<{
+            flight_number: string | null;
+            airline_code: string | null;
+            airline_name: string | null;
+            departure: {
+                airport: string | null;
+                time: string | null;
+            };
+            arrival: {
+                airport: string | null;
+                time: string | null;
+            };
+            booking_class: string | null;
+            duration: string | number | null;
+        }>;
+    }>;
+    baggage_allowance?: {
+        checked: string;
+        cabin: string;
+    };
+}
+
 export interface FlightCartState {
-    selectedFlight: any | null;
+    selectedFlight: FlightOffer | null;
     passengers: Passenger[];
-    travelportSessionId: string | null; // 🔥 Stockage de l'ID de session Travelport
+    travelportSessionId: string | null;
     contactInfo: {
         email: string;
         phone: string;
     };
-    setFlight: (flight: any) => void;
-    setTravelportSessionId: (id: string | null) => void; // 🔥 Action pour modifier l'ID de session
+
+    setFlight: (flight: FlightOffer) => void;
+    setTravelportSessionId: (id: string | null) => void;
     initPassengersList: (count: number) => void;
     updatePassenger: (index: number, fields: Partial<Passenger>) => void;
     updateContactInfo: (fields: Partial<{ email: string; phone: string }>) => void;
@@ -28,14 +87,15 @@ export interface FlightCartState {
 export const useCartStore = create<FlightCartState>()(
     persist(
         (set) => ({
+            // --- ÉTAT INITIAL ---
             selectedFlight: null,
             passengers: [],
-            travelportSessionId: null, // Initialisé à null
+            travelportSessionId: null,
             contactInfo: { email: "", phone: "" },
 
+            // --- ACTIONS ---
             setFlight: (flight) => set({ selectedFlight: flight }),
 
-            // 🔥 Implémentation de la méthode de mise à jour
             setTravelportSessionId: (id) => set({ travelportSessionId: id }),
 
             initPassengersList: (count) => {
@@ -51,6 +111,8 @@ export const useCartStore = create<FlightCartState>()(
 
             updatePassenger: (index, fields) =>
                 set((state) => {
+                    if (index < 0 || index >= state.passengers.length) return state;
+
                     const updated = [...state.passengers];
                     updated[index] = { ...updated[index], ...fields };
                     return { passengers: updated };
@@ -61,7 +123,6 @@ export const useCartStore = create<FlightCartState>()(
                     contactInfo: { ...state.contactInfo, ...fields },
                 })),
 
-            // 🔥 Ajout de la remise à zéro du travelportSessionId lors du vidage de panier
             clearCart: () => set({
                 selectedFlight: null,
                 passengers: [],
@@ -70,7 +131,7 @@ export const useCartStore = create<FlightCartState>()(
             }),
         }),
         {
-            name: "creativ-flight-cart", // Le middleware persist sauvegarde automatiquement le travelportSessionId dans le localStorage
+            name: "creativ-flight-cart", // clé localStorage
         }
     )
 );

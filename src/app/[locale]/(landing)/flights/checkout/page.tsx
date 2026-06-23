@@ -20,10 +20,11 @@ import {Header} from "../../../../../components/layout/Header";
 import {Footer} from "../../../../../components/layout/Footer";
 import {api} from "../../../../../core/api/axios-instance";
 import {toast} from "sonner";
+import {useState} from "react";
 
 export default function FlightCheckoutPage() {
     const router = useRouter();
-    const [bookingType, setBookingType] = React.useState<string>("now"); // 'now' pour paiement immédiat, 'hold' pour réservation
+    const [bookingType, setBookingType] = useState<'now' | 'hold'>("now");
     // Zustand Hooks
     const selectedFlight = useCartStore((state) => state.selectedFlight);
     const passengers = useCartStore((state) => state.passengers);
@@ -33,8 +34,11 @@ export default function FlightCheckoutPage() {
 
     // États Locaux d'UI
     const [step, setStep] = React.useState<number>(1);
-    const [paymentMethod, setPaymentMethod] = React.useState<string>("momo");
-    const [momoOperator, setMomoOperator] = React.useState<string>("momo");
+//  APRÈS (Typage strict aligné sur les exigences de la passerelle de paiement)
+    const [paymentMethod, setPaymentMethod] = React.useState<'momo' | 'om' | 'wave' | 'card'>("momo");
+
+// Si momoOperator ne prend que Orange Money ou Mobile Money MTN :
+    const [momoOperator, setMomoOperator] = React.useState<'momo' | 'om'>("momo");
     const [momoPhone, setMomoPhone] = React.useState<string>("");
     const [insuranceSelected, setInsuranceSelected] = React.useState<boolean>(false);
     const [extraBaggage, setExtraBaggage] = React.useState<number>(0);
@@ -45,38 +49,6 @@ export default function FlightCheckoutPage() {
     const RESERVATION_HOLD_FEE = 5000; // Frais fixes en XAF pour bloquer un billet
 // 1. Récupération de l'identifiant depuis Zustand
     const travelportSessionId = useCartStore((state) => state.travelportSessionId);
-
-// 2. Envoi dans la mutation
-    const { mutate: submitPassengers, isPending: isPassengersPending } = useMutation({
-        mutationFn: async () => {
-            const formattedPassengers = passengers.map(p => ({
-                ...p,
-                civility: p.civility === "Mme" ? "MRS" : "MR"
-            }));
-
-            // 🔥 On passe le token directement dans le body de la requête POST
-            const response = await api.post('/flights/booking/passengers', {
-                session_identifier: travelportSessionId, // <-- INJECTÉ ICI
-                passengers: formattedPassengers,
-                contact_info: {
-                    email: contactInfo.email,
-                    phone: contactInfo.phone,
-                },
-                selected_flight: selectedFlight
-            });
-            return response.data;
-        },
-        onSuccess: (data) => {
-            if (data.status === 'success') {
-                setStep(2);
-            } else {
-                toast(data.message);
-            }
-        },
-        onError: (error: any) => {
-            toast(error.response?.data?.message || "Erreur de communication.");
-        }
-    });
 
     React.useEffect(() => {
         setIsHydrated(true);
@@ -112,55 +84,88 @@ export default function FlightCheckoutPage() {
         return `${hours}h ${minutes > 0 ? `${minutes}m` : ""}`;
     };
 
-    const handleFinalCheckout = () => {
-        // 1. Détermination de la méthode de paiement (MoMo ou Carte), peu importe le bookingType
-        const exactPaymentMethod = paymentMethod === "momo" ? momoOperator : "card";
 
-        // 2. Nettoyage et formatage du numéro de téléphone de paiement
-        const cleanedPhone = momoPhone.replace(/\s+/g, "").replace(/^\+237/, "");
 
-        // Le numéro n'est requis et construit QUE si l'utilisateur utilise MTN ou Orange Money
-        const fullPhoneNumber = ["momo", "om"].includes(exactPaymentMethod) && cleanedPhone
-            ? `+237${cleanedPhone}`
-            : undefined;
 
-        // 3. Envoi sécurisé du payload
-        checkout(
-            {
-                session_identifier: travelportSessionId, // Identifiant transmis explicitement
-                booking_type: bookingType,               // 'now' ou 'hold'
-                payment_method: exactPaymentMethod,      // 'momo', 'om' ou 'card'
-                phone_number: fullPhoneNumber ?? "",          // Envoyé de manière optionnelle (sans le "!")
+        const handleFinalCheckout = () => {
+            // 1. Détermination de la méthode de paiement
+            const exactPaymentMethod = paymentMethod === "momo" ? momoOperator : "card";
 
-                selected_flight: {
-                    ...selectedFlight,
-                    itinerary: selectedFlight.itinerary || selectedFlight.segments || [],
-                    price_details: {
-                        ...selectedFlight.price_details,
-                        final_price_to_pay: finalTotalPrice, // Contient 5000 F si hold, ou le total si now
+            // 2. Nettoyage du numéro de téléphone
+            // On vire les espaces, et on s'assure de ne pas envoyer de symboles parasites.
+            const cleanedPhone = momoPhone.replace(/\s+/g, "").replace(/^\+/, "");
+
+            const isMobileMoney = ["momo", "om", "wave"].includes(exactPaymentMethod);
+            const fullPhoneNumber = isMobileMoney && cleanedPhone ? cleanedPhone : undefined;
+
+            // 3. Envoi sécurisé du payload à votre API/Mutation
+            checkout(
+                {
+                    session_identifier: travelportSessionId,
+                    booking_type: bookingType,               // 'now' ou 'hold'
+                    payment_method: exactPaymentMethod,      // 'momo', 'om', 'wave' ou 'card'
+                    phone_number: fullPhoneNumber || "",
+
+                    selected_flight: {
+                        ...selectedFlight,
+                        price_details: {
+                            ...selectedFlight.price_details,
+                            // Le backend Laravel décide du montant selon le booking_type
+                            final_price_to_pay: selectedFlight.price_details.final_price_to_pay,
+                        },
                     },
+                    contact_info: {
+                        email: contactInfo.email,
+                        phone: contactInfo.phone,
+                    },
+                    passengers: passengers,
                 },
-                contact_info: {
-                    email: contactInfo.email,
-                    phone: contactInfo.phone,
-                },
-                passengers: passengers,
-            },
-            {
-                onSuccess: (data) => {
-                    // Optionnel : vider le panier Zustand si la redirection ne le fait pas déjà
-                    // useCartStore.getState().clearCart();
-                },
-                onError: (error) => {
-                    console.error("Erreur durant le checkout final :", error);
-                },
-            }
-        );
-    };
+                {
+                    onSuccess: (response) => {
+                        // ------------------------------------------------------------
+                        // CAS 1 : REDIRECTION BANCAIRE (Carte Visa / Mastercard)
+                        // ------------------------------------------------------------
+                        if (response.status === "redirect_required" && response.redirect_url) {
+                            console.log("Redirection externe vers le 3D Secure...");
+
+                            // window.location.href reste la méthode standard sous Next.js
+                            // pour sortir de l'application vers un domaine externe (la banque).
+                            window.location.href = response.redirect_url;
+                            return;
+                        }
+
+                        // ------------------------------------------------------------
+                        // CAS 2 : ATTENTE CONFIRMATION PIN (Momo, Orange, Wave)
+                        // ------------------------------------------------------------
+                        if (response.status === "waiting_confirmation") {
+                            console.log("Push USSD lancé.");
+
+                            // Optionnel : Vider le panier Zustand
+                            // useCartStore.getState().clearCart();
+
+                            // Next.js utilise router.push() à la place de navigate()
+                            router.push(`/flights/checkout/waiting?id=${response.booking_id}`);
+                            return;
+                        }
+
+                        toast("Statut de traitement inconnu, veuillez contacter le support.");
+                    },
+                    onError: (error:any) => {
+                        console.error("Erreur durant le checkout final :", error);
+
+                        const errorMessage = error?.response?.data?.message
+                            || "Une erreur est survenue lors de l'initialisation de votre paiement. Veuillez réessayer.";
+
+                        toast(errorMessage);
+                    },
+                }
+            );
+        };
+
 
     return (
         <>
-            <Header/>
+            <Header />
             <div className="w-full max-w-7xl mx-auto p-4 lg:py-8 text-left grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
                 <main className="lg:col-span-8 space-y-6">
@@ -178,8 +183,8 @@ export default function FlightCheckoutPage() {
                                     {step > s.id ? <CheckCircle2 className="h-4 w-4" /> : s.id}
                                 </div>
                                 <span className={`text-xs font-semibold ${step === s.id ? "text-zinc-900" : "text-zinc-400"}`}>
-                                    {s.label}
-                                </span>
+                                {s.label}
+                            </span>
                                 {s.id < 3 && <ArrowRight className="h-3 w-3 text-zinc-300 mx-2" />}
                             </div>
                         ))}
@@ -247,17 +252,10 @@ export default function FlightCheckoutPage() {
                                 </Card>
 
                                 <Button
-                                    onClick={() => submitPassengers()}
-                                    disabled={isPassengersPending}
-                                    className="w-full md:w-auto bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold px-8 h-12 rounded-xl float-right flex items-center gap-2"
+                                    onClick={() => setStep(2)}
+                                    className="w-full md:w-auto bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold px-8 h-12 rounded-xl float-right"
                                 >
-                                    {isPassengersPending ? (
-                                        <>
-                                            <Loader2 className="h-4 w-4 animate-spin" /> Enregistrement...
-                                        </>
-                                    ) : (
-                                        "Continuer vers les options"
-                                    )}
+                                    Continuer vers les options
                                 </Button>
                             </motion.div>
                         )}
@@ -305,7 +303,6 @@ export default function FlightCheckoutPage() {
                         )}
 
                         {/* ÉTAPE 3 : PAIEMENT FINTECH */}
-
                         {step === 3 && (
                             <motion.div key="step3" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-4">
 
@@ -319,7 +316,7 @@ export default function FlightCheckoutPage() {
                                     <CardContent className="p-6">
                                         <RadioGroup
                                             defaultValue="now"
-                                            onValueChange={(val) => setBookingType(val)}
+                                            onValueChange={(val) => setBookingType(val as "now" | "hold")}
                                             className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                         >
                                             <label className={`flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-all ${bookingType === "now" ? "border-[#15a4e6] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
@@ -333,29 +330,31 @@ export default function FlightCheckoutPage() {
                                             <label className={`flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-all ${bookingType === "hold" ? "border-[#15a4e6] bg-amber-50/10 shadow-sm" : "border-zinc-200"}`}>
                                                 <RadioGroupItem value="hold" id="pay_hold" className="mt-1" />
                                                 <div>
-                                                    <span className="font-bold text-sm block text-amber-600">Bloquer ce tarif & Réserver (+{RESERVATION_HOLD_FEE.toLocaleString()} XAF)</span>
+                                                    <span className="font-bold text-sm block text-amber-600">Bloquer ce tarif & Réserver (+{(RESERVATION_HOLD_FEE ?? 0).toLocaleString()} XAF)</span>
                                                     <span className="text-xs text-zinc-500 block mt-1">
-                                Évitez que le prix n'augmente. Bloquez vos places immédiatement en ne payant que les frais de réservation de {RESERVATION_HOLD_FEE.toLocaleString()} XAF. Vous solderez le reste plus tard.
-                            </span>
+                                                    Évitez que le prix n'augmente. Bloquez vos places immédiatement en ne payant que les frais de réservation de {(RESERVATION_HOLD_FEE ?? 0).toLocaleString()} XAF. Vous solderez le reste plus tard.
+                                                </span>
                                                 </div>
                                             </label>
                                         </RadioGroup>
                                     </CardContent>
                                 </Card>
 
-                                {/* SECTION PAIEMENT (S'affiche dans les deux cas maintenant) */}
+                                {/* SECTION PAIEMENT */}
                                 <Card className="border-zinc-200 shadow-sm">
                                     <CardHeader className="border-b border-zinc-100 bg-zinc-50/50">
                                         <CardTitle className="text-sm font-bold uppercase tracking-wider text-zinc-800 flex items-center gap-2">
                                             <CreditCard className="h-4 w-4 text-[#15a4e6]" />
                                             {bookingType === "hold"
-                                                ? `Règlement des frais de réservation (${RESERVATION_HOLD_FEE.toLocaleString()} XAF)`
+                                                ? `Règlement des frais de réservation (${(RESERVATION_HOLD_FEE ?? 0).toLocaleString()} XAF)`
                                                 : "Méthode de Paiement Sécurisée"
                                             }
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-6 space-y-6">
-                                        <RadioGroup defaultValue="momo" onValueChange={(val) => setPaymentMethod(val)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <RadioGroup defaultValue="momo"
+                                                    onValueChange={(val) => setPaymentMethod(val as "momo" | "om" | "wave" | "card")}
+                                                    className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === "momo" ? "border-[#15a4e6] bg-emerald-50/10 shadow-sm" : "border-zinc-200"}`}>
                                                 <RadioGroupItem value="momo" id="momo" />
                                                 <div>
@@ -384,7 +383,7 @@ export default function FlightCheckoutPage() {
                                                         <span className="absolute left-3 top-2.5 text-sm font-bold text-zinc-400">+237</span>
                                                         <Input value={momoPhone} onChange={(e) => setMomoPhone(e.target.value)} className="pl-14 font-semibold" placeholder="6xx xxx xxx" maxLength={9} />
                                                     </div>
-                                                    <p className="text-[11px] text-zinc-400 flex items-center gap-1 mt-1"><Lock className="h-3 w-3" /> Vous validerez le débit de {finalTotalPrice.toLocaleString()} XAF sur votre téléphone.</p>
+                                                    <p className="text-[11px] text-zinc-400 flex items-center gap-1 mt-1"><Lock className="h-3 w-3" /> Vous validerez le débit de {(finalTotalPrice ?? 0).toLocaleString()} XAF sur votre téléphone.</p>
                                                 </div>
                                             </div>
                                         ) : (
@@ -410,11 +409,11 @@ export default function FlightCheckoutPage() {
                                     <Button
                                         onClick={handleFinalCheckout}
                                         disabled={isCheckoutPending}
-                                        className={`bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold px-10 h-12 rounded-xl shadow-md flex items-center gap-2`}
+                                        className="bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold px-10 h-12 rounded-xl shadow-md flex items-center gap-2"
                                     >
                                         {isCheckoutPending
                                             ? "Traitement en cours..."
-                                            : `Confirmer et Régler ${finalTotalPrice.toLocaleString()} XAF`
+                                            : `Confirmer et Régler ${(finalTotalPrice ?? 0).toLocaleString()} XAF`
                                         }
                                     </Button>
                                 </div>
@@ -423,116 +422,149 @@ export default function FlightCheckoutPage() {
                     </AnimatePresence>
                 </main>
 
-                {/* SIDEBAR DE DROITE */}
+                {/* SIDEBAR DE DROITE DEVENUE ULTRA-RESILIENTE */}
                 <aside className="lg:col-span-4 space-y-4 sticky top-6">
-                    <Card className="border-zinc-200 shadow-sm overflow-hidden bg-white">
-                        <div className="bg-zinc-900 text-white p-4">
-                            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#15a4e6]">
-                                <span>Résumé du Vol</span>
-                                <span className="bg-white/10 px-2 py-0.5 rounded text-white font-medium">
-                    {selectedFlight.airline_code} {selectedFlight.flight_number}
-                </span>
-                            </div>
-                            <div className="mt-4 flex items-center justify-between gap-2">
-                                <div>
-                                    <div className="text-xl font-black">
-                                        {new Date(selectedFlight.departure_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </div>
-                                    <div className="text-xs font-bold text-zinc-400 mt-0.5">{selectedFlight.origin}</div>
+                    {selectedFlight && (
+                        <Card className="border-zinc-200 shadow-sm overflow-hidden bg-white">
+                            <div className="bg-zinc-900 text-white p-4">
+                                <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#15a4e6]">
+                                    <span>Résumé du Vol</span>
+                                    <span className="bg-white/10 px-2 py-0.5 rounded text-white font-medium">
+                                    {selectedFlight.itinerary?.[0]?.segments?.[0]?.airline_code ?? "GDS"}{' '}
+                                        {selectedFlight.itinerary?.[0]?.segments?.[0]?.flight_number ?? ""}
+                                </span>
                                 </div>
-                                <div className="flex-1 text-center px-2">
-                    <span className="text-[10px] text-zinc-400 flex items-center justify-center gap-1">
-                        <Clock className="h-3 w-3" /> {formatDuration(selectedFlight.duration)}
-                    </span>
-                                    <div className="w-full border-t border-dashed border-white/20 my-1 relative">
-                                        <Plane className="h-3 w-3 absolute -top-1.5 left-1/2 -translate-x-1/2 rotate-45 text-[#15a4e6]" />
+                                <div className="mt-4 flex items-center justify-between gap-2">
+                                    <div>
+                                        <div className="text-xl font-black">
+                                            {selectedFlight.itinerary?.[0]?.segments?.[0]?.departure?.time ? (
+                                                new Date(selectedFlight.itinerary[0].segments[0].departure.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                            ) : (
+                                                "--:--"
+                                            )}
+                                        </div>
+                                        <div className="text-xs font-bold text-zinc-400 mt-0.5">
+                                            {selectedFlight.itinerary?.[0]?.segments?.[0]?.departure?.airport  ?? "N/A"}
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <div className="text-xl font-black">
-                                        {new Date(selectedFlight.arrival_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    <div className="flex-1 text-center px-2">
+                                    <span className="text-[10px] text-zinc-400 flex items-center justify-center gap-1">
+                                       <Clock className="h-3 w-3" /> {
+                                        typeof selectedFlight.itinerary?.[0]?.segments?.[0]?.duration === 'number'
+                                            ? formatDuration(selectedFlight.itinerary[0].segments[0].duration)
+                                            : (selectedFlight.itinerary?.[0]?.segments?.[0]?.duration || "N/A")
+                                    }
+                                    </span>
+                                        <div className="w-full border-t border-dashed border-white/20 my-1 relative">
+                                            <Plane className="h-3 w-3 absolute -top-1.5 left-1/2 -translate-x-1/2 rotate-45 text-[#15a4e6]" />
+                                        </div>
                                     </div>
-                                    <div className="text-xs font-bold text-zinc-400 mt-0.5">{selectedFlight.destination}</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <CardContent className="p-4 space-y-3 text-sm">
-                            <div className="flex justify-between text-zinc-600">
-                                <span>Tarif de base</span>
-                                <span className="font-medium">{selectedFlight.price_details.base_fare.toLocaleString()} F</span>
-                            </div>
-                            <div className="flex justify-between text-zinc-600">
-                                <span>Taxes aéroportuaires</span>
-                                <span className="font-medium">{selectedFlight.price_details.taxes.toLocaleString()} F</span>
-                            </div>
-                            <div className="flex justify-between text-zinc-600">
-                                <span>Frais de service agence</span>
-                                <span className="font-medium">{selectedFlight.price_details.agency_fees.toLocaleString()} F</span>
-                            </div>
-
-                            {extraBaggage > 0 && (
-                                <div className="flex justify-between text-emerald-600 font-medium bg-emerald-50/40 p-1.5 rounded text-xs">
-                                    <span>Bagage sup. (x{extraBaggage})</span>
-                                    <span>+{baggagePrice.toLocaleString()} F</span>
-                                </div>
-                            )}
-                            {insuranceSelected && (
-                                <div className="flex justify-between text-blue-600 font-medium bg-blue-50/40 p-1.5 rounded text-xs">
-                                    <span>Assurance Multirisque</span>
-                                    <span>+{insurancePrice.toLocaleString()} F</span>
-                                </div>
-                            )}
-
-                            <hr className="border-zinc-100 my-2" />
-
-                            {/* 🔥 BLOC DE CALCUL DYNAMIQUE : PAIEMENT TOTAL VS ACOMPTE HOLD */}
-                            {bookingType === "hold" ? (
-                                <div className="space-y-2 bg-amber-50/60 p-3 rounded-xl border border-amber-200 text-xs">
-                                    <div className="flex justify-between text-zinc-600">
-                                        <span>Total de la commande :</span>
-                                        <span className="font-semibold text-zinc-900">
-                            {totalFlightWithOptions.toLocaleString()} F
-                        </span>
-                                    </div>
-                                    <div className="flex justify-between text-zinc-600">
-                                        <span>Frais de réservation payés :</span>
-                                        <span className="font-semibold text-zinc-900">
-                            -{RESERVATION_HOLD_FEE.toLocaleString()} F
-                        </span>
-                                    </div>
-                                    <div className="flex justify-between text-amber-800 font-bold bg-amber-100/50 p-1.5 rounded">
-                                        <span>Reste à solder plus tard :</span>
-                                        <span>
-                            {(totalFlightWithOptions - RESERVATION_HOLD_FEE).toLocaleString()} F
-                        </span>
-                                    </div>
-                                    <hr className="border-amber-200 my-1" />
-                                    <div className="flex justify-between items-baseline pt-1">
-                                        <span className="font-bold text-amber-950 text-sm">Acompte à payer aujourd'hui</span>
-                                        <div className="text-right">
-                            <span className="text-2xl font-black text-amber-600 tracking-tight">
-                                {RESERVATION_HOLD_FEE.toLocaleString()}
-                            </span>
-                                            <span className="text-xs font-bold text-amber-700 uppercase ml-1">XAF</span>
+                                    <div>
+                                        <div className="text-xl font-black">
+                                            {(() => {
+                                                const segments = selectedFlight.itinerary?.[0]?.segments ?? [];
+                                                const lastSegment = segments[segments.length - 1];
+                                                return lastSegment?.arrival?.time ? (
+                                                    new Date(lastSegment.arrival.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                                ) : (
+                                                    "--:--"
+                                                );
+                                            })()}
+                                        </div>
+                                        <div className="text-xs font-bold text-zinc-400 mt-0.5">
+                                            {(() => {
+                                                const segments = selectedFlight.itinerary?.[0]?.segments ?? [];
+                                                return segments[segments.length - 1]?.arrival?.airport  ?? "N/A";
+                                            })()}
                                         </div>
                                     </div>
                                 </div>
-                            ) : (
-                                <div className="flex justify-between items-baseline pt-1">
-                                    <span className="font-bold text-zinc-900">Montant total à payer</span>
-                                    <div className="text-right">
-                        <span className="text-2xl font-black text-[#15a4e6] tracking-tight">
-                            {finalTotalPrice.toLocaleString()}
-                        </span>
-                                        <span className="text-xs font-bold text-zinc-500 uppercase ml-1">
-                            {selectedFlight.price_details.currency || "XAF"}
-                        </span>
-                                    </div>
+                            </div>
+
+                            {/* SECTION FINANCIERE SECURISÉE CONTRE LES DATA UNDEFINED */}
+                            <CardContent className="p-4 space-y-3 text-sm">
+                                <div className="flex justify-between text-zinc-600">
+                                    <span>Tarif de base</span>
+                                    <span className="font-medium">
+                                    {(selectedFlight.price_details?.base_price ?? 0).toLocaleString()} F
+                                </span>
                                 </div>
-                            )}
-                        </CardContent>
-                    </Card>
+                                <div className="flex justify-between text-zinc-600">
+                                    <span>Taxes aéroportuaires</span>
+                                    <span className="font-medium">
+                                    {(selectedFlight.price_details?.taxes ?? 0).toLocaleString()} F
+                                </span>
+                                </div>
+                                <div className="flex justify-between text-zinc-600">
+                                    <span>Frais de service agence</span>
+                                    <span className="font-medium">
+                                    {(selectedFlight.price_details?.agency_fees ?? 0).toLocaleString()} F
+                                </span>
+                                </div>
+
+                                {extraBaggage > 0 && (
+                                    <div className="flex justify-between text-emerald-600 font-medium bg-emerald-50/40 p-1.5 rounded text-xs">
+                                        <span>Bagage sup. (x{extraBaggage})</span>
+                                        <span>+{(baggagePrice ?? 0).toLocaleString()} F</span>
+                                    </div>
+                                )}
+                                {insuranceSelected && (
+                                    <div className="flex justify-between text-blue-600 font-medium bg-blue-50/40 p-1.5 rounded text-xs">
+                                        <span>Assurance Multirisque</span>
+                                        <span>+{(insurancePrice ?? 0).toLocaleString()} F</span>
+                                    </div>
+                                )}
+
+                                <hr className="border-zinc-100 my-2" />
+
+                                {/* BLOC DE CALCUL DYNAMIQUE: HOLD ACOMPTE VS COMPLET */}
+                                {bookingType === "hold" ? (
+                                    <div className="space-y-2 bg-amber-50/60 p-3 rounded-xl border border-amber-200 text-xs">
+                                        <div className="flex justify-between text-zinc-600">
+                                            <span>Total de la commande :</span>
+                                            <span className="font-semibold text-zinc-900">
+                                            {(totalFlightWithOptions ?? 0).toLocaleString()} F
+                                        </span>
+                                        </div>
+                                        <div className="flex justify-between text-zinc-600">
+                                            <span>Frais de réservation payés :</span>
+                                            <span className="font-semibold text-zinc-900">
+                                            -{(RESERVATION_HOLD_FEE ?? 0).toLocaleString()} F
+                                        </span>
+                                        </div>
+                                        <div className="flex justify-between text-amber-800 font-bold bg-amber-100/50 p-1.5 rounded">
+                                            <span>Reste à solder plus tard :</span>
+                                            <span>
+                                            {((totalFlightWithOptions ?? 0) - (RESERVATION_HOLD_FEE ?? 0)).toLocaleString()} F
+                                        </span>
+                                        </div>
+                                        <hr className="border-amber-200 my-1" />
+                                        <div className="flex justify-between items-baseline pt-1">
+                                            <span className="font-bold text-amber-950 text-sm">Acompte à payer aujourd'hui</span>
+                                            <div className="text-right">
+                                            <span className="text-2xl font-black text-amber-600 tracking-tight">
+                                                {(RESERVATION_HOLD_FEE ?? 0).toLocaleString()}
+                                            </span>
+                                                <span className="text-xs font-bold text-amber-700 uppercase ml-1">XAF</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex justify-between items-baseline pt-1">
+                                        <span className="font-bold text-zinc-900">Montant total à payer</span>
+                                        <div className="text-right">
+                                        <span className="text-2xl font-black text-[#15a4e6] tracking-tight">
+                                            {(finalTotalPrice ?? 0).toLocaleString()}
+                                        </span>
+                                            <span className="text-xs font-bold text-zinc-500 uppercase ml-1">
+                                            {selectedFlight.price_details?.currency || "XAF"}
+                                        </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+                    )}
                 </aside>
             </div>
             <Footer />

@@ -24,13 +24,15 @@ interface CustomerLayoutProps {
     children: ReactNode;
 }
 
-// 1. Dictionnaire de traduction local pour la Sidebar
+// 1. Dictionnaire de traduction local mis à jour
 const translations = {
     fr: {
         menu: "Menu",
         logout: "Déconnexion",
         home: "Accueil",
         bookings: "Mes Réservations",
+        flights: "Vols",
+        hotels: "Hôtels",
         profile: "Mon Profil",
         invoices: "Factures",
         favorites: "Favoris",
@@ -43,6 +45,8 @@ const translations = {
         logout: "Log Out",
         home: "Home",
         bookings: "My Bookings",
+        flights: "Flights",
+        hotels: "Hotels",
         profile: "My Profile",
         invoices: "Invoices",
         favorites: "Favorites",
@@ -52,19 +56,24 @@ const translations = {
     }
 };
 
-// 2. Les chemins (href) n'incluent plus le préfixe de langue, on le gérera dynamiquement
+// 2. Les chemins (href) avec les sous-menus pour les réservations
 const sidebarItems = [
     {
         icon: Home,
         translationKey: "home" as const,
-        href: "/customer-space/dashboard", // Page d'accueil racine
+        href: "/customer-space/dashboard",
         color: "text-[#15a4e6]"
     },
     {
         icon: Calendar,
         translationKey: "bookings" as const,
         href: "/customer-space/bookings",
-        color: "text-[#15a4e6]"
+        color: "text-[#15a4e6]",
+        // Ajout des sous-menus ici
+        subItems: [
+            { translationKey: "flights" as const, href: "/customer-space/bookings/flights" },
+            { translationKey: "hotels" as const, href: "/customer-space/bookings/hotels" }
+        ]
     },
     {
         icon: User,
@@ -72,12 +81,6 @@ const sidebarItems = [
         href: "/customer-space/profile",
         color: "text-[#15a4e6]"
     },
-/*    {
-        icon: Receipt,
-        translationKey: "invoices" as const,
-        href: "/customer-space/invoices",
-        color: "text-[#15a4e6]"
-    },*/
     {
         icon: Heart,
         translationKey: "favorites" as const,
@@ -106,10 +109,12 @@ const sidebarItems = [
 
 export default function CustomerLayout({ children }: CustomerLayoutProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    // État pour contrôler l'ouverture du sous-menu Bookings
+    const [isBookingsOpen, setIsBookingsOpen] = useState(true);
+
     const pathname = usePathname();
     const params = useParams();
 
-    // Récupération de la langue actuelle (ex: 'fr' ou 'en'). Par défaut 'fr' si non trouvé.
     const locale = (params?.locale as "fr" | "en") || "fr";
     const t = translations[locale] || translations.fr;
 
@@ -130,7 +135,11 @@ export default function CustomerLayout({ children }: CustomerLayoutProps) {
                                 <span className="font-extrabold text-xl text-zinc-900">{t.menu}</span>
                             )}
                             <button
-                                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                                onClick={() => {
+                                    setIsSidebarOpen(!isSidebarOpen);
+                                    // Optionnel : refermer le sous-menu si on ferme la sidebar
+                                    if (isSidebarOpen) setIsBookingsOpen(false);
+                                }}
                                 className="p-2 hover:bg-zinc-100 rounded-xl transition-colors"
                             >
                                 {isSidebarOpen ? (
@@ -143,35 +152,79 @@ export default function CustomerLayout({ children }: CustomerLayoutProps) {
 
                         <nav className="p-4 space-y-2">
                             {sidebarItems.map((item, index) => {
-                                // On génère l'URL finale avec la langue courante (ex: /fr/customer/bookings)
                                 const localizedHref = `/${locale}${item.href}`;
 
-                                // Gestion intelligente du lien actif :
-                                // Si c'est l'accueil (/fr), correspondance exacte. Sinon, on vérifie si le pathname commence par le href.
+                                // Un item est actif si on est sur sa page ou sur l'une de ses sous-pages
                                 const isActive = item.href === ""
                                     ? pathname === `/${locale}` || pathname === `/${locale}/`
                                     : pathname.startsWith(localizedHref);
 
                                 const ItemIcon = item.icon;
+                                const hasSubItems = item.subItems && item.subItems.length > 0;
+
+                                // Si l'élément a des sous-menus, on peut vouloir bloquer la navigation directe
+                                // ou la permettre. Ici, le clic sur "Bookings" ouvre/ferme le sous-menu.
+                                const handleItemClick = (e: React.MouseEvent) => {
+                                    if (hasSubItems && isSidebarOpen) {
+                                        e.preventDefault(); // Empêche la redirection directe si on veut forcer l'usage du sous-menu
+                                        setIsBookingsOpen(!isBookingsOpen);
+                                    }
+                                };
 
                                 return (
-                                    <Link
-                                        key={index}
-                                        href={localizedHref}
-                                        className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                                            isActive
-                                                ? "bg-[#15a4e6]/10 text-[#15a4e6] font-bold"
-                                                : "text-zinc-600 hover:bg-zinc-100"
-                                        }`}
-                                    >
-                                        <ItemIcon className={`h-5 w-5 ${isActive ? item.color : "text-zinc-400"}`} />
-                                        {isSidebarOpen && (
-                                            <span>{t[item.translationKey]}</span>
+                                    <div key={index} className="space-y-1">
+                                        <Link
+                                            href={localizedHref}
+                                            onClick={handleItemClick}
+                                            className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+                                                isActive && !hasSubItems
+                                                    ? "bg-[#15a4e6]/10 text-[#15a4e6] font-bold"
+                                                    : "text-zinc-600 hover:bg-zinc-100"
+                                            } ${hasSubItems && isActive ? "bg-zinc-50 font-semibold" : ""}`}
+                                        >
+                                            <ItemIcon className={`h-5 w-5 ${isActive ? item.color : "text-zinc-400"}`} />
+                                            {isSidebarOpen && (
+                                                <span>{t[item.translationKey]}</span>
+                                            )}
+
+                                            {/* Petite flèche pour indiquer le sous-menu (seulement si la sidebar est ouverte) */}
+                                            {hasSubItems && isSidebarOpen && (
+                                                <div className="ml-auto transition-transform duration-200" style={{ transform: isBookingsOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}>
+                                                    <ChevronRight className="h-4 w-4 text-zinc-400" />
+                                                </div>
+                                            )}
+
+                                            {isActive && !hasSubItems && isSidebarOpen && (
+                                                <div className="ml-auto w-1.5 h-1.5 bg-[#15a4e6] rounded-full" />
+                                            )}
+                                        </Link>
+
+                                        {/* Rendu des sous-menus (Animation accordéon basique en CSS) */}
+                                        {hasSubItems && isSidebarOpen && (
+                                            <div className={`pl-9 space-y-1 transition-all duration-200 overflow-hidden ${
+                                                isBookingsOpen ? "max-h-40 opacity-100 py-1" : "max-h-0 opacity-0 pointer-events-none"
+                                            }`}>
+                                                {item.subItems.map((subItem, subIndex) => {
+                                                    const localizedSubHref = `/${locale}${subItem.href}`;
+                                                    const isSubActive = pathname === localizedSubHref;
+
+                                                    return (
+                                                        <Link
+                                                            key={subIndex}
+                                                            href={localizedSubHref}
+                                                            className={`flex items-center p-2 rounded-lg text-sm transition-all ${
+                                                                isSubActive
+                                                                    ? "text-[#15a4e6] font-bold bg-[#15a4e6]/5"
+                                                                    : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
+                                                            }`}
+                                                        >
+                                                            {t[subItem.translationKey]}
+                                                        </Link>
+                                                    );
+                                                })}
+                                            </div>
                                         )}
-                                        {isActive && isSidebarOpen && (
-                                            <div className="ml-auto w-1.5 h-1.5 bg-[#15a4e6] rounded-full" />
-                                        )}
-                                    </Link>
+                                    </div>
                                 );
                             })}
                         </nav>
@@ -182,7 +235,7 @@ export default function CustomerLayout({ children }: CustomerLayoutProps) {
                         </div>
 
                         {/* Logout */}
-                    <SidebarLogoutButton isSidebarOpen={isSidebarOpen} t={t}/>
+                        <SidebarLogoutButton isSidebarOpen={isSidebarOpen} t={t}/>
                     </aside>
 
                     {/* Main Content */}

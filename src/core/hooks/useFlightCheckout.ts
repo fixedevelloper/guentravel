@@ -1,15 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import {api} from "../api/axios-instance";
-import {toast} from "sonner";
+import { api } from "../api/axios-instance";
+import { toast } from "sonner";
 
-// Typage du payload attendu par ton API Laravel
-interface CheckoutPayload {
+// Typage précis du payload attendu par l'API Laravel
+export interface CheckoutPayload {
     session_identifier: string | null;
-    booking_type: string; // 'now' ou 'hold'
+    booking_type: 'now' | 'hold';
     selected_flight: any;
-    payment_method: string;
-    phone_number?: string;
+    payment_method: 'momo' | 'om' | 'wave' | 'card';
+    phone_number: string;
     contact_info: {
         email: string;
         phone: string;
@@ -17,36 +16,56 @@ interface CheckoutPayload {
     passengers: any[];
 }
 
+// Typage de la réponse asynchrone de l'API Laravel
+export interface CheckoutResponse {
+    status: 'waiting_confirmation' | 'redirect_required' | 'error' | 'initiation_failed';
+    message: string;
+    booking_id: number;
+    redirect_url?: string; // Présent uniquement si status === 'redirect_required'
+}
+
 export function useFlightCheckout() {
-    const router = useRouter();
+    return useMutation<CheckoutResponse, Error, CheckoutPayload>({
+        mutationFn: async (payload: CheckoutPayload): Promise<CheckoutResponse> => {
+            // Sécurisation du payload pour s'assurer que booking_type respecte le contrat
+            const securePayload = {
+                ...payload,
+                booking_type: payload.booking_type as 'now' | 'hold'
+            };
 
-    return useMutation({
-        mutationFn: async (payload: CheckoutPayload) => {
-            const { data } = await api.post("/flights/verify-and-pay", payload);
+            // Appel de l'endpoint Laravel
+            const { data } = await api.post("/flights/verify-and-pay", securePayload);
 
-            if (data.status !== "success") {
-                throw new Error(data.message || "Une erreur est survenue lors de la transaction.");
+            // Validation du statut renvoyé par l'API Laravel
+            if (data.status === "error" || data.status === "initiation_failed") {
+                throw new Error(data.message || "La passerelle a refusé d'initier la transaction.");
             }
 
-            return data.data;
+            return data;
         },
         onSuccess: (data) => {
-            // Toast de succès enrichi avec Sonner
-            toast.success("Réservation confirmée !", {
-                description: `Votre code PNR est ${data.pnr}. Les e-tickets ont été rattachés.`,
-                duration: 6000,
-            });
-
-            // Redirection fluide vers ta page de confirmation locale
-            // router.push(`/checkout/confirmation?pnr=${data.pnr}`);
+            // Notifications visuelles adaptées selon la réponse de la passerelle
+            if (data.status === "redirect_required") {
+                toast.info("Redirection bancaire", {
+                    description: "Nous vous redirigeons vers l'espace sécurisé de paiement...",
+                    duration: 4000,
+                });
+            } else if (data.status === "waiting_confirmation") {
+                toast.success("Demande de paiement émise !", {
+                    description: "Consultez votre téléphone pour valider l'opération avec votre code PIN.",
+                    duration: 6000,
+                });
+            }
         },
         onError: (error: any) => {
-            console.error("Payment integration error:", error);
-            const errorMessage = error.response?.data?.message || error.message;
+            console.error("Erreur lors de l'initialisation du checkout :", error);
 
-            // Toast d'erreur
-            toast.error("Échec de la transaction", {
+            // Extraction propre du message d'erreur structuré par Laravel ou Axios
+            const errorMessage = error.response?.data?.message || error.message || "Une erreur inconnue est survenue.";
+
+            toast.error("Échec de l'opération", {
                 description: errorMessage,
+                duration: 6000
             });
         },
     });

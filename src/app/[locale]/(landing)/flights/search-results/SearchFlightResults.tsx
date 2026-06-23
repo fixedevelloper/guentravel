@@ -17,45 +17,69 @@ import {
 import {
     Plane,
     ArrowRight,
-    Clock,
     SlidersHorizontal,
     ChevronDown,
-    Briefcase,
     Info,
-    Luggage,
     X,
-    Edit3,
-    Loader2
+    Edit3
 } from "lucide-react";
 import SearchFlight from "../../../../../components/search/flights/SearchFlight";
-import {useCartStore} from "../../../../../core/store/useCartStore";
-import {useRouter} from "@/i18n/routing";
+import { useCartStore, FlightOffer as StoreFlightOffer } from "../../../../../core/store/useCartStore";
+import { useRouter } from "@/i18n/routing";
 import FlightCard from "../FlightCard";
-import {api} from "../../../../../core/api/axios-instance";
+import { api } from "../../../../../core/api/axios-instance";
 import { useMutation } from "@tanstack/react-query";
-import {toast} from "sonner"; // Import TanStack
+import { toast } from "sonner";
+
+// --- INTERFACES LOCALES ALIGNÉES SUR LE PARSER PHP ---
 interface Segment {
-    airline_name: string;
-    airline_code: string;
-    flight_number: string;
-    departure: { airport: string; time: string };
-    arrival: { airport: string; time: string };
-    duration: number;
+    flight_number: string | null;
+    airline_code: string | null;
+    airline_name: string | null;
+    departure: {
+        airport: string | null;
+        time: string | null;
+    };
+    arrival: {
+        airport: string | null;
+        time: string | null;
+    };
+    booking_class: string | null;
+    duration: string | number | null;
 }
 
 interface Journey {
     direction: "outbound" | "inbound";
+    offering_id: string | null;
+    brand_value: string | null;
+    travelport?: {
+        brand_value: string | null;
+    };
     stops_count: number;
     segments: Segment[];
 }
 
 interface FlightOffer {
     id: string;
+    travelport: {
+        transaction_id: string | null;
+        offering_id: string | null;
+        gds_authority_value: string | null;
+        catalog_product_offering_identifier: string | null;
+        raw_offering?: any;
+        flight_refs?: any;
+        catalog_offerings_identifier?: any;
+        available_brands?: any;
+        product_brand_offerings?: any;
+        products?: any;
+
+    };
     price_details: {
+        base_price: number;
+        taxes: number;
         final_price_to_pay: number;
         currency: string;
-        base_fare: number;
-        taxes: number;
+        agency_fees:number;
     };
     itinerary: Journey[];
     baggage_allowance?: {
@@ -82,19 +106,30 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
 
     const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = React.useState<boolean>(false);
-    const [isBookingId, setIsBookingId] = React.useState<string | null>(null);
-
     const [maxPrice, setMaxPrice] = React.useState<number>(1500000);
 
+    // Extraction sécurisée des compagnies uniques pour les filtres
     const uniqueAirlines = React.useMemo(() => {
         const airlines = new Set<string>();
-        flights.forEach(f => f.itinerary.forEach(j => j.segments.forEach(s => airlines.add(s.airline_name))));
+        flights.forEach(f =>
+            f.itinerary?.forEach(j =>
+                j.segments?.forEach(s => {
+                    if (s.airline_name) airlines.add(s.airline_name);
+                })
+            )
+        );
         return Array.from(airlines);
     }, [flights]);
 
-    const formatDuration = (totalMinutes: number) => {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
+    // Helper mis à jour supportant le format minutes ou chaînes ISO 8601 (Fallback)
+    const formatDuration = (duration: string | number | null) => {
+        if (!duration) return "--";
+        if (typeof duration === "string") {
+            // Traitement basique si Travelport retourne un format ISO "PT2H15M"
+            return duration.replace("PT", "").replace("H", "h ").replace("M", "m").toLowerCase();
+        }
+        const hours = Math.floor(duration / 60);
+        const minutes = duration % 60;
         return `${hours}h ${minutes > 0 ? `${minutes}m` : ""}`;
     };
 
@@ -103,59 +138,96 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
     const setTravelportSessionId = useCartStore((state) => state.setTravelportSessionId);
     const router = useRouter();
 
-    const handleSelectFlight = (flight: any) => {
-        const outboundSegments = flight.itinerary[0].segments;
-        const firstSegment = outboundSegments[0];
-        const lastSegment = outboundSegments[outboundSegments.length - 1];
+    const handleSelectFlight = (flight: FlightOffer) => {
+        if (!flight.itinerary || flight.itinerary.length === 0) {
+            console.error("Structure de l'itinéraire invalide");
+            return;
+        }
 
-        setFlight({
+        // 🔥 ADAPTATION STRICTE : Injection de la structure exacte attendue par le store Zustand
+        const flightToStore: StoreFlightOffer = {
             id: flight.id,
-            airline_name: firstSegment.airline_name,
-            airline_code: firstSegment.airline_code,
-            flight_number: firstSegment.flight_number,
-            origin: firstSegment.departure.airport,
-            destination: lastSegment.arrival.airport,
-            departure_time: firstSegment.departure.time,
-            arrival_time: lastSegment.arrival.time,
-            duration: flight.itinerary[0].duration || 0,
-            itinerary: flight.itinerary || [],
+            travelport: {
+                transaction_id: flight.travelport?.transaction_id ?? null,
+                offering_id: flight.travelport?.offering_id ?? null,
+                gds_authority_value: flight.travelport?.gds_authority_value ?? null,
+
+                // Aligné sur le nom de clé du JSON réel
+                catalog_offerings_identifier: flight.travelport?.catalog_offerings_identifier ?? null,
+
+                // 🔥 AJOUT DES CLÉS MANQUANTES (Sécurisées avec le chaînage optionnel)
+                available_brands: flight.travelport?.available_brands ?? [],
+                product_brand_offerings: flight.travelport?.product_brand_offerings ?? [],
+                products: flight.travelport?.products ?? [],
+                flight_refs: flight.travelport?.flight_refs ?? [],
+
+                raw_offering: flight.travelport?.raw_offering ?? null
+            },
             price_details: {
-                base_fare: flight.price_details.base_price,
-                taxes: flight.price_details.taxes,
-                agency_fees: flight.price_details.agency_fees,
-                final_price_to_pay: flight.price_details.final_price_to_pay,
-                currency: flight.price_details.currency,
+                base_price: Number(flight.price_details?.base_price ?? 0),
+                taxes: Number(flight.price_details?.taxes ?? 0),
+                final_price_to_pay: Number(flight.price_details?.final_price_to_pay ?? 0),
+                currency: flight.price_details?.currency ?? "XAF",
+                agency_fees: Number(flight.price_details?.agency_fees ?? 0),
+            },
+            itinerary: flight.itinerary.map(journey => ({
+                direction: journey.direction,
+                offering_id: journey.offering_id,
+                brand_value: journey.brand_value,
+                travelport: journey.travelport,
+                stops_count: journey.stops_count,
+                segments: journey.segments.map(seg => ({
+                    flight_number: seg.flight_number,
+                    airline_code: seg.airline_code,
+                    airline_name: seg.airline_name,
+                    departure: {
+                        airport: seg.departure?.airport ?? null,
+                        time: seg.departure?.time ?? null
+                    },
+                    arrival: {
+                        airport: seg.arrival?.airport ?? null,
+                        time: seg.arrival?.time ?? null
+                    },
+                    booking_class: seg.booking_class ?? null,
+                    duration: seg.duration ?? null
+                }))
+            })),
+            baggage_allowance: flight.baggage_allowance ?? {
+                checked: "1 PC",
+                cabin: "1 PC"
             }
-        });
+        };
 
-        // Nombre de passagers total basé sur la recherche d'origine
-        const totalPassengers = searchCriteria.passengers.adults +
-            searchCriteria.passengers.children +
-            searchCriteria.passengers.infants;
+        // Enregistrement dans le store
+        setFlight(flightToStore);
 
+        // Calcul dynamique du nombre de passagers total basé sur les critères de recherche
+        const totalPassengers =
+            (searchCriteria.passengers?.adults || 1) +
+            (searchCriteria.passengers?.children || 0) +
+            (searchCriteria.passengers?.infants || 0);
+
+        // Initialisation de la liste des formulaires passagers dans Zustand
         initPassengersList(totalPassengers);
+
+        // Redirection fluide vers la page de checkout
         router.push("/flights/checkout");
     };
 
-// ----------------------------------------------------------------
-    // 🚀 TANSTACK MUTATION AVEC AXIOS (CORRIGÉE)
+    // ----------------------------------------------------------------
+    // 🚀 TANSTACK MUTATION AVEC AXIOS
     // ----------------------------------------------------------------
     const { mutate: initBookingSession, variables } = useMutation({
-        mutationFn: async (flight: any) => {
-            // Appel à l'aide de votre instance Axios
+        mutationFn: async (flight: FlightOffer) => {
             const response = await api.post('/flights/booking/session/init');
-            // response.data contient le corps JSON renvoyé par Laravel
             return { data: response.data, flight };
         },
         onSuccess: ({ data, flight }) => {
             if (data.status === 'success') {
-                // 🔥 Attention au double "data" si votre Laravel renvoie { status: 'success', data: { session_identifier: '...' } }
                 const sessionId = data.data?.session_identifier || data.session_identifier;
 
                 if (sessionId) {
-                    // 1. On stocke d'abord l'ID de session de manière synchrone
                     setTravelportSessionId(sessionId);
-                    // 2. On traite le vol et on redirige vers /checkout
                     handleSelectFlight(flight);
                 } else {
                     console.error("Identifiant de session manquant dans la réponse API", data);
@@ -366,10 +438,8 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                                 key={flight.id}
                                 flight={flight}
                                 formatDuration={formatDuration}
-                                // On déclenche directement la mutation TanStack ici
                                 handleSelectFlight={() => initBookingSession(flight)}
-                                // `variables` contient le paramètre de la mutation courante.
-                                // Si variables.id correspond à ce vol, alors ce FlightCard passe en mode loader.
+                                // 🔥 Correction : On compare avec l'objet de mutation Tanstack courant
                                 isBooking={variables?.id === flight.id}
                             />
                         ))
