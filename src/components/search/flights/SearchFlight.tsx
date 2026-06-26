@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from '@tanstack/react-query';
 import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
 import { format } from "date-fns";
 import { fr, enUS, Locale } from "date-fns/locale";
+import { useDebounce } from "use-debounce";
 
 // UI Components
 import { Input } from "@/components/ui/input";
@@ -16,57 +17,88 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 // Icons
-import {Plane, Calendar as CalendarIcon, Users, Minus, Plus, Trash2, PlusCircle, ChevronDown} from "lucide-react";
+import { Plane, Calendar as CalendarIcon, Users, Minus, Plus, Trash2, PlusCircle, ChevronDown, Loader2 } from "lucide-react";
+import { api } from "../../../core/api/axios-instance";
 
-interface PassengerConfig {
-    adults: number;
-    children: number;
-    infants: number;
+// 🔥 ÉTAPE 1 : Import ou écriture locale du hook d'extraction pour la réhydratation
+function useFlightSearchParams() {
+    const searchParams = useSearchParams();
+
+    const adults = parseInt(searchParams.get("adults") || "1", 10);
+    const children = parseInt(searchParams.get("children") || "0", 10);
+    const infants = parseInt(searchParams.get("infants") || "0", 10);
+    const trip_type = (searchParams.get("trip_type") || "round_trip") as "one_way" | "round_trip" | "multi_city";
+    const return_date = searchParams.get("return_date") || "";
+
+    const segments: FlightSegment[] = [];
+
+    if (trip_type === "multi_city") {
+        let index = 0;
+        while (searchParams.has(`origin[${index}]`)) {
+            segments.push({
+                origin: searchParams.get(`origin[${index}]`) || "",
+                destination: searchParams.get(`destination[${index}]`) || "",
+                departure_date: searchParams.get(`departure_date[${index}]`) || "",
+            });
+            index++;
+        }
+    }
+
+    if (segments.length === 0) {
+        segments.push({
+            origin: searchParams.get("origin") || "",
+            destination: searchParams.get("destination") || "",
+            departure_date: searchParams.get("departure_date") || "",
+        });
+    }
+
+    return { trip_type, return_date, passengers: { adults, children, infants }, segments };
 }
 
-interface FlightSegment {
-    origin: string;
-    destination: string;
-    departure_date: string;
-}
-
-interface ExtendedSearchFormValues {
-    trip_type: "one_way" | "round_trip" | "multi_city";
-    passengers: PassengerConfig;
-    return_date?: string;
-    segments: FlightSegment[];
-}
+interface PassengerConfig { adults: number; children: number; infants: number; }
+interface FlightSegment { origin: string; destination: string; departure_date: string; }
+interface ExtendedSearchFormValues { trip_type: "one_way" | "round_trip" | "multi_city"; passengers: PassengerConfig; return_date?: string; segments: FlightSegment[]; }
+interface Airport { airport_code: string; airport_name: string; city: string; country: string; }
 
 export default function SearchFlight() {
     const router = useRouter();
     const t = useTranslations("Flight");
-    const tCounter = useTranslations("GuestCounter");
-    const tCalendar = useTranslations("DateRangePicker");
     const locale = useLocale();
 
     const dateFnsLocale = React.useMemo<Locale>(() => (locale === "fr" ? fr : enUS), [locale]);
 
-    // 1. Initialisation du Formulaire avec React Hook Form
+    // 🔥 ÉTAPE 2 : Récupération des paramètres d'URL actuels
+    const urlParams = useFlightSearchParams();
+
+    // 🔥 ÉTAPE 3 : Injection des paramètres d'URL comme defaultValues
     const form = useForm<ExtendedSearchFormValues>({
         defaultValues: {
-            trip_type: "round_trip",
-            passengers: { adults: 1, children: 0, infants: 0 },
-            return_date: "",
-            segments: [{ origin: "", destination: "", departure_date: "" }]
+            trip_type: urlParams.trip_type,
+            passengers: urlParams.passengers,
+            return_date: urlParams.return_date,
+            segments: urlParams.segments
         },
     });
 
-    const { watch, setValue, control, handleSubmit } = form;
+    const { watch, setValue, control, handleSubmit, reset } = form;
     const tripType = watch("trip_type");
     const passengers = watch("passengers");
 
-    // Gestion dynamique des segments pour le Multi-Destination
     const { fields, append, remove } = useFieldArray({
         control,
         name: "segments",
     });
+
+    // 🔥 ÉTAPE 4 : Écouter les changements d'URL externes (par ex: bouton retour navigateur)
+    React.useEffect(() => {
+        reset({
+            trip_type: urlParams.trip_type,
+            passengers: urlParams.passengers,
+            return_date: urlParams.return_date,
+            segments: urlParams.segments
+        });
+    }, [urlParams.trip_type, urlParams.return_date, urlParams.passengers, urlParams.segments, reset]);
 
     const handleTripTypeChange = (type: "one_way" | "round_trip" | "multi_city") => {
         setValue("trip_type", type);
@@ -76,10 +108,8 @@ export default function SearchFlight() {
         }
     };
 
-    // 2. Traitement de la soumission et construction de la Query String
     const onSubmit = (values: ExtendedSearchFormValues) => {
         const searchParams = new URLSearchParams();
-
         searchParams.set("trip_type", values.trip_type);
         searchParams.set("adults", values.passengers.adults.toString());
         searchParams.set("children", values.passengers.children.toString());
@@ -89,20 +119,20 @@ export default function SearchFlight() {
             searchParams.set("return_date", values.return_date);
         }
 
-        // Pour les segments, on extrait le premier pour une lecture simple à la Wakanow
-        // ou on passe des index si votre page de destination gère le multi-city complet.
         if (values.segments && values.segments.length > 0) {
-            searchParams.set("origin", values.segments[0].origin);
-            searchParams.set("destination", values.segments[0].destination);
-            searchParams.set("departure_date", values.segments[0].departure_date);
-
-            // Si multi-destination, on serialize le reste des segments en JSON ou index séparés
             if (values.trip_type === "multi_city") {
-                searchParams.set("all_segments", JSON.stringify(values.segments));
+                values.segments.forEach((segment, index) => {
+                    searchParams.set(`origin[${index}]`, segment.origin);
+                    searchParams.set(`destination[${index}]`, segment.destination);
+                    searchParams.set(`departure_date[${index}]`, segment.departure_date);
+                });
+            } else {
+                searchParams.set("origin", values.segments[0].origin);
+                searchParams.set("destination", values.segments[0].destination);
+                searchParams.set("departure_date", values.segments[0].departure_date);
             }
         }
 
-        // Redirection vers la page de recherche avec les paramètres construits
         router.push(`/flights/search-results?${searchParams.toString()}`);
     };
 
@@ -123,7 +153,7 @@ export default function SearchFlight() {
                             </TabsList>
                         </Tabs>
 
-                        {/* COMPTEUR DE PASSAGERS AVANCÉ */}
+                        {/* COMPTEUR DE PASSAGERS */}
                         <FormField
                             control={control}
                             name="passengers"
@@ -139,7 +169,6 @@ export default function SearchFlight() {
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-full sm:w-72 p-4 space-y-4" align="end">
-                                        {/* ADULTES */}
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <p className="font-semibold text-sm text-zinc-950">Adultes</p>
@@ -155,8 +184,6 @@ export default function SearchFlight() {
                                                 </Button>
                                             </div>
                                         </div>
-
-                                        {/* ENFANTS */}
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <p className="font-semibold text-sm text-zinc-950">Enfants</p>
@@ -172,8 +199,6 @@ export default function SearchFlight() {
                                                 </Button>
                                             </div>
                                         </div>
-
-                                        {/* BÉBÉS */}
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <p className="font-semibold text-sm text-zinc-950">Bébés</p>
@@ -201,18 +226,21 @@ export default function SearchFlight() {
                             {fields.map((segmentField, index) => (
                                 <div key={segmentField.id} className="flex flex-col lg:grid lg:grid-cols-12 gap-3 sm:gap-4 items-stretch lg:items-end bg-zinc-50/70 p-3 sm:p-4 rounded-xl border border-zinc-100 relative">
 
-                                    {/* CONTENEUR ORIGINE / DESTINATION (Côte à côte sur mobile) */}
-                                    <div className="grid grid-cols-2 lg:contents gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:contents gap-3">
                                         {/* ORIGINE */}
                                         <div className="lg:col-span-3">
                                             <FormField
                                                 control={control}
                                                 name={`segments.${index}.origin`}
                                                 render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold">Départ (IATA)</FormLabel>
+                                                    <FormItem className="relative">
+                                                        <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold">Départ</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Ex: DLA" maxLength={3} className="uppercase font-bold h-12 bg-white rounded-xl lg:rounded-lg" {...field} />
+                                                            <AirportAutocomplete
+                                                                value={field.value}
+                                                                onChange={field.onChange}
+                                                                placeholder="Ville ou Aéroport de départ"
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -226,10 +254,14 @@ export default function SearchFlight() {
                                                 control={control}
                                                 name={`segments.${index}.destination`}
                                                 render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold">Arrivée (IATA)</FormLabel>
+                                                    <FormItem className="relative">
+                                                        <FormLabel className="text-zinc-500 text-[11px] sm:text-xs uppercase tracking-wider font-semibold">Arrivée</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Ex: CDG" maxLength={3} className="uppercase font-bold h-12 bg-white rounded-xl lg:rounded-lg" {...field} />
+                                                            <AirportAutocomplete
+                                                                value={field.value}
+                                                                onChange={field.onChange}
+                                                                placeholder="Ville ou Aéroport d'arrivée"
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -238,7 +270,6 @@ export default function SearchFlight() {
                                         </div>
                                     </div>
 
-                                    {/* CONTENEUR DATES (Côte à côte sur mobile pour Aller-Retour) */}
                                     <div className={`grid ${tripType === "round_trip" ? "grid-cols-2" : "grid-cols-1"} lg:contents gap-3`}>
                                         {/* DATE DE DÉPART */}
                                         <div className={tripType === "round_trip" ? "lg:col-span-3" : "lg:col-span-5"}>
@@ -254,8 +285,8 @@ export default function SearchFlight() {
                                                                     <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white rounded-xl lg:rounded-lg ${!field.value && "text-zinc-400"}`}>
                                                                         <CalendarIcon className="h-4 w-4 text-[#15a4e6] shrink-0" />
                                                                         <span className="truncate text-xs sm:text-sm">
-                                                                        {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
-                                                                    </span>
+                                                                            {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
+                                                                        </span>
                                                                     </Button>
                                                                 </FormControl>
                                                             </PopoverTrigger>
@@ -290,8 +321,8 @@ export default function SearchFlight() {
                                                                         <Button variant="outline" className={`w-full h-12 text-left font-medium justify-start gap-2 bg-white rounded-xl lg:rounded-lg ${!field.value && "text-zinc-400"}`}>
                                                                             <CalendarIcon className="h-4 w-4 text-[#15a4e6] shrink-0" />
                                                                             <span className="truncate text-xs sm:text-sm">
-                                                                            {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
-                                                                        </span>
+                                                                                {field.value ? format(new Date(field.value), "dd LLL yyyy", { locale: dateFnsLocale }) : <span>Choisir</span>}
+                                                                            </span>
                                                                         </Button>
                                                                     </FormControl>
                                                                 </PopoverTrigger>
@@ -343,7 +374,7 @@ export default function SearchFlight() {
 
                             {/* BOUTON RECHERCHER */}
                             <div className="flex justify-end pt-4 border-t">
-                                <Button type="submit" className="w-full lg:w-48 h-12 bg-[#15a4e6] hover:bg-[#167f3c] text-white font-bold transition-colors shadow-md rounded-xl text-base">
+                                <Button type="submit" className="w-full lg:w-48 h-12 bg-[#15a4e6] hover:bg-[#1182b8] text-white font-bold transition-colors shadow-md rounded-xl text-base">
                                     Rechercher
                                 </Button>
                             </div>
@@ -351,6 +382,136 @@ export default function SearchFlight() {
                     </Form>
                 </CardContent>
             </Card>
+        </div>
+    );
+}
+
+interface Airport {
+    airport_code: string;
+    airport_name: string;
+    city: string;
+    country: string;
+}
+
+interface AutocompleteProps {
+    value: string;
+    onChange: (code: string) => void;
+    placeholder?: string;
+}
+
+function AirportAutocomplete({ value, onChange, placeholder }: AutocompleteProps) {
+    const [open, setOpen] = React.useState(false);
+    const containerRef = React.useRef<HTMLDivElement>(null);
+
+    // Un seul état pour piloter le champ de saisie
+    const [searchTerm, setSearchTerm] = React.useState("");
+    const [debouncedSearch] = useDebounce(searchTerm, 300);
+
+    // TanStack Query gère entièrement le statut et le cache
+    const { data, isLoading, isFetching } = useQuery({
+        queryKey: ['airports', debouncedSearch],
+        queryFn: async ({ signal }) => {
+            if (debouncedSearch.length < 2) return null;
+
+            const res = await api.get('/airports/search', {
+                params: { q: debouncedSearch },
+                signal
+            });
+            return res.data;
+        },
+        enabled: debouncedSearch.length >= 2,
+        staleTime: 1000 * 60 * 5, // Cache de 5 minutes
+    });
+
+    // Extraction propre des résultats sans collision de variables
+    const results: Airport[] = data?.success && data?.results ? data.results : [];
+    const isSearching = isLoading || isFetching;
+
+    // Fermer la liste si clic à l'extérieur
+    React.useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    return (
+        <div ref={containerRef} className="relative w-full">
+            <div className="relative flex items-center">
+                <Input
+                    type="text"
+                    placeholder={placeholder}
+                    // Affiche la saisie en cours si ouvert, sinon la valeur sélectionnée
+                    value={open ? searchTerm : value}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setOpen(true);
+                    }}
+                    onFocus={() => {
+                        setSearchTerm(value);
+                        setOpen(true);
+                    }}
+                    className="font-bold h-12 bg-white rounded-xl lg:rounded-lg pr-10"
+                />
+
+                {isSearching && (
+                    <Loader2 className="absolute right-3 h-4 w-4 animate-spin text-zinc-400" />
+                )}
+
+                {!isSearching && value && !open && (
+                    <span className="absolute right-3 text-xs bg-zinc-100 text-zinc-600 font-black px-1.5 py-0.5 rounded border uppercase">
+                        {value}
+                    </span>
+                )}
+            </div>
+
+            {/* Fenêtre flottante de résultats */}
+            {open && (searchTerm.length >= 2 || results.length > 0) && (
+                <div className="absolute z-50 w-full mt-1 bg-white border border-zinc-200 rounded-xl shadow-lg max-h-60 overflow-y-auto py-1">
+                    {isSearching && results.length === 0 && (
+                        <div className="p-3 text-sm text-zinc-500 text-center flex items-center justify-center gap-2">
+                            <Loader2 className="h-4 w-4 animate-spin text-[#15a4e6]" />
+                            Recherche en cours...
+                        </div>
+                    )}
+
+                    {!isSearching && results.length === 0 && (
+                        <div className="p-3 text-sm text-zinc-400 text-center">
+                            Aucun aéroport trouvé
+                        </div>
+                    )}
+
+                    {results.map((airport) => (
+                        <button
+                            key={airport.airport_code}
+                            type="button"
+                            className="w-full text-left px-4 py-2.5 hover:bg-zinc-50 flex items-center justify-between gap-4 border-b border-zinc-50 last:border-0 transition-colors"
+                            onClick={() => {
+                                // Envoie le code IATA au parent/formulaire (ex: 'DLA')
+                                onChange(airport.airport_code);
+                                // Met à jour le texte affiché localement pour plus de clarté
+                                setSearchTerm(`${airport.city} (${airport.airport_code})`);
+                                setOpen(false);
+                            }}
+                        >
+                            <div className="truncate">
+                                <p className="font-bold text-sm text-zinc-900 truncate">
+                                    {airport.city}, {airport.country}
+                                </p>
+                                <p className="text-xs text-zinc-500 truncate">
+                                    {airport.airport_name}
+                                </p>
+                            </div>
+                            <span className="font-black text-xs text-[#15a4e6] bg-[#15a4e6]/10 px-2 py-1 rounded shrink-0 uppercase tracking-wider">
+                                {airport.airport_code}
+                            </span>
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

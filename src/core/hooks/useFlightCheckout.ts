@@ -9,6 +9,9 @@ export interface CheckoutPayload {
     selected_flight: any;
     payment_method: 'momo' | 'om' | 'wave' | 'card';
     phone_number: string;
+    finalpricetopay:any;
+    insuranceSelected:any;
+    extraBaggage:any;
     contact_info: {
         email: string;
         phone: string;
@@ -32,7 +35,7 @@ export function useFlightCheckout() {
                 ...payload,
                 booking_type: payload.booking_type as 'now' | 'hold'
             };
-
+            console.log(securePayload)
             // Appel de l'endpoint Laravel
             const { data } = await api.post("/flights/verify-and-pay", securePayload);
 

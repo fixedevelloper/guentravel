@@ -31,7 +31,6 @@ import { api } from "../../../../../core/api/axios-instance";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-// --- INTERFACES LOCALES ALIGNÉES SUR LE PARSER PHP ---
 interface Segment {
     flight_number: string | null;
     airline_code: string | null;
@@ -64,8 +63,8 @@ interface FlightOffer {
     travelport: {
         transaction_id: string | null;
         offering_id: string | null;
-        gds_authority_value: string | null;
-        catalog_product_offering_identifier: string | null;
+        fare_source_code: string | null;
+        session_id: string | null;
         raw_offering?: any;
         flight_refs?: any;
         catalog_offerings_identifier?: any;
@@ -88,7 +87,7 @@ interface FlightOffer {
     };
 }
 
-interface ResultsProps {
+/*interface ResultsProps {
     searchCriteria: {
         origin: string;
         destination: string;
@@ -99,11 +98,35 @@ interface ResultsProps {
     };
     flights: FlightOffer[];
     isPending: boolean;
+}*/
+interface FlightSegmentCriteria {
+    origin: string;
+    destination: string;
+    departure_date: string;
 }
 
+interface ResultsProps {
+    searchCriteria: {
+        trip_type: 'one_way' | 'round_trip' | 'multi_city';
+        passengers: {
+            adults: number;
+            children: number;
+            infants: number;
+        };
+        // 🔥 Pour le One-Way / Round-Trip, on utilise le premier élément [0] de ce tableau
+        // Pour le Multi-City, on boucle sur tous les éléments du tableau
+        segments: FlightSegmentCriteria[];
+
+        // Optionnel : Uniquement utilisé et requis si trip_type === 'round_trip'
+        return_date?: string;
+    };
+    flights: FlightOffer[];
+    isPending: boolean;
+}
 export default function SearchFlightResults({ searchCriteria, flights = [], isPending }: ResultsProps) {
     const t = useTranslations("Flight");
 
+    console.log(searchCriteria)
     const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = React.useState<boolean>(false);
     const [maxPrice, setMaxPrice] = React.useState<number>(1500000);
@@ -148,20 +171,13 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
         const flightToStore: StoreFlightOffer = {
             id: flight.id,
             travelport: {
-                transaction_id: flight.travelport?.transaction_id ?? null,
-                offering_id: flight.travelport?.offering_id ?? null,
-                gds_authority_value: flight.travelport?.gds_authority_value ?? null,
-
+                transaction_id: flight.travelport?.fare_source_code ?? null,
+                offering_id: flight.travelport?.fare_source_code ?? null,
+                gds_authority_value: flight.travelport?.fare_source_code ?? null,
+                gds_authority_value_inbound:null,
                 // Aligné sur le nom de clé du JSON réel
                 catalog_offerings_identifier: flight.travelport?.catalog_offerings_identifier ?? null,
 
-                // 🔥 AJOUT DES CLÉS MANQUANTES (Sécurisées avec le chaînage optionnel)
-                available_brands: flight.travelport?.available_brands ?? [],
-                product_brand_offerings: flight.travelport?.product_brand_offerings ?? [],
-                products: flight.travelport?.products ?? [],
-                flight_refs: flight.travelport?.flight_refs ?? [],
-
-                raw_offering: flight.travelport?.raw_offering ?? null
             },
             price_details: {
                 base_price: Number(flight.price_details?.base_price ?? 0),
@@ -217,14 +233,22 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
     // ----------------------------------------------------------------
     // 🚀 TANSTACK MUTATION AVEC AXIOS
     // ----------------------------------------------------------------
-    const { mutate: initBookingSession, variables } = useMutation({
+// --- Logique TanStack Mutation Corrigée ---
+    const { mutate: revalidateFare, isPending: isMutationPending, variables } = useMutation({
         mutationFn: async (flight: FlightOffer) => {
-            const response = await api.post('/flights/booking/session/init');
+            // 🔥 FIX : Passage obligatoire des paramètres requis par le contrôleur Laravel
+            const response = await api.post('/flights/revalidate', {
+                session_id: flight.travelport?.session_id,
+                fare_source_code: flight.travelport?.fare_source_code,
+                // Optionnel : rajoutez fare_source_code_inbound si votre modèle le gère à l'avenir
+            });
             return { data: response.data, flight };
         },
         onSuccess: ({ data, flight }) => {
-            if (data.status === 'success') {
-                const sessionId = data.data?.session_identifier || data.session_identifier;
+            // Aligné sur le retour standard { success: true, data: { ... } } du contrôleur
+            if (data.success || data.status === 'success') {
+                // Extraction résiliente de la session (selon la structure de l'API)
+                const sessionId = data.data?.session_identifier || data.data?.session_id || flight.travelport?.session_id;
 
                 if (sessionId) {
                     setTravelportSessionId(sessionId);
@@ -234,12 +258,12 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                     toast.error("Erreur technique : Session de réservation introuvable.");
                 }
             } else {
-                toast.error(data.message || "Impossible d'initialiser votre session de réservation.");
+                toast.error(data.message || "Le prix de ce vol a changé ou n'est plus disponible.");
             }
         },
         onError: (error: any) => {
-            console.error("Erreur lors de l'initialisation TanStack/Axios :", error);
-            const apiError = error.response?.data?.message || "Une erreur de communication est survenue.";
+            console.error("Erreur lors de la revalidation :", error);
+            const apiError = error.response?.data?.message || "Le tarif n'a pas pu être validé auprès de la compagnie.";
             toast.error(apiError);
         }
     });
@@ -323,12 +347,20 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                         </div>
                         <div>
                             <div className="flex items-center gap-2 text-base sm:text-lg font-bold">
-                                <span className="uppercase">{searchCriteria.origin}</span>
+                                {/* 🟢 FIX : Accès sécurisé à l'origine du premier segment */}
+                                <span className="uppercase">{searchCriteria?.segments?.[0]?.origin || "---"}</span>
                                 <ArrowRight className="h-4 w-4 text-zinc-400" />
-                                <span className="uppercase">{searchCriteria.destination}</span>
+                                {/* 🟢 FIX : Accès sécurisé à la destination du premier segment */}
+                                <span className="uppercase">{searchCriteria?.segments?.[0]?.destination || "---"}</span>
                             </div>
                             <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5 truncate max-w-[250px] sm:max-w-none">
-                                {searchCriteria.departure_date} {searchCriteria.return_date ? `| ${searchCriteria.return_date}` : ""} • {searchCriteria.passengers.adults + searchCriteria.passengers.children + searchCriteria.passengers.infants} voy.
+                                {/* 🟢 FIX : Date de départ du premier segment et cumul sécurisé des passagers */}
+                                {searchCriteria?.segments?.[0]?.departure_date || "---"}{" "}
+                                {searchCriteria?.return_date ? `| ${searchCriteria.return_date}` : ""}{" "}
+                                • {((searchCriteria?.passengers?.adults || 0) +
+                                (searchCriteria?.passengers?.children || 0) +
+                                (searchCriteria?.passengers?.infants || 0))}{" "}
+                                voy.
                             </p>
                         </div>
                     </div>
@@ -438,9 +470,9 @@ export default function SearchFlightResults({ searchCriteria, flights = [], isPe
                                 key={flight.id}
                                 flight={flight}
                                 formatDuration={formatDuration}
-                                handleSelectFlight={() => initBookingSession(flight)}
-                                // 🔥 Correction : On compare avec l'objet de mutation Tanstack courant
-                                isBooking={variables?.id === flight.id}
+                                handleSelectFlight={() => !isMutationPending && revalidateFare(flight)}
+                                isBooking={isMutationPending && variables?.id === flight.id}
+                                isDisabled={isMutationPending && variables?.id !== flight.id}
                             />
                         ))
                     )}

@@ -94,7 +94,7 @@ function WaitingPaymentContent() {
                     </div>
 
                     <button
-                        onClick={() => router.push('/customer-space/dashboard/bookings')}
+                        onClick={() => router.push('/customer-space/dashboard/')}
                         className="mt-6 w-full bg-[#15a4e6] hover:bg-[#1182b8] transition-colors py-3 rounded-xl text-white font-semibold text-sm shadow-sm"
                     >
                         Accéder à mon espace client
@@ -117,7 +117,7 @@ function WaitingPaymentContent() {
                     </p>
                     <div className="flex flex-col gap-2 mt-6">
                         <button
-                            onClick={() => router.push('/checkout')}
+                            onClick={() => router.push('/flights/checkout')}
                             className="w-full bg-zinc-800 hover:bg-zinc-700 transition-colors py-3 rounded-xl text-white font-semibold text-sm"
                         >
                             Réessayer avec un autre moyen

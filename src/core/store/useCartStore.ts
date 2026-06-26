@@ -7,6 +7,7 @@ export interface Passenger {
     last_name: string;
     birth_date: string;
     passport_number: string;
+    passport_expiry:string;
 }
 
 export interface ProductBrandOffering {
@@ -19,6 +20,7 @@ export interface TravelportData {
     transaction_id: string | null;
     offering_id: string | null;
     gds_authority_value: string | null;
+    gds_authority_value_inbound: string | null;
     catalog_offerings_identifier: string; // Parfaitement aligné sur le Payload de ton API
     available_brands?: string[];
     product_brand_offerings?: ProductBrandOffering[];
@@ -100,11 +102,12 @@ export const useCartStore = create<FlightCartState>()(
 
             initPassengersList: (count) => {
                 const emptyPassengers = Array.from({ length: count }, () => ({
-                    civility: "M.",
+                    civility: "MR",
                     first_name: "",
                     last_name: "",
                     birth_date: "",
                     passport_number: "",
+                    passport_expiry:''
                 }));
                 set({ passengers: emptyPassengers });
             },

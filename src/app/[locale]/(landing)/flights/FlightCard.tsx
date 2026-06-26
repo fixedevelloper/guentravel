@@ -10,10 +10,11 @@ interface FlightCardProps {
     flight: any;
     handleSelectFlight: (flight: any) => void;
     formatDuration: (duration: any) => string;
-    isBooking: boolean;
+    isBooking: boolean;    // CE vol précis est en cours de revalidation
+    isDisabled?: boolean;  // Un AUTRE vol de la liste est en cours de traitement
 }
 
-export default function FlightCard({ flight, handleSelectFlight, formatDuration, isBooking }: FlightCardProps) {
+export default function FlightCard({ flight, handleSelectFlight, formatDuration, isBooking, isDisabled = false }: FlightCardProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     // Extraction sécurisée des détails globaux du prix
@@ -22,7 +23,10 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
 
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
-            <Card className="overflow-hidden bg-white border border-zinc-200 hover:border-zinc-300 rounded-2xl shadow-sm transition-all group">
+            {/* Ajout d'une opacité réduite et désactivation des clics si un autre vol charge */}
+            <Card className={`overflow-hidden bg-white border border-zinc-200 hover:border-zinc-300 rounded-2xl shadow-sm transition-all group ${
+                isDisabled ? 'opacity-40 pointer-events-none' : ''
+            }`}>
                 <CardContent className="p-0 grid grid-cols-1 md:grid-cols-12 items-stretch">
 
                     {/* BLOC DES ITINÉRAIRES */}
@@ -53,10 +57,6 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                                 const firstSegment = segments[0] || {};
                                 const lastSegment = segments[segments.length - 1] || {};
 
-                                /**
-                                 * Lecture de la durée totale du trajet.
-                                 * Supporte le format ISO string (ex: "PT14H30M") ou le fallback reduce d'un entier.
-                                 */
                                 const totalDuration = journey?.duration
                                     || firstSegment?.duration
                                     || segments.reduce((acc: number, s: any) => acc + (parseInt(s?.duration, 10) || 0), 0);
@@ -153,13 +153,13 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
 
                         <div className="w-full space-y-2">
                             <Button
-                                disabled={isBooking}
+                                disabled={isBooking || isDisabled}
                                 onClick={() => handleSelectFlight(flight)}
                                 className="w-full bg-[#15a4e6] hover:bg-[#1182b8] disabled:bg-zinc-300 text-white font-bold h-10 shadow-sm rounded-xl text-xs flex items-center justify-center gap-2 transition-all"
                             >
                                 {isBooking ? (
                                     <>
-                                        <Loader2 className="h-3.5 w-3.5 animate-spin" /> Traitement...
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin" /> Vérification...
                                     </>
                                 ) : (
                                     "Sélectionner"
@@ -192,7 +192,7 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                                 return (
                                     <div key={jIndex} className="border-l-2 border-dashed border-zinc-200 pl-4 ml-2 space-y-4 relative">
                                         <div className="text-xs font-black text-zinc-400 uppercase tracking-wider mb-2">
-                                            {journey.direction === "outbound" ? "✈️ Vol Aller" : "🔄 Vol Retour"}
+                                            {journey.direction === "outbound" ? "✈️ Vol Aller" : journey.direction === "inbound" ? "🔄 Vol Retour" : `📍 Segment Multi-destination ${jIndex + 1}`}
                                         </div>
 
                                         {segments.length === 0 ? (

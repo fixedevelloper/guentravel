@@ -14,67 +14,79 @@ import SearchFlightResults from "./SearchFlightResults";
 function useFlightSearchParams() {
     const searchParams = useSearchParams();
 
-    // Reconstruction de la structure passagers
+    // 1. Reconstruction de la structure passagers
     const adults = parseInt(searchParams.get("adults") || "1", 10);
     const children = parseInt(searchParams.get("children") || "0", 10);
     const infants = parseInt(searchParams.get("infants") || "0", 10);
 
-    // Extraction des segments (gère le One-way, Round-trip, et Multi-city basique)
-    // Pour le multi-city complexe, l'idéal est de passer un tableau indexé (ex: origin_0, origin_1)
     const trip_type = (searchParams.get("trip_type") || "round_trip") as "one_way" | "round_trip" | "multi_city";
+    const return_date = searchParams.get("return_date") || undefined;
 
-    const segments = [
-        {
+    // 2. Extraction dynamique des segments
+    const segments: Array<{ origin: string; destination: string; departure_date: string }> = [];
+
+    if (trip_type === "multi_city") {
+        let index = 0;
+        // On boucle tant que l'URL contient un paramètre indexé (ex: origin[0], origin[1]...)
+        while (searchParams.has(`origin[${index}]`)) {
+            segments.push({
+                origin: searchParams.get(`origin[${index}]`) || "",
+                destination: searchParams.get(`destination[${index}]`) || "",
+                departure_date: searchParams.get(`departure_date[${index}]`) || "",
+            });
+            index++;
+        }
+    }
+
+    // Fallback : Si le tableau est resté vide (Aller simple / Aller-Retour ou URL classique)
+    if (segments.length === 0) {
+        segments.push({
             origin: searchParams.get("origin") || "",
             destination: searchParams.get("destination") || "",
             departure_date: searchParams.get("departure_date") || "",
-        }
-    ];
-
-    const return_date = searchParams.get("return_date") || undefined;
+        });
+    }
 
     return {
         trip_type,
         return_date,
         passengers: { adults, children, infants },
         segments,
-        // Critère d'affichage simplifié pour les en-têtes
-        origin: segments[0].origin,
-        destination: segments[0].destination,
-        departure_date: segments[0].departure_date
+
+        // Racourcis conservés pour la compatibilité avec vos en-têtes d'affichage
+        origin: segments[0]?.origin || "",
+        destination: segments[0]?.destination || "",
+        departure_date: segments[0]?.departure_date || ""
+
     };
 }
 
 function SearchFlightResultsContent() {
     const searchCriteria = useFlightSearchParams();
 
-    // Requête TanStack Query pour récupérer les vols côté client basés sur l'URL GDS Sabre
     const { data: flightsResponse, isPending } = useQuery({
         queryKey: ["flights-search", searchCriteria],
         queryFn: async () => {
-            // Si les paramètres minimaux ne sont pas présents, on évite le call API
             if (!searchCriteria.origin || !searchCriteria.destination) return null;
 
             const response = await api.post("/flights/search", searchCriteria);
-            return response.data;
+            return response.data; // This returns the root object containing { success, data: { offers, ... } }
         },
         enabled: !!searchCriteria.origin && !!searchCriteria.destination,
     });
 
-    const flights = flightsResponse?.flights || [];
+    // Extracting fields according to your actual JSON structure
+    const flights = flightsResponse?.data?.offers || [];
+    const sessionId = flightsResponse?.data?.session_id || "";
 
     return (
         <div className="min-h-screen bg-white text-zinc-900 flex flex-col antialiased">
             <Header />
 
             <main className="flex-1 w-full mx-auto py-8">
-                {/*
-                  On délègue l'affichage des filtres, du loader, du bandeau supérieur
-                  et des cartes de billets au sous-composant dédié qu'on a conçu.
-                */}
                 <SearchFlightResults
                     searchCriteria={searchCriteria}
-                    flights={flights}
+                    flights={flights}      // Safely passes down the array of flight offers
                     isPending={isPending}
                 />
             </main>

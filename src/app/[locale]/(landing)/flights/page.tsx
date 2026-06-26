@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
+// 1. Ajoutez l'import de Suspense ici
+import React, { useEffect, useState, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { motion } from "framer-motion";
@@ -8,13 +9,13 @@ import { ShieldCheck, CreditCard, Users, ChevronRight, PlaneTakeoff } from "luci
 import SearchFlight from "../../../../components/search/flights/SearchFlight";
 import { AppPromo } from "../../../../components/layout/AppPromo";
 import { Card, CardContent } from "@/components/ui/card";
-import {Header} from "../../../../components/layout/Header";
-import {Footer} from "../../../../components/layout/Footer"; // Import de shadcn si disponible
+import { Header } from "../../../../components/layout/Header";
+import { Footer } from "../../../../components/layout/Footer";
 
-export default function LandingPageContent() {
+// 2. Changez "export default function" par un simple "function" ou renommez-le
+function LandingPageContent() {
     const t = useTranslations("Flight");
-
-    const listProperties: any[] = []; // data?.data || [];
+    const listProperties: any[] = [];
 
     return (
         <div className="min-h-screen bg-white text-zinc-900 selection:bg-[#15a4e6] selection:text-white">
@@ -23,7 +24,6 @@ export default function LandingPageContent() {
             <main>
                 {/* HERO SECTION */}
                 <section className="relative min-h-[85vh] lg:min-h-[90vh] flex flex-col items-center justify-center bg-zinc-900 text-white overflow-hidden py-10 md:py-16 lg:py-24">
-                    {/* Image de fond adaptative (positionnée pour ne pas couper le ciel/l'avion sur petit écran) */}
                     <div className="absolute inset-0 bg-[url('/images/flights.jpg')] bg-cover bg-center sm:bg-center opacity-30"></div>
 
                     <div className="relative z-10 text-center px-4 sm:px-6 w-full max-w-6xl mx-auto flex flex-col items-center">
@@ -45,12 +45,12 @@ export default function LandingPageContent() {
                             {t("hero.subtitle")}
                         </motion.p>
 
-                        {/* Conteneur de recherche sécurisé pour le responsive */}
                         <div className="w-full overflow-x-visible px-1 sm:px-0">
                             <SearchFlight />
                         </div>
                     </div>
                 </section>
+
                 {/* TRUST SECTION */}
                 <section className="py-20 bg-white">
                     <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12">
@@ -70,12 +70,12 @@ export default function LandingPageContent() {
                     </div>
                 </section>
 
-                {/* LISTING SECTION (Vols Récents / Populaires) */}
+                {/* LISTING SECTION */}
                 <section className="py-24 bg-zinc-50">
                     <div className="max-w-7xl mx-auto px-6">
                         <header className="flex justify-between items-end mb-12">
                             <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-                                {t("flights.listings.title")} {/* Correction faute d'orthographe "flihts" */}
+                                {t("flights.listings.title")}
                             </h2>
                         </header>
 
@@ -111,5 +111,18 @@ export default function LandingPageContent() {
 
             <Footer />
         </div>
+    );
+}
+
+// 3. Créez et exportez le wrapper sécurisé avec Suspense
+export default function LandingPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-zinc-900 flex items-center justify-center text-white">
+                <div className="animate-pulse text-sm font-medium text-zinc-400">Chargement de votre espace de voyage...</div>
+            </div>
+        }>
+            <LandingPageContent />
+        </Suspense>
     );
 }
