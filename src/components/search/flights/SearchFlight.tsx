@@ -90,7 +90,11 @@ export default function SearchFlight() {
         name: "segments",
     });
 
-    // 🔥 ÉTAPE 4 : Écouter les changements d'URL externes (par ex: bouton retour navigateur)
+// 🔥 ÉTAPE 4 : Écouter et synchroniser les changements d'URL externes (Bouton retour, etc.)
+// On sérialise les objets pour éviter que React ne recrée la dépendance à chaque rendu.
+    const serializedSegments = JSON.stringify(urlParams.segments);
+    const serializedPassengers = JSON.stringify(urlParams.passengers);
+
     React.useEffect(() => {
         reset({
             trip_type: urlParams.trip_type,
@@ -98,7 +102,13 @@ export default function SearchFlight() {
             return_date: urlParams.return_date,
             segments: urlParams.segments
         });
-    }, [urlParams.trip_type, urlParams.return_date, urlParams.passengers, urlParams.segments, reset]);
+    }, [
+        urlParams.trip_type,
+        urlParams.return_date,
+        serializedPassengers, // 🟢 Utilisation de la version sérialisée stable
+        serializedSegments,   // 🟢 Utilisation de la version sérialisée stable
+        reset
+    ]);
 
     const handleTripTypeChange = (type: "one_way" | "round_trip" | "multi_city") => {
         setValue("trip_type", type);
