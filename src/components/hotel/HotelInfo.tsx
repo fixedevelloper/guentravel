@@ -73,7 +73,11 @@ export function HotelInfo({ hotel }: { hotel: HotelDetails }) {
                         À propos de cet établissement
                     </h3>
                     <div className="text-sm text-zinc-600 leading-relaxed font-normal transition-all duration-300">
-                        {displayedDescription}
+                        {/* On injecte le HTML de manière sécurisée dans un span inline */}
+                        <span
+                            dangerouslySetInnerHTML={{ __html: displayedDescription }}
+                        />
+
                         {shouldTruncate && (
                             <button
                                 onClick={() => setIsDescExpanded(!isDescExpanded)}
