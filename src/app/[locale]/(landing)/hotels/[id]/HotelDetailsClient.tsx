@@ -5,11 +5,12 @@ import { HotelGallery } from "@/components/hotel/HotelGallery";
 import { HotelInfo } from "@/components/hotel/HotelInfo";
 import { RoomRatesList } from "@/components/hotel/RoomRatesList";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShieldCheck, ArrowRight, Zap } from "lucide-react";
+import {ShieldCheck, ArrowRight, Zap, ArrowLeft} from "lucide-react";
 import { useHotelDetails } from "../../../../../core/hooks/useHotelDetails";
 import { useRoomRates } from "../../../../../core/hooks/useRoomRates";
 import { HotelErrorState } from "./HotelErrorState";
 import { useSearchStore } from "../../../../../core/store/useSearchStore"; // Import du store d'occupation
+import { useRouter } from "@/i18n/routing"; // Ou "next/navigation" selon ta configuration
 
 interface Props {
     hotelId:   string;
@@ -21,7 +22,7 @@ interface Props {
 export function HotelDetailsClient({
                                        hotelId, tokenId, productId, sessionId
                                    }: Props) {
-
+    const router = useRouter();
     // Récupération de l'occupation actuelle de la recherche depuis le store Zustand
     const occupancy = useSearchStore((state) => state.occupancy);
 
@@ -56,10 +57,27 @@ export function HotelDetailsClient({
             {!loadingHotel && hotel && (
                 <div className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-zinc-200/60 hidden md:block transition-all duration-300 animate-fade-in">
                     <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                        <div className="flex flex-col">
-                            <span className="text-xs text-zinc-400 font-medium uppercase tracking-wider">Vous consultez</span>
-                            <h2 className="text-sm font-bold text-zinc-800 tracking-tight truncate max-w-md">{hotel.name}</h2>
+
+                        {/* Partie Gauche : Bouton Retour + Infos Hôtel */}
+                        <div className="flex items-center gap-4">
+                            {/* Bouton Retour */}
+                            <button
+                                onClick={() => router.back()} // Équivalent de window.history.back() via Next.js
+                                className="p-2 hover:bg-zinc-100 text-zinc-500 hover:text-zinc-800 rounded-xl transition-colors border border-zinc-200/60 shadow-sm bg-white focus:outline-none"
+                                aria-label="Retour"
+                            >
+                                <ArrowLeft size={16} />
+                            </button>
+
+                            <div className="flex flex-col">
+                                <span className="text-xs text-zinc-400 font-medium uppercase tracking-wider">Vous consultez</span>
+                                <h2 className="text-sm font-bold text-zinc-800 tracking-tight truncate max-w-sm lg:max-w-md">
+                                    {hotel.name}
+                                </h2>
+                            </div>
                         </div>
+
+                        {/* Partie Droite : Bouton d'action */}
                         <button
                             onClick={() => document.getElementById("rates-section")?.scrollIntoView({ behavior: "smooth" })}
                             className="bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2 group"
