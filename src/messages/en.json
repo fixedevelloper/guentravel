@@ -197,20 +197,15 @@
     "cta": "Download the app"
   },
   "Metadata": { "title": "Book your ideal stay", "description": "Find the best accommodations, villas, and hotels." },
-  "GuestCounter": {
-    "label": "Guests",
-    "summary": "{total} guests, {rooms} rooms",
-    "adults": { "label": "Adults", "sub": "13+ years" },
-    "children": { "label": "Children", "sub": "2-12 years" },
-    "rooms": { "label": "Rooms", "sub": "Private spaces" }
-  },
   "DateRangePicker": {
     "label": "Dates",
     "placeholder": "Add dates"
   },
   "SearchComponent": {
     "whereTo": "Where to?",
-    "searchButton": "Search"
+    "searchButton": "Search",
+    "noResults": "No results found",
+    "searching": "Searching..."
   },
 
   "Auth": {
@@ -299,12 +294,20 @@
     "placeholder": "Select a date"
   },
   "GuestCounter": {
-    "label": "Passengers",
-    "summary": "{total, plural, =1 {# Adult} other {# Travelers}}",
+    "label": "Guests",
+    "summary": "{total, plural, =1 {# guest} other {# guests}} · {rooms, plural, =1 {# room} other {# rooms}}",
+    "room": "Room",
+    "addRoom": "Add a room",
+    "childAge": "Child {n} age",
+    "infant": "Infant (0-1 yo)",
+    "years": "years old",
     "adults": {
-      "label": "Adult",
-      "label_plural": "Adults",
-      "sub": "12+ years"
+      "label": "Adults",
+      "sub": "Ages 18 or above"
+    },
+    "children": {
+      "label": "Children",
+      "sub": "Ages 0 to 17"
     }
   }
 

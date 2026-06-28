@@ -6,6 +6,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { MapPin, LogOut, LayoutDashboard, ChevronDown, Hotel, Plane, Bed, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SelectLanguage } from "./SelectLanguage";
+import { SelectCurrency } from "./SelectCurrency"; // <-- Ajout de l'import
 import { useTranslations, useLocale } from "next-intl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/core/api/axios-instance";
@@ -20,6 +21,7 @@ import {
 import { useAuth } from "../../core/hooks/useAuth";
 import { useAuthStore } from "../../core/store/useAuthStore";
 import Image from "next/image";
+
 export function Header() {
     const t = useTranslations("Header");
     const { user } = useAuthStore();
@@ -48,7 +50,6 @@ export function Header() {
     const mobileLinks = [
         { key: 'flights', href: '/flights', label: t("flights"), icon: Plane },
         { key: 'hotels', href: '/', label: t("hotels"), icon: Bed },
-        // Ajout d'un onglet Espace Hôte ou Compte pour l'ergonomie mobile
         { key: 'account', href: user ? '/customer-space/dashboard' : '/login', label: user ? t("dashboard") : t("login"), icon: User },
     ];
 
@@ -63,9 +64,9 @@ export function Header() {
                             <Image
                                 src="/images/logo.png"
                                 alt="Logo Officiel GUEN'S TRAVEL & TOURS"
-                                width={180} // Ajustez la largeur selon vos besoins réels
-                                height={50} // Ajustez la hauteur selon vos besoins réels
-                                priority // 🔥 Charge le logo immédiatement (LCP optimization)
+                                width={180}
+                                height={50}
+                                priority
                                 className="object-contain"
                             />
                         </Link>
@@ -102,7 +103,13 @@ export function Header() {
                             <Link href="/host-portal/register" className="text-sm font-bold border border-zinc-200 px-4 py-1.5 rounded-full flex items-center gap-2 hover:border-[#15a4e6]/30">
                                 <Hotel className="h-4 w-4 text-[#15a4e6]" /> {t("becomeHost")}
                             </Link>
-                            <SelectLanguage />
+
+                            {/* Sélecteurs de Devise et de Langue groupés */}
+                            <div className="flex items-center gap-1 bg-zinc-50 border border-zinc-100 rounded-xl px-1">
+                                <SelectCurrency />
+                                <div className="h-4 w-[1px] bg-zinc-200 self-center" /> {/* Séparateur visuel subti */}
+                                <SelectLanguage />
+                            </div>
 
                             {user ? (
                                 <DropdownMenu>
@@ -123,8 +130,9 @@ export function Header() {
                             )}
                         </div>
 
-                        {/* PETITE ACTION RAPIDE MOBILE (Sélecteur de langue uniquement en haut à droite) */}
-                        <div className="flex md:hidden items-center gap-2">
+                        {/* ACTIONS RAPIDES MOBILE (Haut à droite) */}
+                        <div className="flex md:hidden items-center gap-1 bg-zinc-50 border border-zinc-100 rounded-xl px-1">
+                            <SelectCurrency />
                             <SelectLanguage />
                         </div>
                     </nav>

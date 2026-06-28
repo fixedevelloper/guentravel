@@ -195,8 +195,21 @@ export default function PropertyDetailsPage() {
                                 selectedRooms={widgetRooms}
                                 date={{ from: checkIn ? new Date(checkIn) : undefined, to: checkOut ? new Date(checkOut) : undefined }}
                                 setDate={(range) => setBooking({ checkIn: range?.from?.toISOString(), checkOut: range?.to?.toISOString() })}
-                                guests={guests}
-                                setGuests={(newGuests) => setBooking({ guests: newGuests })}
+
+                                // On transforme l'objet unique "guests" en un tableau à un seul élément
+                                roomsConfig={[{
+                                    adults: guests?.adults ?? 2,
+                                    children: guests?.children ?? 0,
+                                    child_ages: []
+                                }]}
+                                // Lors de la mise à jour, on extrait le premier élément pour le réenregistrer en objet dans le store
+                                setRoomsConfig={(newRooms) => setBooking({
+                                    guests: {
+                                        adults: newRooms[0].adults,
+                                        children: newRooms[0].children
+                                    }
+                                })}
+
                                 checkIn={checkIn}
                                 checkOut={checkOut}
                                 nights={nights}

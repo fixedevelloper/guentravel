@@ -190,10 +190,20 @@
   "Metadata": { "title": "Réservez votre séjour idéal", "description": "Trouvez les meilleurs hébergements, villas et hôtels." },
   "GuestCounter": {
     "label": "Voyageurs",
-    "summary": "{total} pers, {rooms} ch.",
-    "adults": { "label": "Adultes", "sub": "13 ans et +" },
-    "children": { "label": "Enfants", "sub": "2-12 ans" },
-    "rooms": { "label": "Chambres", "sub": "Espaces privés" }
+    "summary": "{total, plural, =1 {# voyageur} other {# voyageurs}} · {rooms, plural, =1 {# chambre} other {# chambres}}",
+    "room": "Chambre",
+    "addRoom": "Ajouter une chambre",
+    "childAge": "Âge de l'enfant {n}",
+    "infant": "Bébé (0-1 an)",
+    "years": "ans",
+    "adults": {
+      "label": "Adultes",
+      "sub": "À partir de 18 ans"
+    },
+    "children": {
+      "label": "Enfants",
+      "sub": "De 0 à 17 ans"
+    }
   },
   "DateRangePicker": {
     "label": "Dates",
@@ -201,7 +211,9 @@
   },
   "SearchComponent": {
     "whereTo": "Où aller ?",
-    "searchButton": "Rechercher"
+    "searchButton": "Rechercher",
+    "noResults": "Aucun résultat trouvé",
+    "searching": "Recherche en cours..."
   },
   "Auth": {
     "title": "Portail Client",
@@ -287,16 +299,6 @@
   "DateRangePicker": {
     "label": "Date de départ",
     "placeholder": "Sélectionner une date"
-  },
-  "GuestCounter": {
-    "label": "Passagers",
-    "summary": "{total, plural, =1 {# Adulte} other {# Voyageurs}}",
-    "adults": {
-      "label": "Adultes",
-      "label_plural": "Adultes",
-      "sub": "+12 ans"
-    }
   }
-
 
 }

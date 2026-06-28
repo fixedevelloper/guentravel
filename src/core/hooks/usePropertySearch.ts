@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const searchProperties = async (params: PropertySearchParams): Promise<{ data: Property[] }> => {
     if (Object.keys(params).length === 0) return { data: [] };
 
-    const { data } = await api.get("/search", { params });
+    const { data } = await api.get("/hotels/search", { params });
     // On s'assure de retourner la structure { data: Property[] }
     return { data: data.data || [] };
 };

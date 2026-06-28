@@ -6,9 +6,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Search, MapPin, ShieldCheck } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { PropertyItem } from "../../../../components/PropertyItem";
 import FilterComponent, { FilterState } from "../../../../components/FilterComponent";
 import { usePropertySearch } from "../../../../core/hooks/usePropertySearch";
+import {HotelItem} from "../../../../components/PropertyItem";
 
 // Composant interne qui utilise useSearchParams
 function SearchResultsContent() {
@@ -62,7 +62,7 @@ function SearchResultsContent() {
                             <div className="space-y-6">
                                 {searchResults.data.map((property: any) => (
                                     <div key={property.id} className="border-b border-zinc-100 pb-6 last:border-none">
-                                        <PropertyItem property={property} locale="fr" />
+                                        <HotelItem property={property} locale="fr"  session_id={'none'}/>
                                     </div>
                                 ))}
                             </div>

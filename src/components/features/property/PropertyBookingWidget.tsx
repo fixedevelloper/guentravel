@@ -6,7 +6,7 @@ import { Calendar } from "lucide-react";
 import { DateRangePicker } from "../../search/date-range-picker";
 import { GuestCounter } from "../../search/GuestCounter";
 import React from "react";
-import {DateRange} from "react-day-picker";
+import { DateRange } from "react-day-picker";
 
 interface RoomSelection {
     id: string;
@@ -15,15 +15,23 @@ interface RoomSelection {
     quantity: number;
 }
 
+// Interface pour matcher la structure attendue par GuestCounter
+interface RoomGuestConfig {
+    adults: number;
+    children: number;
+    child_ages: number[];
+}
+
 interface BookingWidgetProps {
     selectedRooms: RoomSelection[];
     date: { from?: Date; to?: Date };
     setDate: (range: any) => void;
-    guests: { adults: number; children: number };
-    setGuests: (guests: any) => void;
+    // On change "guests" pour "roomsConfig" (ou "rooms") pour correspondre au composant enfant
+    roomsConfig: RoomGuestConfig[];
+    setRoomsConfig: (rooms: RoomGuestConfig[]) => void;
     nights: number;
     checkIn: string;
-    checkOut:string;
+    checkOut: string;
     onSubmit: () => void;
     isPending?: boolean;
 }
@@ -32,9 +40,10 @@ export function PropertyBookingWidget({
                                           selectedRooms,
                                           date,
                                           setDate,
-                                          guests,
-                                          setGuests,
-                                          checkIn,checkOut,
+                                          roomsConfig,
+                                          setRoomsConfig,
+                                          checkIn,
+                                          checkOut,
                                           nights,
                                           onSubmit,
                                           isPending = false
@@ -58,7 +67,8 @@ export function PropertyBookingWidget({
                 {/* Sélecteurs de dates et invités */}
                 <div className="space-y-4">
                     <DateRangePicker date={date as DateRange} setDate={setDate} />
-                    <GuestCounter guests={guests} setGuests={setGuests} />
+                    {/* On passe maintenant les bonnes variables ici */}
+                    <GuestCounter rooms={roomsConfig} setRooms={setRoomsConfig} />
                 </div>
 
                 {selectedRooms.length > 0 ? (
