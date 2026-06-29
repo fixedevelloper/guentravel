@@ -1,4 +1,4 @@
-import {HotelDetailsParams, HotelSearchParams, RoomRatesParams} from "../../types/hotel";
+import {FilterParams, HotelDetailsParams, HotelSearchParams, RoomRatesParams} from "../../types/hotel";
 
 export const hotelKeys = {
     all:        ["hotels"]                                      as const,
@@ -14,4 +14,8 @@ export const hotelKeys = {
         [...hotelKeys.all, "details", params] as const,
     booking: (refNum: number) =>
         [...hotelKeys.all, "booking", refNum] as const,
+    filter: (params: FilterParams) =>
+        [...hotelKeys.all, "filter", params] as const,
+    bookingDetails: (refNum: string) =>
+        [...hotelKeys.all, "booking-details", refNum] as const,
 };

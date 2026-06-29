@@ -24,10 +24,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatDate } from "@/lib/date";
+import { Link } from "@/i18n/routing";
 
 // --- TYPAGES CORRECTS POUR LES HÔTELS ---
 interface Booking {
     id: number;
+    supplier_confirmation_num:string;
     reference: string;
     property_name: string;
     property_image?: string;
@@ -61,6 +63,7 @@ const translations = {
         statusPending: "En attente",
         statusCancelled: "Annulé / Échoué",
         rooms: "Chambres",
+        detail: 'Detail'
     },
     en: {
         title: "My Hotel Bookings",
@@ -79,6 +82,7 @@ const translations = {
         statusPending: "Pending",
         statusCancelled: "Cancelled",
         rooms: "Rooms",
+        detail: 'Detail'
     }
 };
 
@@ -293,13 +297,14 @@ export default function CustomerBookingsPage() {
                                                 <div className="flex items-center gap-2">
                                                     {booking.host_phone && ["CONFIRMED", "TICKETED"].includes(booking.status) && (
                                                         <a
-                                                            href={`tel:${booking.host_phone}`}
-                                                            className="inline-flex items-center justify-center p-3 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
-                                                            title={t.callHost}
+                                                        href={`tel:${booking.host_phone}`}
+                                                        className="inline-flex items-center justify-center p-3 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
+                                                        title={t.callHost}
                                                         >
-                                                            <Phone className="h-5 w-5" />
+                                                        <Phone className="h-5 w-5" />
                                                         </a>
-                                                    )}
+                                                        )}
+
                                                     {["CONFIRMED", "TICKETED"].includes(booking.status) && (
                                                         <Button
                                                             variant="outline"
@@ -310,10 +315,16 @@ export default function CustomerBookingsPage() {
                                                             <Download className="h-4 w-4" />
                                                         </Button>
                                                     )}
-                                                </div>
-                                            </div>
 
-                                        </CardContent>
+                                                    <Link
+                                                        href={`/customer-space/bookings/hotels/${booking.reference}?supplier=${booking.supplier_confirmation_num}`}
+                                                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm border border-zinc-200 text-zinc-700 hover:bg-zinc-50 transition-colors shadow-sm"
+                                                    >
+                                                        <FileText className="h-4 w-4" />
+                                                        {t.detail}
+                                                    </Link>
+                                                </div>
+                                            </div>  </CardContent>
                                     </Card>
                                 </motion.div>
                             ))}

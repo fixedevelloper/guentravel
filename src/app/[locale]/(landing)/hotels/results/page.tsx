@@ -1,92 +1,88 @@
 "use client";
 
-import React, { Suspense, useMemo } from "react";
+import React, { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Search, MapPin, ShieldCheck } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import FilterComponent, { FilterState } from "../../../../../components/FilterComponent";
 import { useHotelSearch } from "../../../../../core/hooks/useHotelSearch";
-import { HotelSearchParams, OccupancyRoom } from "@/types/hotel";
-import {HotelItem} from "../../../../../components/PropertyItem";
+import { HotelSearchParams, OccupancyRoom, Hotel } from "@/types/hotel";
+import { HotelItem } from "../../../../../components/PropertyItem";
+import { FiltersPanel } from "../../../../../components/hotel/HotelFiltersPanel";
+import { HotelMap } from "../../../../../components/hotel/HotelMap";
 
-// Composant interne qui extrait l'URL et affiche les résultats
+// CORRECTIONS : Les imports directs de react-leaflet ont été supprimés ici !
+
 function SearchResultsContent() {
     const searchParams = useSearchParams();
 
-    // 1. Extraction et formatage des paramètres d'URL vers l'interface HotelSearchParams
+    const [filteredHotels, setFilteredHotels] = useState<Hotel[] | null>(null);
+
     const hotelFilters = useMemo<HotelSearchParams | null>(() => {
-        const checkin = searchParams.get("checkin");
+        const checkin  = searchParams.get("checkin");
         const checkout = searchParams.get("checkout");
-        const location = searchParams.get("location");
+        const lat      = searchParams.get("latitude");
+        const lng      = searchParams.get("longitude");
 
-        // ⚠️ ATTENTION : Votre formulaire DOIT envoyer la latitude et la longitude dans l'URL.
-        // Exemple : &latitude=31.6295&longitude=-7.9811
-        const lat = searchParams.get("latitude");
-        const lng = searchParams.get("longitude");
+        if (!checkin || !checkout || !lat || !lng) return null;
 
-        // Si les paramètres obligatoires manquent, on ne lance pas le hook
-        if (!checkin || !checkout || !lat || !lng) {
-            console.warn("⚠️ Paramètres de coordonnées manquants dans l'URL (latitude/longitude)");
-            return null;
-        }
-
-        // Extraction et conversion de "rooms" (URL) vers "occupancy" (Type attendu par Laravel)
         let occupancy: OccupancyRoom[] = [];
         try {
-            const roomsRaw = searchParams.get("rooms"); // Extraction de la clé 'rooms' de votre URL
-            if (roomsRaw) {
-                occupancy = JSON.parse(decodeURIComponent(roomsRaw));
-            } else {
-                occupancy = [{ room_no: 1, adult: 2, child: 0, child_age: [] }];
-            }
-        } catch (e) {
-            console.error("Erreur de parsing du paramètre 'rooms'", e);
+            const roomsRaw = searchParams.get("rooms");
+            occupancy = roomsRaw
+                ? JSON.parse(decodeURIComponent(roomsRaw))
+                : [{ room_no: 1, adult: 2, child: 0, child_age: [] }];
+        } catch {
             occupancy = [{ room_no: 1, adult: 2, child: 0, child_age: [] }];
         }
 
         return {
             checkin,
             checkout,
-            latitude: parseFloat(lat),
-            longitude: parseFloat(lng),
+            latitude:    parseFloat(lat),
+            longitude:   parseFloat(lng),
             nationality: searchParams.get("nationality") || "FR",
-            currency: searchParams.get("currency") || "EUR",
-            city_name: location || undefined, // On mappe 'location' sur 'city_name' pour Laravel
-            radius: searchParams.get("radius") ? parseInt(searchParams.get("radius")!) : 20,
-            max_result: searchParams.get("max_result") ? parseInt(searchParams.get("max_result")!) : 50,
+            currency:    searchParams.get("currency")    || "EUR",
+            city_name:   searchParams.get("location")    || undefined,
+            radius:      parseInt(searchParams.get("radius")     ?? "20"),
+            max_result:  parseInt(searchParams.get("max_result") ?? "50"),
             occupancy,
         };
     }, [searchParams]);
 
-    // 2. Appel de notre hook useQuery (s'exécute automatiquement si hotelFilters n'est pas null)
     const { results, loading, error } = useHotelSearch(hotelFilters);
 
-    console.log(results)
-    // Extraction des données basées sur l'interface HotelSearchResponse retournée par Laravel
-    const hotelsList = results?.hotels ?? [];
-    const session_id = results?.status.session_id;
+    const hotelsList   = filteredHotels ?? results?.hotels ?? [];
+    const isFiltered   = filteredHotels !== null;
+    const sessionId    = results?.status.session_id ?? "";
+    const currency     = hotelFilters?.currency ?? "EUR";
     const totalResults = hotelsList.length;
-
-    const totalGuests = hotelFilters?.occupancy.reduce((sum, r) => sum + r.adult + r.child, 0) || 2;
-
-    const handleFiltersChange = (newFilters: FilterState) => {
-        console.log('Filtres mis à jour:', newFilters);
-        // Optionnel : pousser les filtres secondaires (prix, étoiles) dans l'URL ici
-    };
+    const totalGuests  = hotelFilters?.occupancy
+        .reduce((sum, r) => sum + r.adult + r.child, 0) ?? 2;
 
     return (
         <div className="min-h-screen bg-white text-zinc-900 flex flex-col antialiased">
             <Header />
 
-            {/* Infos de contexte de recherche */}
             <div className="border-b border-zinc-100 bg-zinc-50/50">
                 <div className="max-w-[1500px] mx-auto px-6 py-3 flex items-center justify-between text-xs text-zinc-500">
                     <div className="flex items-center gap-2 font-medium">
-                        <span className="text-zinc-800">{hotelFilters?.city_name || "Destination"}</span>
+                        <span className="text-zinc-800">
+                            {hotelFilters?.city_name || "Destination"}
+                        </span>
                         <span>•</span>
-                        <span>{totalGuests} voyageur{totalGuests > 1 ? 's' : ''}</span>
+                        <span>{totalGuests} voyageur{totalGuests > 1 ? "s" : ""}</span>
+                        {isFiltered && (
+                            <>
+                                <span>•</span>
+                                <button
+                                    onClick={() => setFilteredHotels(null)}
+                                    className="text-[#15a4e6] hover:underline">
+                                    Voir tous les résultats ({results?.hotels.length})
+                                </button>
+                            </>
+                        )}
                     </div>
                     <span className="hidden sm:inline">Prix TTC, taxes incluses</span>
                 </div>
@@ -98,39 +94,62 @@ function SearchResultsContent() {
                         <Skeleton className="h-8 w-64" />
                     ) : (
                         <>
-                            {totalResults} hébergement{totalResults > 1 ? 's' : ''} trouvé{totalResults > 1 ? 's' : ''}
+                            {totalResults} hébergement{totalResults > 1 ? "s" : ""} trouvé
                             {hotelFilters?.city_name && ` à ${hotelFilters.city_name}`}
+                            {isFiltered && (
+                                <span className="ml-2 text-sm font-normal text-zinc-400">
+                                    (sur {results?.hotels.length} au total)
+                                </span>
+                            )}
                         </>
                     )}
                 </h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    {/* Filtres de recherche */}
+
+                    {/* Filtres */}
                     <div className="lg:col-span-2">
-                        <FilterComponent onFiltersChange={handleFiltersChange} />
+                        {loading || !sessionId ? (
+                            <div className="space-y-3">
+                                <Skeleton className="h-8  w-full rounded-xl" />
+                                <Skeleton className="h-28 w-full rounded-xl" />
+                                <Skeleton className="h-20 w-full rounded-xl" />
+                                <Skeleton className="h-32 w-full rounded-xl" />
+                            </div>
+                        ) : (
+                            <FiltersPanel
+                                sessionId={sessionId}
+                                currency={currency}
+                                onApply={(hotels) => setFilteredHotels(hotels)}
+                                onReset={() => setFilteredHotels(null)}
+                            />
+                        )}
                     </div>
 
-                    {/* Section principale : Liste des Hôtels */}
+                    {/* Liste hôtels */}
                     <section className="lg:col-span-7 space-y-6">
                         {error && (
                             <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm">
-                                ⚠️ Une erreur est survenue lors de la recherche : {error}
+                                ⚠️ {error}
                             </div>
                         )}
 
                         {loading ? (
                             <LoadingSkeleton />
                         ) : totalResults === 0 ? (
-                            <EmptyState />
+                            <EmptyState
+                                isFiltered={isFiltered}
+                                onReset={() => setFilteredHotels(null)}
+                            />
                         ) : (
                             <div className="space-y-6">
-                                {hotelsList.map((hotel: any) => (
-                                    <div key={hotel.hotel_id} className="border-b border-zinc-100 pb-6 last:border-none">
-                                        {/* Remplacement par les données d'interface 'Hotel' de votre backend */}
+                                {hotelsList.map((hotel: Hotel) => (
+                                    <div key={hotel.hotel_id}
+                                         className="border-b border-zinc-100 pb-6 last:border-none">
                                         <HotelItem
                                             property={hotel}
                                             locale="fr"
-                                            session_id={session_id ?? ""} // Si null ou undefined, utilise ""
+                                            session_id={sessionId}
                                         />
                                     </div>
                                 ))}
@@ -138,22 +157,37 @@ function SearchResultsContent() {
                         )}
                     </section>
 
-                    {/* Encadrés d'informations latéraux */}
+                    {/* Sidebar */}
                     <aside className="hidden lg:col-span-3 lg:block sticky top-[80px] space-y-6">
                         <div className="border border-zinc-200 rounded-2xl p-4 bg-white shadow-sm">
                             <h3 className="text-xs font-bold uppercase text-zinc-400 mb-3 flex items-center gap-2">
                                 <MapPin className="w-3.5 h-3.5" /> Localisation
                             </h3>
-                            <div className="h-36 w-full bg-zinc-100 rounded-lg border border-zinc-200 flex items-center justify-center">
-                                <button className="text-xs font-semibold px-4 py-2 bg-white rounded-md shadow-sm border border-zinc-200 hover:bg-zinc-50">
-                                    Afficher la carte
-                                </button>
+
+                            {/* CORRECTION : Remplacement de l'aperçu problématique par un conteneur stylisé neutre et sécurisé */}
+                            <div className="h-36 w-full bg-zinc-50 border border-zinc-100 rounded-xl relative overflow-hidden flex flex-col items-center justify-center p-4 text-center group">
+                                <div className="absolute inset-0 opacity-45 bg-[radial-gradient(#e4e4e7_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+
+                                {!loading && sessionId ? (
+                                    <div className="relative z-10 space-y-2">
+                                        <p className="text-[11px] text-zinc-500 font-medium">
+                                            Visualisez les {totalResults} logements sur un plan interactif.
+                                        </p>
+                                        <HotelMap
+                                            hotels={hotelsList}
+                                            sessionId={sessionId}
+                                        />
+                                    </div>
+                                ) : (
+                                    <Skeleton className="w-full h-full absolute inset-0" />
+                                )}
                             </div>
                         </div>
 
                         <div className="border border-zinc-200 rounded-2xl p-5 bg-zinc-50/50 space-y-3">
                             <h4 className="text-xs font-bold text-zinc-900 flex items-center gap-2">
-                                <ShieldCheck className="w-4 h-4 text-[#15a4e6]" /> Réserver en confiance
+                                <ShieldCheck className="w-4 h-4 text-[#15a4e6]" />
+                                Réserver en confiance
                             </h4>
                             <ul className="text-[11px] text-zinc-600 space-y-2">
                                 <li>• Annulation gratuite sur la plupart des logements.</li>
@@ -164,6 +198,7 @@ function SearchResultsContent() {
                     </aside>
                 </div>
             </main>
+
             <Footer />
         </div>
     );
@@ -177,9 +212,6 @@ export default function SearchResultsPage() {
     );
 }
 
-// ... Les composants PageFallback, LoadingSkeleton et EmptyState restent inchangés
-
-// Fallback affiché pendant le chargement initial (avant que useSearchParams soit résolu)
 const PageFallback = () => (
     <div className="min-h-screen bg-white flex flex-col">
         <Header />
@@ -190,7 +222,6 @@ const PageFallback = () => (
     </div>
 );
 
-// Composants de support pour alléger le rendu
 const LoadingSkeleton = () => (
     <div className="space-y-6">
         {[...Array(3)].map((_, i) => (
@@ -206,10 +237,28 @@ const LoadingSkeleton = () => (
     </div>
 );
 
-const EmptyState = () => (
+const EmptyState = ({
+                        isFiltered,
+                        onReset,
+                    }: {
+    isFiltered: boolean;
+    onReset:    () => void;
+}) => (
     <div className="text-center py-20 border-2 border-dashed border-zinc-100 rounded-2xl">
         <Search className="w-10 h-10 text-zinc-300 mx-auto mb-3" />
         <h3 className="text-sm font-semibold text-zinc-900">Aucun résultat</h3>
-        <p className="text-xs text-zinc-500 mt-1">Ajustez vos filtres pour voir plus de choix.</p>
+        <p className="text-xs text-zinc-500 mt-1">
+            {isFiltered
+                ? "Aucun hôtel ne correspond aux filtres sélectionnés."
+                : "Ajustez vos critères pour voir plus de choix."
+            }
+        </p>
+        {isFiltered && (
+            <button
+                onClick={onReset}
+                className="mt-4 text-xs text-[#15a4e6] hover:underline font-medium">
+                Voir tous les résultats
+            </button>
+        )}
     </div>
 );

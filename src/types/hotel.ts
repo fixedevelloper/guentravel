@@ -205,3 +205,86 @@ export interface HotelBooking {
     customer_phone:            string;
     rooms:                     BookedRoom[];
 }
+// types/hotel.ts
+
+export type SortingOption =
+    | "price-low-high"
+    | "price-high-low";
+
+export type FareType =
+    | "Refundable"
+    | "Non-Refundable";
+
+export interface PriceRange {
+    min: number;
+    max: number;
+}
+
+export interface HotelFilters {
+    price?:               PriceRange;
+    rating?:              number[];
+    tripadvisor_rating?:  number[];
+    hotel_name?:          string;
+    fare_type?:           FareType;
+    property_type?:       string;
+    facilities?:          string[];
+    sorting?:             SortingOption;
+    locality?:            string[];
+}
+
+export interface FilterParams {
+    session_id:  string;
+    max_result?: number;
+    filters?:    HotelFilters;
+}
+
+export interface FilterStatus {
+    session_id:    string;
+    more_results:  boolean;
+    next_token:    string | null;
+    filter_key:    string | null;
+}
+
+export interface FilterResponse {
+    success:    boolean;
+    type: string;
+    status:     FilterStatus;
+    hotels:     Hotel[];
+    filter_key: string | null;
+}
+// types/hotel.ts
+export interface BookingHotel {
+    hotel_id:    string;
+    name:        string;
+    address:     string;
+    city:        string;
+    country:     string;
+    postal_code: string | null;
+    latitude:    number | null;
+    longitude:   number | null;
+    email:       string | null;
+    phone:       string | null;
+    image:       string | null;
+    rating:      string | null;
+}
+
+export interface BookingDetails {
+    status:                    string;
+    supplier_confirmation_num: string;
+    reference_num:             string;
+    client_ref_num:            string;
+    product_id:                string;
+    hotel:                     BookingHotel;
+    check_in:                  string;
+    check_out:                 string;
+    days:                      number;
+    currency:                  string;
+    net_price:                 number;
+    fare_type:                 string;
+    cancellation_policy:       string[];
+    cancel_reference_num:      string | null;
+    customer_email:            string | null;
+    customer_phone:            string | null;
+    booking_date_time:         string | null;
+    rooms:                     BookedRoom[];
+}

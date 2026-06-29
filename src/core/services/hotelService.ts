@@ -2,6 +2,9 @@
 import { HotelSearchParams, HotelSearchResponse, CitiesResponse } from "@/types/hotel";
 import { api } from "../api/axios-instance";
 import {
+    BookingDetails,
+    FilterParams,
+    FilterResponse,
     HotelBooking,
     HotelBookParams,
     HotelDetails,
@@ -56,6 +59,24 @@ export const hotelService = {
 
     bookHotel: async (params: HotelBookParams): Promise<HotelBooking> => {
         const { data } = await api.post<HotelBooking>("/hotels/book", params);
+        return data;
+    },
+    filterHotels: async (params: FilterParams): Promise<FilterResponse> => {
+        const { data } = await api.post<FilterResponse>(
+            "/hotels/filter",
+            params
+        );
+        return data;
+    },
+    // services/hotelService.ts
+    getBookingDetails: async (params: {
+        supplier_confirmation_num: string;
+        reference_num:             string;
+    }): Promise<BookingDetails> => {
+        const { data } = await api.post<BookingDetails>(
+            "/hotels/booking-details",
+            params
+        );
         return data;
     },
 };

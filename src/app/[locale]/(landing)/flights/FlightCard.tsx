@@ -13,7 +13,18 @@ interface FlightCardProps {
     isBooking: boolean;    // CE vol précis est en cours de revalidation
     isDisabled?: boolean;  // Un AUTRE vol de la liste est en cours de traitement
 }
+// 2. TA FONCTION DE FORMATAGE ICI (Accessible par tout le fichier)
+const formatDurationNow = (totalMinutes: number | string) => {
+    const minutesNum = Number(totalMinutes);
+    if (isNaN(minutesNum) || minutesNum <= 0) return "0 min";
 
+    const hours = Math.floor(minutesNum / 60);
+    const minutes = minutesNum % 60;
+
+    if (hours === 0) return `${minutes} min`;
+    if (minutes === 0) return `${hours}h`;
+    return `${hours}h ${minutes}min`;
+};
 export default function FlightCard({ flight, handleSelectFlight, formatDuration, isBooking, isDisabled = false }: FlightCardProps) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -57,9 +68,11 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                                 const firstSegment = segments[0] || {};
                                 const lastSegment = segments[segments.length - 1] || {};
 
+                                // 1. Ton calcul existant pour récupérer le total des minutes
                                 const totalDuration = journey?.duration
                                     || firstSegment?.duration
                                     || segments.reduce((acc: number, s: any) => acc + (parseInt(s?.duration, 10) || 0), 0);
+
 
                                 return (
                                     <div key={jIndex} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 relative">
@@ -91,7 +104,7 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
 
                                             <div className="flex-1 text-center px-1 max-w-[180px]">
                                                 <span className="text-[10px] sm:text-xs font-medium text-zinc-400 flex items-center justify-center gap-1">
-                                                    <Clock className="h-3 w-3" /> {formatDuration(totalDuration)}
+                                                    <Clock className="h-3 w-3" /> {formatDurationNow(totalDuration)}
                                                 </span>
                                                 <div className="relative flex items-center justify-center my-1.5">
                                                     <div className="w-full border-t-2 border-zinc-200 group-hover:border-zinc-300 transition-colors"></div>
@@ -202,6 +215,26 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                                         ) : (
                                             segments.map((segment: any, sIndex: number) => {
                                                 const isLast = sIndex === segments.length - 1;
+                                                const nextSegment = segments[sIndex + 1];
+
+                                                // Calcul de la durée de l'escale si un segment suivant existe
+                                                let layoverDurationStr = "";
+                                                if (!isLast && nextSegment && segment?.arrival?.time && nextSegment?.departure?.time) {
+                                                    const arrivalTime = new Date(segment.arrival.time).getTime();
+                                                    const nextDepartureTime = new Date(nextSegment.departure.time).getTime();
+
+                                                    if (!isNaN(arrivalTime) && !isNaN(nextDepartureTime)) {
+                                                        const diffMs = nextDepartureTime - arrivalTime;
+                                                        const diffMins = Math.floor(diffMs / (1000 * 60));
+
+                                                        if (diffMins > 0) {
+                                                            const hours = Math.floor(diffMins / 60);
+                                                            const mins = diffMins % 60;
+                                                            layoverDurationStr = hours > 0 ? `${hours}h ${mins}min` : `${mins}min`;
+                                                        }
+                                                    }
+                                                }
+
                                                 return (
                                                     <div key={sIndex} className="space-y-2">
                                                         <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
@@ -209,7 +242,7 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                                                                 Vol {segment?.airline_code} {segment?.flight_number} — {segment?.airline_name}
                                                             </div>
                                                             <div className="text-zinc-400 font-medium">
-                                                                Durée : {formatDuration(segment?.duration || 0)}
+                                                                Durée :  {formatDurationNow(segment?.duration)}
                                                             </div>
                                                         </div>
 
@@ -240,10 +273,14 @@ export default function FlightCard({ flight, handleSelectFlight, formatDuration,
                                                             </p>
                                                         </div>
 
-                                                        {!isLast && segments[sIndex + 1] && (
+                                                        {/* Alerte Escale mise à jour avec la durée calculée */}
+                                                        {!isLast && nextSegment && (
                                                             <div className="my-3 mx-2 text-[11px] font-bold text-amber-600 bg-amber-50 border border-amber-100 rounded-lg p-2 max-w-max flex items-center gap-1.5">
                                                                 <Clock className="h-3.5 w-3.5" />
-                                                                Escale à {segment?.arrival?.airport}
+                                                                <span>
+                                        Escale à {segment?.arrival?.airport}
+                                                                    {layoverDurationStr ? ` (${layoverDurationStr})` : ""}
+                                    </span>
                                                             </div>
                                                         )}
                                                     </div>

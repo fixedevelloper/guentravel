@@ -1,6 +1,7 @@
 import { HotelDetailsClient } from "./HotelDetailsClient";
 import React from "react";
 import {Header} from "../../../../../components/layout/Header";
+import {Footer} from "../../../../../components/layout/Footer";
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -21,6 +22,7 @@ export default async function HotelDetailsPage(props: Props) {
             productId={searchParams.product ?? ""}
             sessionId={searchParams.session ?? ""}
         />
+        <Footer />
         </>
     );
 }
