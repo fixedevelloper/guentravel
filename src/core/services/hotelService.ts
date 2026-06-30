@@ -52,6 +52,7 @@ export const hotelService = {
                 hotel_id:   params.hotel_id,
                 product_id: params.product_id,
                 token_id:   params.token_id,
+                is_local:   params.is_local,
             },
         });
         return data;
@@ -77,6 +78,16 @@ export const hotelService = {
             "/hotels/booking-details",
             params
         );
+        return data;
+    },
+    getMoreResults: async (
+        sessionId:  string,
+        nextToken:  string,
+        maxResult = 20
+    ): Promise<HotelSearchResponse> => {
+        const { data } = await api.get<HotelSearchResponse>("/hotels/more-results", {
+            params: { session_id: sessionId, next_token: nextToken, max_result: maxResult },
+        });
         return data;
     },
 };

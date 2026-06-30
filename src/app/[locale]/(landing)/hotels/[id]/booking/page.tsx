@@ -7,6 +7,7 @@ interface Props {
         token?:         string;
         product?:       string;
         session?:       string;
+        is_local?:       string;
         rate_basis_id?: string;
         rooms?:         string; // JSON stringifié
     };

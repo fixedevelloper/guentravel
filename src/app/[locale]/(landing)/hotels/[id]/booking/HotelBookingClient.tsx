@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
     MapPin, Star, BedDouble, Loader2, ChevronRight,
-    ShieldCheck, User, Info, Lock, Timer, Calendar, RefreshCw, CheckCircle2
+    ShieldCheck, User, Info, Lock, Timer, Calendar, RefreshCw, CheckCircle2, CreditCard
 } from "lucide-react";
 import { useHotelBook } from "../../../../../../core/hooks/useHotelBook";
 import Image from "next/image";
@@ -43,7 +43,12 @@ export function HotelBookingClient({ rateBasisId }: Props) {
     const [localCheckOut, setLocalCheckOut] = useState(check_out);
     const [checkingDispo, setCheckingDispo] = useState(false);
     const [dispoVerified, setDispoVerified] = useState(false);
-
+    const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile_money'>('card');
+    const [mobileOperator, setMobileOperator] = useState<'orange' | 'mtn' | null>(null);
+    const [cardNumber, setCardNumber] = useState('');
+    const [cardExpiry, setCardExpiry] = useState('');
+    const [cardCvc, setCardCvc] = useState('');
+    const [paymentPhone, setPaymentPhone] = useState('');
     // Initialisation synchrone des voyageurs
     const [rooms, setRooms] = useState<BookingRoom[]>([]);
 
@@ -100,24 +105,39 @@ export function HotelBookingClient({ rateBasisId }: Props) {
     const handleBook = async () => {
         if (!cart) return;
 
+        console.log(cart)
         const result = await book({
-            session_id:    cart.sessionId,
-            product_id:    cart.productId,
-            token_id:      cart.tokenId,
-            rate_basis_id: cart.selectedRate.rate_basis_id,
-            hotel_id:      cart.hotelId,
-            client_ref:    `REF-${Date.now()}`,
+            is_local:       cart.isLocal,
+            session_id:     cart.sessionId,
+            product_id:     cart.productId,
+            token_id:       cart.tokenId,
+            rate_basis_id:  cart.selectedRate.rate_basis_id,
+            hotel_id:       cart.hotelId,
+            client_ref:     `REF-${Date.now()}`,
             customer_email: email,
             customer_phone: phone,
-            booking_note:  note,
-            net_price:     cart.selectedRate.net_price,
-            fare_type:     cart.selectedRate.fare_type,
-            payment_method: 'momo',
-            currency:      'XAF',
+            booking_note:   note,
+            net_price:      cart.selectedRate.net_price,
+            fare_type:      cart.selectedRate.fare_type,
+            currency:       'XAF',
             check_in,
             check_out,
             days,
             rooms,
+
+            // --- NOUVELLES DONNÉES DE PAIEMENT DYNAMIQUES ---
+            payment_method: paymentMethod === 'card' ? 'card' : 'momo',
+            mobile_operator: paymentMethod === 'mobile_money' ? mobileOperator : null,
+
+            // Si c'est Mobile Money, on envoie le numéro de paiement, sinon on garde le téléphone principal
+            payment_phone:  paymentMethod === 'mobile_money' ? `+237${paymentPhone.replace(/\s+/g, '')}` : phone,
+
+            // Si c'est par carte, on transmet les détails de facturation (sécurisés ensuite par ton gateway)
+            card_details: paymentMethod === 'card' ? {
+                number: cardNumber.replace(/\s+/g, ''),
+                expiry: cardExpiry,
+                cvc:    cardCvc
+            } : null
         });
 
         if (result) {
@@ -245,13 +265,14 @@ export function HotelBookingClient({ rateBasisId }: Props) {
                         </div>
                     )}
 
-                    {/* ÉTAPE 2 : Facturation & Lancement du Process Asynchrone */}
+                    {/* ÉTAPE 2 : Facturation, Choix du paiement & Lancement du Process Asynchrone */}
                     {step === 2 && (
                         <div className="space-y-6 animate-fade-in">
                             <button onClick={() => setStep(1)} className="inline-flex items-center gap-1 text-xs font-bold text-zinc-500 hover:text-zinc-900">
                                 <ChevronRight className="h-3 w-3 rotate-180" /> Modifier les voyageurs
                             </button>
 
+                            {/* Coordonnées de facturation */}
                             <div className="bg-white rounded-3xl border border-zinc-200/60 shadow-sm p-6 space-y-6">
                                 <div className="space-y-1">
                                     <h2 className="text-base font-black text-zinc-900 flex items-center gap-2">
@@ -276,6 +297,136 @@ export function HotelBookingClient({ rateBasisId }: Props) {
                                 </div>
                             </div>
 
+                            {/* NOUVELLE SECTION : Sélection de la méthode de paiement */}
+                            <div className="bg-white rounded-3xl border border-zinc-200/60 shadow-sm p-6 space-y-4">
+                                <div className="space-y-1">
+                                    <h2 className="text-base font-black text-zinc-900 flex items-center gap-2">
+                                        <CreditCard className="h-4 w-4 text-zinc-900" /> Mode de paiement
+                                    </h2>
+                                    <p className="text-[11px] text-zinc-400 font-medium">Sélectionnez la méthode de paiement de votre choix.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                    {/* Option Carte Bancaire */}
+                                    <div
+                                        onClick={() => { setPaymentMethod('card'); setMobileOperator(null); }}
+                                        className={`cursor-pointer rounded-2xl border p-4 flex flex-col gap-2 transition-all ${paymentMethod === 'card' ? 'border-zinc-900 bg-zinc-50 ring-1 ring-zinc-900' : 'border-zinc-200 hover:border-zinc-300'}`}
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs font-bold text-zinc-800">Carte Bancaire</span>
+                                            <div className={`h-3 w-3 rounded-full border flex items-center justify-center ${paymentMethod === 'card' ? 'border-zinc-900 bg-zinc-900' : 'border-zinc-300'}`}>
+                                                {paymentMethod === 'card' && <div className="h-1 w-1 bg-white rounded-full" />}
+                                            </div>
+                                        </div>
+                                        <span className="text-[10px] text-zinc-400 font-medium">Visa, Mastercard</span>
+                                    </div>
+
+                                    {/* Option Mobile Money */}
+                                    <div
+                                        onClick={() => setPaymentMethod('mobile_money')}
+                                        className={`cursor-pointer rounded-2xl border p-4 flex flex-col gap-2 transition-all ${paymentMethod === 'mobile_money' ? 'border-zinc-900 bg-zinc-50 ring-1 ring-zinc-900' : 'border-zinc-200 hover:border-zinc-300'}`}
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs font-bold text-zinc-800">Mobile Money</span>
+                                            <div className={`h-3 w-3 rounded-full border flex items-center justify-center ${paymentMethod === 'mobile_money' ? 'border-zinc-900 bg-zinc-900' : 'border-zinc-300'}`}>
+                                                {paymentMethod === 'mobile_money' && <div className="h-1 w-1 bg-white rounded-full" />}
+                                            </div>
+                                        </div>
+                                        <span className="text-[10px] text-zinc-400 font-medium">Directement sur votre téléphone</span>
+                                    </div>
+                                </div>
+
+                                {/* Sous-options Opérateurs Mobiles (Affichées uniquement si Mobile Money est sélectionné) */}
+                                {paymentMethod === 'mobile_money' && (
+                                    <div className="pt-2 grid grid-cols-2 gap-3 animate-fade-in">
+                                        {/* Orange Money */}
+                                        <div
+                                            onClick={() => setMobileOperator('orange')}
+                                            className={`cursor-pointer rounded-xl border p-3 flex items-center justify-between transition-all ${mobileOperator === 'orange' ? 'border-orange-500 bg-orange-50/40 ring-1 ring-orange-500' : 'border-zinc-200 hover:border-zinc-300'}`}
+                                        >
+                                            <span className="text-xs font-extrabold text-zinc-700">Orange Money</span>
+                                            <div className={`h-2.5 w-2.5 rounded-full border flex items-center justify-center ${mobileOperator === 'orange' ? 'border-orange-500 bg-orange-500' : 'border-zinc-300'}`} />
+                                        </div>
+
+                                        {/* MTN MoMo */}
+                                        <div
+                                            onClick={() => setMobileOperator('mtn')}
+                                            className={`cursor-pointer rounded-xl border p-3 flex items-center justify-between transition-all ${mobileOperator === 'mtn' ? 'border-yellow-500 bg-yellow-50/40 ring-1 ring-yellow-500' : 'border-zinc-200 hover:border-zinc-300'}`}
+                                        >
+                                            <span className="text-xs font-extrabold text-zinc-700">MTN MoMo</span>
+                                            <div className={`h-2.5 w-2.5 rounded-full border flex items-center justify-center ${mobileOperator === 'mtn' ? 'border-yellow-600 bg-yellow-600' : 'border-zinc-300'}`} />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* FORMULAIRE DYNAMIQUE SELON LE MODE DE PAIEMENT */}
+                                <div className="mt-4 pt-4 border-t border-zinc-100">
+                                    {/* Cas 1 : Formulaire Carte Bancaire */}
+                                    {paymentMethod === 'card' && (
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
+                                            <div className="space-y-1.5 sm:col-span-3">
+                                                <Label className="text-xs font-bold text-zinc-700">Numéro de carte</Label>
+                                                <Input
+                                                    type="text"
+                                                    value={cardNumber}
+                                                    onChange={(e) => setCardNumber(e.target.value.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim())}
+                                                    maxLength={19}
+                                                    placeholder="4242 4242 4242 4242"
+                                                    className="rounded-xl border-zinc-200 text-sm font-mono"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5 sm:col-span-2">
+                                                <Label className="text-xs font-bold text-zinc-700">Date d'expiration</Label>
+                                                <Input
+                                                    type="text"
+                                                    value={cardExpiry}
+                                                    onChange={(e) => setCardExpiry(e.target.value)}
+                                                    maxLength={5}
+                                                    placeholder="MM/AA"
+                                                    className="rounded-xl border-zinc-200 text-sm font-mono"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <Label className="text-xs font-bold text-zinc-700">CVC / CVV</Label>
+                                                <Input
+                                                    type="password"
+                                                    value={cardCvc}
+                                                    onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, ''))}
+                                                    maxLength={3}
+                                                    placeholder="123"
+                                                    className="rounded-xl border-zinc-200 text-sm font-mono"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Cas 2 : Formulaire Mobile Money (uniquement si l'opérateur est choisi) */}
+                                    {paymentMethod === 'mobile_money' && mobileOperator && (
+                                        <div className="space-y-1.5 animate-fade-in">
+                                            <Label className="text-xs font-bold text-zinc-700">
+                                                Numéro de téléphone pour le débit {mobileOperator === 'orange' ? 'Orange Money' : 'MTN MoMo'} *
+                                            </Label>
+                                            <div className="relative">
+                                                <Input
+                                                    type="tel"
+                                                    value={paymentPhone}
+                                                    onChange={(e) => setPaymentPhone(e.target.value)}
+                                                    placeholder="6xx xx xx xx"
+                                                    className="rounded-xl border-zinc-200 text-sm pl-12"
+                                                />
+                                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">
+                                                    +237
+                                                </div>
+                                            </div>
+                                            <p className="text-[10px] text-zinc-400 font-medium">
+                                                Une demande d'autorisation de débit va être envoyée sur ce numéro. Vous devrez saisir votre code secret.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Mentions légales */}
                             <div className="bg-zinc-100 border border-zinc-200/60 rounded-2xl p-4 flex items-start gap-3">
                                 <ShieldCheck className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
                                 <p className="text-[11px] text-zinc-500 leading-relaxed">
@@ -289,11 +440,26 @@ export function HotelBookingClient({ rateBasisId }: Props) {
                                 </div>
                             )}
 
-                            <Button onClick={handleBook} disabled={!isStep2Valid || booking} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 text-xs font-bold uppercase tracking-wider rounded-2xl shadow-md flex items-center justify-center gap-2">
+                            {/* Bouton de confirmation dynamique */}
+                            <Button
+                                onClick={handleBook}
+                                disabled={!isStep2Valid || booking || (paymentMethod === 'mobile_money' && !mobileOperator)}
+                                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 text-xs font-bold uppercase tracking-wider rounded-2xl shadow-md flex items-center justify-center gap-2"
+                            >
                                 {booking ? (
                                     <><Loader2 className="h-4 w-4 animate-spin" /> Génération de la demande de débit...</>
                                 ) : (
-                                    <><Lock className="h-4 w-4" /> Confirmer la réservation et payer par Mobile Money</>
+                                    <>
+                                        <Lock className="h-4 w-4" />
+                                        {paymentMethod === 'card'
+                                            ? "Confirmer la réservation et payer par Carte"
+                                            : mobileOperator === 'orange'
+                                                ? "Payer via Orange Money"
+                                                : mobileOperator === 'mtn'
+                                                    ? "Payer via MTN MoMo"
+                                                    : "Confirmer et procéder au paiement"
+                                        }
+                                    </>
                                 )}
                             </Button>
                         </div>

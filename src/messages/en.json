@@ -309,6 +309,25 @@
       "label": "Children",
       "sub": "Ages 0 to 17"
     }
+  },
+  "admin": {
+    "navigation": {
+      "general": "General",
+      "dashboard": "Dashboard",
+      "flights": "Flight Management",
+      "flightBookings": "Flight Bookings",
+      "airlines": "Airlines",
+      "airports": "Airports Repository",
+      "hotels": "Hotel Management",
+      "hotelBookings": "Hotel Bookings",
+      "properties": "Properties Catalogue",
+      "management": "Management",
+      "users": "Users Management",
+      "hosts": "Hosts & Partners",
+      "system": "System",
+      "settings": "System Settings",
+      "logout": "Sign Out"
+    }
   }
 
 }

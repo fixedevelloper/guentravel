@@ -17,10 +17,11 @@ interface Props {
     tokenId:   string;
     productId: string;
     sessionId: string;
+    isLocal: string;
 }
 
 export function HotelDetailsClient({
-                                       hotelId, tokenId, productId, sessionId
+                                       hotelId, tokenId, productId, sessionId,isLocal
                                    }: Props) {
     const router = useRouter();
     // Récupération de l'occupation actuelle de la recherche depuis le store Zustand
@@ -30,8 +31,9 @@ export function HotelDetailsClient({
         hotel_id: hotelId,
         token_id: tokenId,
         product_id: productId,
-        session_id: sessionId
-    }), [hotelId, tokenId, productId, sessionId]);
+        session_id: sessionId,
+        is_local: isLocal
+    }), [hotelId, tokenId, productId, sessionId,isLocal]);
 
     const { data: hotel, isLoading: loadingHotel, error: hotelError } =
         useHotelDetails(detailsParams);
@@ -214,6 +216,7 @@ export function HotelDetailsClient({
                             sessionId={sessionId}
                             tokenId={tokenId}
                             hotelId={hotelId}
+                            isLocal={isLocal}
                             // --- PASSE DES PARAMÈTRES REQUIS DU NOUVEAU COMPOSANT ---
                             hotelName={hotel?.name || ""}
                             hotelCity={hotel?.city || ""}

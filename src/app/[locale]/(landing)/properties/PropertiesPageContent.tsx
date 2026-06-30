@@ -61,7 +61,7 @@ export function PropertiesPageContent() {
                                 {listProperties.length > 0 ? (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         {listProperties.map((property, index) => (
-                                            <PropertyCard key={property.id} property={property} index={index} />
+                                            <PropertyCard key={property.hotel_id} property={property} index={index} />
                                         ))}
                                     </div>
                                 ) : (

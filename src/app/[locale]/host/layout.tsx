@@ -17,12 +17,10 @@ import {
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {AuthProvider} from "../../../providers/AuthProvider";
+import {useAuth} from "../../../core/hooks/useAuth";
+import {useAuthStore} from "../../../core/store/useAuthStore";
 
-// Remplacez par votre vrai hook d'auth
-const useAuth = () => ({
-    user: { name: "John Doe", role: "Hôte" },
-    logout: () => console.log("Déconnexion...")
-});
+
 
 const hostNavigationItems = [
     { id: "dashboard", href: "/host/dashboard", icon: LayoutGrid },
@@ -35,7 +33,8 @@ const hostNavigationItems = [
 export default function HostLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const t = useTranslations("host.navigation");
-    const { user, logout } = useAuth();
+    const { logout } = useAuth();
+    const user = useAuthStore((state) => state.user);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const currentActiveItem = hostNavigationItems.find(item => pathname.includes(item.href));

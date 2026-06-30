@@ -299,6 +299,25 @@
   "DateRangePicker": {
     "label": "Date de départ",
     "placeholder": "Sélectionner une date"
+  },
+  "admin": {
+    "navigation": {
+      "general": "Général",
+      "dashboard": "Tableau de bord",
+      "flights": "Gestion des Vols",
+      "flightBookings": "Réservations de vols",
+      "airlines": "Compagnies aériennes",
+      "airports": "Référentiel Aéroports",
+      "hotels": "Gestion des Hôtels",
+      "hotelBookings": "Réservations de nuits",
+      "properties": "Catalogue Établissements",
+      "management": "Administration",
+      "users": "Gestion des Clients",
+      "hosts": "Hôtes & Partenaires",
+      "system": "Configuration",
+      "settings": "Paramètres Système",
+      "logout": "Déconnexion"
+    }
   }
 
 }

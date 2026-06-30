@@ -180,7 +180,7 @@ export const HotelItem: React.FC<HotelItemProps> = ({ property, locale,session_i
 
                     {/* Bouton vers la page détails de l'hôtel */}
                     <Link
-                        href={`/hotels/${property.hotel_id}?token=${property.token_id}&session=${session_id}&product=${property.product_id}`}
+                        href={`/hotels/${property.hotel_id}?token=${property.token_id}&session=${session_id}&product=${property.product_id}&is_local=${false}`}
                         className="md:mt-3 px-5 py-2 bg-zinc-900 text-white rounded-xl text-xs font-bold hover:bg-zinc-800 transition-all shadow-sm active:scale-98 text-center"
                     >
                         {locale === "fr" ? "Voir les chambres" : "View rooms"}

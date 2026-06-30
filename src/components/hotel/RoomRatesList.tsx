@@ -19,7 +19,7 @@ interface Props {
     sessionId: string;
     tokenId:   string;
     hotelId:   string;
-    // Données de l'hôtel parent pour alimenter correctement le panier de réservation
+    isLocal:   string;
     hotelName: string;
     hotelCity: string;
     hotelStars: number;
@@ -28,7 +28,7 @@ interface Props {
 }
 
 export function RoomRatesList({
-                                  grouped, loading, sessionId, tokenId, hotelId, hotelName, hotelCity, hotelStars, hotelMainImage, occupancy
+                                  grouped, loading, sessionId, tokenId, hotelId, hotelName, hotelCity, hotelStars, hotelMainImage, occupancy,isLocal
                               }: Props) {
 
     const router = useRouter();
@@ -39,6 +39,7 @@ export function RoomRatesList({
             session:       sessionId,
             product:       rate.product_id,
             token:         tokenId ?? "",
+            is_local:isLocal,
             rate_basis_id: rate.rate_basis_id,
             rooms:         encodeURIComponent(JSON.stringify(occupancy)),
         });
@@ -46,6 +47,7 @@ export function RoomRatesList({
         // 1. Enregistrement des données dans le store Zustand
         addToCart({
             hotelId,
+            isLocal,
             hotelName: hotelName,
             hotelImages: hotelMainImage ? [hotelMainImage] : [],
             city: hotelCity,

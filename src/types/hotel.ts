@@ -17,6 +17,7 @@ export interface HotelSearchParams {
     city_name?:    string; // Optionnel : Passer en optionnel (?) car marqué 'sometimes' sur Laravel
     country_name?: string; // Optionnel : Idem
     radius?:       number; // Optionnel : Idem
+    travel_class: string;
     max_result?:   number; // Optionnel : Idem
     hotel_codes?:  string[]; // Optionnel : Idem
     occupancy:    OccupancyRoom[];
@@ -115,6 +116,7 @@ export interface RoomRatesParams {
     product_id: string;
     token_id:   string;
     hotel_id:   string;
+    is_local:   string;
 }
 // types/hotel.ts
 
@@ -142,9 +144,8 @@ export interface HotelDetailsParams {
     hotel_id:   string;
     product_id: string;
     token_id:   string;
+    is_local:   string;
 }
-// types/hotel.ts
-
 export interface PaxInfo {
     title:      string;
     first_name: string;
@@ -157,25 +158,37 @@ export interface BookingRoom {
     children?: PaxInfo[];
 }
 
+export interface CardDetails {
+    number: string;
+    expiry: string;
+    cvc: string;
+}
+
 export interface HotelBookParams {
-    days:number;
-    check_in:string;
-    check_out:string;
-    currency:string;
-    net_price:number;
-    payment_method:string;
-    fare_type:string;
-    hotel_id:string;
+    days: number;
+    check_in: string;
+    check_out: string;
+    currency: string;
+    net_price: number;
+    payment_method: 'card' | 'momo'; // Typage plus strict au lieu de simple string
+    fare_type: string;
+    hotel_id: string;
+    is_local?: string;
     booking_id?: string;
-    session_id:     string;
-    product_id:     string;
-    token_id:       string;
-    rate_basis_id:  string;
-    client_ref:     string;
+    session_id: string;
+    product_id: string;
+    token_id: string;
+    rate_basis_id: string | null;
+    client_ref: string;
     customer_email: string;
     customer_phone: string;
-    booking_note?:  string;
-    rooms:          BookingRoom[];
+    booking_note?: string | null;
+    rooms: BookingRoom[];
+
+    // --- ENTRAÎNE LES NOUVELLES INFOS DE PAIEMENT DYNAMIQUES ---
+    mobile_operator?: 'orange' | 'mtn' | null;
+    payment_phone?: string;
+    card_details?: CardDetails | null;
 }
 
 export interface BookedRoom {
@@ -205,7 +218,6 @@ export interface HotelBooking {
     customer_phone:            string;
     rooms:                     BookedRoom[];
 }
-// types/hotel.ts
 
 export type SortingOption =
     | "price-low-high"

@@ -11,6 +11,7 @@ export function useHotelDetails(params: HotelDetailsParams | null) {
         enabled:   !!params?.session_id &&
             !!params?.hotel_id   &&
             !!params?.product_id &&
+            !!params?.is_local &&
             !!params?.token_id,
         staleTime: 10 * 60 * 1000,  // 10 min
         gcTime:    20 * 60 * 1000,

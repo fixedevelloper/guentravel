@@ -5,7 +5,7 @@ import {Footer} from "../../../../../components/layout/Footer";
 
 interface Props {
     params: Promise<{ id: string }>;
-    searchParams: Promise<{ token?: string; product?: string; session?: string }>;
+    searchParams: Promise<{ token?: string; product?: string; session?: string;is_local?:string }>;
 }
 
 export default async function HotelDetailsPage(props: Props) {
@@ -21,6 +21,7 @@ export default async function HotelDetailsPage(props: Props) {
             tokenId={searchParams.token ?? ""}
             productId={searchParams.product ?? ""}
             sessionId={searchParams.session ?? ""}
+            isLocal={searchParams.is_local ?? 'true'}
         />
         <Footer />
         </>

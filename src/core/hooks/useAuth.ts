@@ -53,7 +53,7 @@ export function useAuth() {
         logout: () => {
             clearAuth();
             toast.info("Déconnecté", { description: "Votre session a été fermée." });
-            router.push("/login");
+            router.push("/");
         }
     };
 }

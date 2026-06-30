@@ -20,7 +20,10 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // Icons
 import { Plane, Calendar as CalendarIcon, Users, Minus, Plus, Trash2, PlusCircle, ChevronDown, Loader2 } from "lucide-react";
 import { api } from "../../../core/api/axios-instance";
-
+// Import
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Armchair } from "lucide-react";
+type TravelClass = "Economy" | "PremiumEconomy" | "Business" | "First";
 // 🔥 ÉTAPE 1 : Import ou écriture locale du hook d'extraction pour la réhydratation
 function useFlightSearchParams() {
     const searchParams = useSearchParams();
@@ -30,6 +33,7 @@ function useFlightSearchParams() {
     const infants = parseInt(searchParams.get("infants") || "0", 10);
     const trip_type = (searchParams.get("trip_type") || "round_trip") as "one_way" | "round_trip" | "multi_city";
     const return_date = searchParams.get("return_date") || "";
+    const travel_class = (searchParams.get("travel_class") || "Economy") as TravelClass; // ← ajout
 
     const segments: FlightSegment[] = [];
 
@@ -53,12 +57,12 @@ function useFlightSearchParams() {
         });
     }
 
-    return { trip_type, return_date, passengers: { adults, children, infants }, segments };
+    return { trip_type, return_date, passengers: { adults, children, infants }, segments ,travel_class};
 }
 
 interface PassengerConfig { adults: number; children: number; infants: number; }
 interface FlightSegment { origin: string; destination: string; departure_date: string; }
-interface ExtendedSearchFormValues { trip_type: "one_way" | "round_trip" | "multi_city"; passengers: PassengerConfig; return_date?: string; segments: FlightSegment[]; }
+interface ExtendedSearchFormValues { trip_type: "one_way" | "round_trip" | "multi_city"; passengers: PassengerConfig; return_date?: string; segments: FlightSegment[]; travel_class:string}
 interface Airport { airport_code: string; airport_name: string; city: string; country: string; }
 
 export default function SearchFlight() {
@@ -71,20 +75,29 @@ export default function SearchFlight() {
     // 🔥 ÉTAPE 2 : Récupération des paramètres d'URL actuels
     const urlParams = useFlightSearchParams();
 
+
+// Liste des classes avec labels
+    const TRAVEL_CLASSES: { value: TravelClass; label: string }[] = [
+        { value: "Economy",        label: "Économique" },
+        { value: "PremiumEconomy", label: "Premium Économique" },
+        { value: "Business",       label: "Affaires" },
+        { value: "First",          label: "Première" },
+    ];
     // 🔥 ÉTAPE 3 : Injection des paramètres d'URL comme defaultValues
     const form = useForm<ExtendedSearchFormValues>({
         defaultValues: {
             trip_type: urlParams.trip_type,
             passengers: urlParams.passengers,
             return_date: urlParams.return_date,
-            segments: urlParams.segments
+            segments: urlParams.segments,
+            travel_class: urlParams.travel_class,
         },
     });
 
     const { watch, setValue, control, handleSubmit, reset } = form;
     const tripType = watch("trip_type");
     const passengers = watch("passengers");
-
+    const travelClass = watch("travel_class");
     const { fields, append, remove } = useFieldArray({
         control,
         name: "segments",
@@ -100,11 +113,13 @@ export default function SearchFlight() {
             trip_type: urlParams.trip_type,
             passengers: urlParams.passengers,
             return_date: urlParams.return_date,
-            segments: urlParams.segments
+            segments: urlParams.segments,
+            travel_class: urlParams.travel_class,
         });
     }, [
         urlParams.trip_type,
         urlParams.return_date,
+        urlParams.travel_class,
         serializedPassengers, // 🟢 Utilisation de la version sérialisée stable
         serializedSegments,   // 🟢 Utilisation de la version sérialisée stable
         reset
@@ -124,7 +139,7 @@ export default function SearchFlight() {
         searchParams.set("adults", values.passengers.adults.toString());
         searchParams.set("children", values.passengers.children.toString());
         searchParams.set("infants", values.passengers.infants.toString());
-
+        searchParams.set("travel_class", values.travel_class);
         if (values.trip_type === "round_trip" && values.return_date) {
             searchParams.set("return_date", values.return_date);
         }
@@ -162,7 +177,25 @@ export default function SearchFlight() {
                                 <TabsTrigger value="multi_city" className="flex-1 sm:flex-initial data-[state=active]:bg-[#15a4e6] data-[state=active]:text-white text-xs sm:text-sm">Multi-ville</TabsTrigger>
                             </TabsList>
                         </Tabs>
-
+                        <FormField
+                            control={control}
+                            name="travel_class"
+                            render={({ field }) => (
+                                <Select value={field.value} onValueChange={field.onChange}>
+                                    <SelectTrigger className="h-11 lg:h-10 w-full sm:w-auto gap-2 text-sm font-medium border-zinc-200 rounded-xl sm:rounded-lg bg-white">
+                                        <Armchair className="text-[#15a4e6] h-4 w-4 shrink-0" />
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {TRAVEL_CLASSES.map((c) => (
+                                            <SelectItem key={c.value} value={c.value} className="text-sm">
+                                                {c.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
                         {/* COMPTEUR DE PASSAGERS */}
                         <FormField
                             control={control}
@@ -228,6 +261,8 @@ export default function SearchFlight() {
                                 </Popover>
                             )}
                         />
+
+
                     </div>
 
                     {/* FORMULAIRE PRINCIPAL */}

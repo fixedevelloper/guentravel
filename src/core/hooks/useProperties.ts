@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/core/api/axios-instance";
 import { Property, PaginatedResponse } from "@/types/property";
+import {Hotel} from "../../types/hotel";
 
-const fetchProperties = async (): Promise<PaginatedResponse<Property>> => {
+const fetchProperties = async (): Promise<PaginatedResponse<Hotel>> => {
     // La réponse de l'API contient { success: true, meta: {...}, data: [...] }
     const { data } = await api.get("/properties");
 

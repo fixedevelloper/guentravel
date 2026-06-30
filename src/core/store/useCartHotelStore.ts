@@ -9,10 +9,10 @@ export interface CartHotelItem {
     hotelImages: string[];
     city: string;
     rating: number;
-    // Session API voyage
     sessionId: string;
     productId: string;
     tokenId: string;
+    isLocal: string;
     // L'offre tarifaire exacte choisie
     selectedRate: RoomRate;
     // Date de mise en panier pour calculer l'expiration de l'offre

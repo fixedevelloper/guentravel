@@ -79,7 +79,7 @@ export default function LandingPageContent() {
 
                         <div className="grid md:grid-cols-3 gap-8">
                             {listProperties?.slice(0, 3).map((property, idx) => (
-                                <PropertyCard key={property.id} property={property} index={idx} />
+                                <PropertyCard key={property.hotel_id} property={property} index={idx} />
                             ))}
                         </div>
                     </div>

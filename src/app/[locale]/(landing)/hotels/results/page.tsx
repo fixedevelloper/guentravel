@@ -1,24 +1,23 @@
 "use client";
 
-import React, { Suspense, useMemo, useState } from "react";
+import React, { Suspense, useMemo, useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, MapPin, ShieldCheck } from "lucide-react";
+import { Search, MapPin, ShieldCheck, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { useHotelSearch } from "../../../../../core/hooks/useHotelSearch";
+import { useHotelSearch }    from "../../../../../core/hooks/useHotelSearch";
 import { HotelSearchParams, OccupancyRoom, Hotel } from "@/types/hotel";
 import { HotelItem } from "../../../../../components/PropertyItem";
-import { FiltersPanel } from "../../../../../components/hotel/HotelFiltersPanel";
-import { HotelMap } from "../../../../../components/hotel/HotelMap";
-
-// CORRECTIONS : Les imports directs de react-leaflet ont été supprimés ici !
+import { HotelMap }  from "@/components/hotel/HotelMap";
+import {FiltersPanel} from "../../../../../components/hotel/HotelFiltersPanel";
+import {useInfiniteHotels} from "../../../../../core/hooks/useInfiniteHotels";
 
 function SearchResultsContent() {
     const searchParams = useSearchParams();
 
-    const [filteredHotels, setFilteredHotels] = useState<Hotel[] | null>(null);
-
+    // 1. Filtres de recherche (depuis l'URL)
     const hotelFilters = useMemo<HotelSearchParams | null>(() => {
         const checkin  = searchParams.get("checkin");
         const checkout = searchParams.get("checkout");
@@ -46,18 +45,45 @@ function SearchResultsContent() {
             currency:    searchParams.get("currency")    || "EUR",
             city_name:   searchParams.get("location")    || undefined,
             radius:      parseInt(searchParams.get("radius")     ?? "20"),
-            max_result:  parseInt(searchParams.get("max_result") ?? "50"),
+            max_result:  parseInt(searchParams.get("max_result") ?? "20"),
+            travel_class: searchParams.get("travel_class") || "Economy",
             occupancy,
         };
     }, [searchParams]);
 
+    // 2. Recherche initiale
     const { results, loading, error } = useHotelSearch(hotelFilters);
 
-    const hotelsList   = filteredHotels ?? results?.hotels ?? [];
-    const isFiltered   = filteredHotels !== null;
-    const sessionId    = results?.status.session_id ?? "";
+    const sessionId = results?.status.session_id ?? "";
+
+    const [filteredHotels, setFilteredHotels] = useState<Hotel[] | null>(null);
+    const isFiltered = filteredHotels !== null;
+
+    const { hotels, hasMore, loadMore, loading: loadingMore } = useInfiniteHotels(
+        results?.hotels ?? [],
+        sessionId,
+        results?.status.next_token ?? null
+    );
+
+    // 6. Scroll infini
+    const observerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!hasMore || isFiltered) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) loadMore(); },
+            { threshold: 0.5 }
+        );
+
+        if (observerRef.current) observer.observe(observerRef.current);
+        return () => observer.disconnect();
+    }, [hasMore, isFiltered, loadMore]);
+
+    // 7. Liste finale affichée
+    const hotelsList   = isFiltered ? filteredHotels : hotels;
     const currency     = hotelFilters?.currency ?? "EUR";
-    const totalResults = hotelsList.length;
+    const totalResults = results?.status?.total_results ?? 0;
     const totalGuests  = hotelFilters?.occupancy
         .reduce((sum, r) => sum + r.adult + r.child, 0) ?? 2;
 
@@ -65,6 +91,7 @@ function SearchResultsContent() {
         <div className="min-h-screen bg-white text-zinc-900 flex flex-col antialiased">
             <Header />
 
+            {/* Barre contexte */}
             <div className="border-b border-zinc-100 bg-zinc-50/50">
                 <div className="max-w-[1500px] mx-auto px-6 py-3 flex items-center justify-between text-xs text-zinc-500">
                     <div className="flex items-center gap-2 font-medium">
@@ -79,7 +106,7 @@ function SearchResultsContent() {
                                 <button
                                     onClick={() => setFilteredHotels(null)}
                                     className="text-[#15a4e6] hover:underline">
-                                    Voir tous les résultats ({results?.hotels.length})
+                                    Voir tous les résultats ({hotels.length})
                                 </button>
                             </>
                         )}
@@ -95,10 +122,11 @@ function SearchResultsContent() {
                     ) : (
                         <>
                             {totalResults} hébergement{totalResults > 1 ? "s" : ""} trouvé
+                            {totalResults > 1 ? "s" : ""}
                             {hotelFilters?.city_name && ` à ${hotelFilters.city_name}`}
                             {isFiltered && (
                                 <span className="ml-2 text-sm font-normal text-zinc-400">
-                                    (sur {results?.hotels.length} au total)
+                                    (sur {hotels.length} au total)
                                 </span>
                             )}
                         </>
@@ -120,7 +148,7 @@ function SearchResultsContent() {
                             <FiltersPanel
                                 sessionId={sessionId}
                                 currency={currency}
-                                onApply={(hotels) => setFilteredHotels(hotels)}
+                                onApply={(filtered) => setFilteredHotels(filtered)}
                                 onReset={() => setFilteredHotels(null)}
                             />
                         )}
@@ -142,18 +170,43 @@ function SearchResultsContent() {
                                 onReset={() => setFilteredHotels(null)}
                             />
                         ) : (
-                            <div className="space-y-6">
-                                {hotelsList.map((hotel: Hotel) => (
-                                    <div key={hotel.hotel_id}
-                                         className="border-b border-zinc-100 pb-6 last:border-none">
-                                        <HotelItem
-                                            property={hotel}
-                                            locale="fr"
-                                            session_id={sessionId}
-                                        />
+                            <>
+                                <div className="space-y-6">
+                                    {hotelsList.map((hotel: Hotel) => (
+                                        <div key={hotel.hotel_id}
+                                             className="border-b border-zinc-100 pb-6 last:border-none">
+                                            <HotelItem
+                                                property={hotel}
+                                                locale="fr"
+                                                session_id={sessionId}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Scroll infini — uniquement hors filtrage */}
+                                {!isFiltered && (
+                                    <div ref={observerRef} className="py-6 flex justify-center">
+                                        {loadingMore ? (
+                                            <div className="flex items-center gap-2 text-sm text-zinc-400">
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                Chargement des résultats suivants...
+                                            </div>
+                                        ) : hasMore ? (
+                                            <Button
+                                                onClick={loadMore}
+                                                variant="outline"
+                                                className="text-sm">
+                                                Voir plus d'hôtels
+                                            </Button>
+                                        ) : hotels.length > 0 ? (
+                                            <p className="text-xs text-zinc-400">
+                                                Tous les résultats ont été chargés ({hotels.length})
+                                            </p>
+                                        ) : null}
                                     </div>
-                                ))}
-                            </div>
+                                )}
+                            </>
                         )}
                     </section>
 
@@ -164,7 +217,6 @@ function SearchResultsContent() {
                                 <MapPin className="w-3.5 h-3.5" /> Localisation
                             </h3>
 
-                            {/* CORRECTION : Remplacement de l'aperçu problématique par un conteneur stylisé neutre et sécurisé */}
                             <div className="h-36 w-full bg-zinc-50 border border-zinc-100 rounded-xl relative overflow-hidden flex flex-col items-center justify-center p-4 text-center group">
                                 <div className="absolute inset-0 opacity-45 bg-[radial-gradient(#e4e4e7_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
@@ -224,13 +276,14 @@ const PageFallback = () => (
 
 const LoadingSkeleton = () => (
     <div className="space-y-6">
-        {[...Array(3)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
             <div key={i} className="flex gap-6 border-b pb-6">
-                <Skeleton className="h-40 w-40 rounded-xl" />
+                <Skeleton className="h-40 w-48 rounded-xl shrink-0" />
                 <div className="space-y-3 flex-1">
-                    <Skeleton className="h-4 w-1/3" />
-                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-1/4" />
+                    <Skeleton className="h-6 w-2/3" />
                     <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-4 w-1/3" />
                 </div>
             </div>
         ))}
