@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
+import React from "react";
 
 export default function QueryProvider({ children }: { children: React.ReactNode }) {
     // Utilisation d'un état pour garantir une instance unique par session client (SSR Safe)

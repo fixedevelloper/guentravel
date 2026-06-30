@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue }
     from "@/components/ui/select";
 import { SlidersHorizontal, X, Loader2 } from "lucide-react";
 import { useHotelFilter } from "../../core/hooks/useHotelFilter";
+import React from "react";
 
 const FACILITIES = [
     "Internet access", "Air conditioning", "Wi-Fi",

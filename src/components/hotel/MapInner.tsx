@@ -6,6 +6,7 @@ import { Hotel } from "@/types/hotel";
 import { fixLeafletIcons, priceIcon } from "@/lib/leaflet-icons";
 import { Star, ArrowRight } from "lucide-react";
 import { useRouter } from "@/i18n/routing";
+import React from "react";
 
 // Auto-fit bounds sur les hôtels
 function FitBounds({ hotels }: { hotels: Hotel[] }) {

@@ -10,6 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import React from "react";
 interface RoomCardProps {
     room: any;
     quantity: number; // Quantité sélectionnée pour cette chambre

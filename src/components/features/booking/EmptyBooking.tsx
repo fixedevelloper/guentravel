@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/routing";
+import React from "react";
 
 export function EmptyBooking() {
     const router = useRouter();

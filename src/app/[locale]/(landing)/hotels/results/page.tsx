@@ -59,10 +59,18 @@ function SearchResultsContent() {
     const [filteredHotels, setFilteredHotels] = useState<Hotel[] | null>(null);
     const isFiltered = filteredHotels !== null;
 
+    // ✅ FIX : mémoïsation pour garder une référence stable tant que `results` ne change pas
+    const initialHotels = useMemo(
+        () => results?.hotels ?? [],
+        [results]
+    );
+
+    const nextToken = results?.status.next_token ?? null;
+
     const { hotels, hasMore, loadMore, loading: loadingMore } = useInfiniteHotels(
-        results?.hotels ?? [],
+        initialHotels,
         sessionId,
-        results?.status.next_token ?? null
+        nextToken
     );
 
     // 6. Scroll infini

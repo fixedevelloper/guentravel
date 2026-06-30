@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Hotel } from "@/types/hotel";
 import { X, Maximize2, Minimize2 } from "lucide-react";
+import React from "react";
 
 // Import dynamique pour éviter SSR (Leaflet nécessite window)
 const MapInner = dynamic(() => import("./MapInner"), {

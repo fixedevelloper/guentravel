@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 
 import { Globe } from "lucide-react";
+import React from "react";
 
 export function SelectLanguage() {
     const router = useRouter();

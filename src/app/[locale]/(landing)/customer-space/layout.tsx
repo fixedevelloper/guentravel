@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
 import SidebarLogoutButton from "../../../../components/layout/SidebarLogoutButton";
+import React from "react";
 
 interface CustomerLayoutProps {
     children: ReactNode;

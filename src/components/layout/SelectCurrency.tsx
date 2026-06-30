@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useTransition } from "react";
-import { useRouter, usePathname } from "next/navigation"; // Utile si vous passez la devise en query param ou rafraîchissez la page
+import { useTransition, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
     Select,
     SelectContent,
@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/select";
 import { Coins } from "lucide-react";
 
-// Types des devises acceptées
 export type CurrencyCode = "XAF" | "USD" | "EUR";
 
 interface CurrencyOption {
@@ -31,27 +30,42 @@ export function SelectCurrency() {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
 
-    // État local initialisé avec la valeur stockée (ou XAF par défaut)
-    const [currentCurrency, setCurrentCurrency] = React.useState<CurrencyCode>(() => {
-        if (typeof window !== "undefined") {
-            return (document.cookie.split("; ").find(row => row.startsWith("currency="))?.split("=")[1] as CurrencyCode) || "XAF";
+    // 1. On initialise TOUJOURS avec la même valeur par défaut sur le serveur et le client
+    const [currentCurrency, setCurrentCurrency] = useState<CurrencyCode>("XAF");
+    const [mounted, setMounted] = useState(false);
+
+    // 2. On lit le cookie APRÈS le premier rendu (uniquement côté client)
+    useEffect(() => {
+        setMounted(true);
+        const cookieValue = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("currency="))
+            ?.split("=")[1] as CurrencyCode;
+
+        if (cookieValue && ["XAF", "USD", "EUR"].includes(cookieValue)) {
+            setCurrentCurrency(cookieValue);
         }
-        return "XAF";
-    });
+    }, []);
 
     const handleCurrencyChange = (newCurrency: CurrencyCode) => {
-        startTransition(() => {
-            // 1. Mise à jour de l'état local
-            setCurrentCurrency(newCurrency);
+        // Optimistic update : on change d'abord l'état visuel immédiatement
+        setCurrentCurrency(newCurrency);
 
-            // 2. Sauvegarde dans un Cookie (accessible par Laravel en HTTP via $request->cookie('currency'))
-            // Expire dans 1 an
+        startTransition(() => {
+            // Sauvegarde dans un Cookie
             document.cookie = `currency=${newCurrency}; path=/; max-age=${365 * 24 * 60 * 60}; SameSite=Lax; Secure`;
 
-            // 3. Optionnel : Rafraîchir les données de la page actuelle (React Query / Next Cache)
+            // Rafraîchir les Server Components pour que Laravel/Next prennent en compte le nouveau cookie
             router.refresh();
         });
     };
+
+    // Pour éviter les flashs de contenu ou les désynchronisations Radix UI avant le montage
+    if (!mounted) {
+        return (
+            <div className="w-[120px] h-9 bg-zinc-50 rounded-lg animate-pulse border border-zinc-100" />
+        );
+    }
 
     return (
         <Select
@@ -65,11 +79,20 @@ export function SelectCurrency() {
             </SelectTrigger>
 
             <SelectContent>
-                {currencies.map((currency) => (
-                    <SelectItem key={currency.code} value={currency.code} className="font-medium">
-                        {currency.label} ({currency.symbol})
-                    </SelectItem>
-                ))}
+                {currencies.map((currency) => {
+                    // On construit explicitement la string en amont pour éviter tout nœud React parasite
+                    const itemDisplayText = `${currency.label} (${currency.symbol})`;
+
+                    return (
+                        <SelectItem
+                            key={currency.code}
+                            value={currency.code}
+                            className="font-medium"
+                        >
+                            {itemDisplayText}
+                        </SelectItem>
+                    );
+                })}
             </SelectContent>
         </Select>
     );

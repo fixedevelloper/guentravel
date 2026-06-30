@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { useRouter } from "@/i18n/routing";
+import React from "react";
 
 type FormData = z.infer<typeof loginSchema>;
 

@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { HotelDetails } from "@/types/hotel";
 import { Badge } from "@/components/ui/badge";
+import React from "react";
 
 // Dictionnaire pour associer les mots-clés d'API à des icônes spécifiques
 const AMENITY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {

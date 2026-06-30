@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown, Heart, Share2 } from "lucide-react";
 import { useState } from "react";
+import React from "react";
 
 interface PropertyBreadcrumbsProps {
     city: string;

@@ -1,6 +1,7 @@
 import {useProperties} from "../core/hooks/useProperties";
 import {useRoomOffers} from "../core/hooks/useRooms";
 import {Button} from "./ui/button";
+import React from "react";
 
 
 export function OffersSection() {

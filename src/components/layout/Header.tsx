@@ -6,7 +6,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { MapPin, LogOut, LayoutDashboard, ChevronDown, Hotel, Plane, Bed, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SelectLanguage } from "./SelectLanguage";
-import { SelectCurrency } from "./SelectCurrency"; // <-- Ajout de l'import
+import { SelectCurrency } from "./SelectCurrency";
 import { useTranslations, useLocale } from "next-intl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/core/api/axios-instance";

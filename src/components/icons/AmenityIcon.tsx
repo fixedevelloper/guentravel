@@ -1,7 +1,7 @@
 import * as LucideIcons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import { Amenity } from "../../types/property";
-
+import React from "react";
 export interface AmenityIconProps {
     amenity: Amenity;
     className?: string;

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Star } from "lucide-react";
+import React from "react";
 
 interface PropertyHeaderProps {
     name: string;

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Shield } from "lucide-react";
+import React from "react";
 
 interface SelectedRoom {
     id: string;

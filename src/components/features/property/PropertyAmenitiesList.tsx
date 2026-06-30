@@ -10,6 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import {Amenity} from "../../../types/property";
+import React from "react";
 
 
 

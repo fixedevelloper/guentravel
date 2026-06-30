@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { HotelImage } from "@/types/hotel";
 import { ChevronLeft, ChevronRight, X, ImageIcon } from "lucide-react";

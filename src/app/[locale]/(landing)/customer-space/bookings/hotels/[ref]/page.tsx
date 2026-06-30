@@ -13,6 +13,7 @@ import {
     Building2,
 } from "lucide-react";
 import {useBookingDetails} from "../../../../../../../core/hooks/useBookingDetails";
+import React from "react";
 
 const STATUS_CONFIG = {
     CONFIRMED: {

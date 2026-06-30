@@ -13,6 +13,7 @@ import {
     Users, Clock, DollarSign, ArrowUpRight, Loader2,
 } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 
 const STATUS_COLORS: Record<string, string> = {
     CONFIRMED: "#15a4e6",

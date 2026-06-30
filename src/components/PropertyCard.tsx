@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/routing"; // Mis à jour pour matcher l'import de tes autres fichiers
 import { Button } from "@/components/ui/button";

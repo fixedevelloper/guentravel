@@ -7,6 +7,7 @@ import { Button }       from "@/components/ui/button";
 import { useRouter }    from "@/i18n/routing";
 import {hotelKeys} from "../../../../../../core/queryKeys/hotelKeys";
 import {HotelBooking} from "../../../../../../types/hotel";
+import React from "react";
 
 export default function ConfirmationPage({
                                              params: { ref }

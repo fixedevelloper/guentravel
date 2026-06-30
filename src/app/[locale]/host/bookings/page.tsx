@@ -12,6 +12,7 @@ import {
     CalendarCheck, User, Building2, Calendar,
     CheckCircle2, Clock, XCircle, Check, X,
 } from "lucide-react";
+import React from "react";
 
 // ── Types alignés sur la vraie réponse API ──────────────────────────────────
 interface HotelBooking {

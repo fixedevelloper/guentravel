@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Phone, Globe, MapPin } from "lucide-react";
+import React from "react";
 
 interface PropertyContactInfoProps {
     phone?: string;

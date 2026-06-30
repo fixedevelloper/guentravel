@@ -4,6 +4,12 @@ import { useMutation }           from "@tanstack/react-query";
 import { Hotel }                 from "@/types/hotel";
 import {hotelService} from "../services/hotelService";
 
+function areHotelListsEqual(a: Hotel[], b: Hotel[]): boolean {
+    if (a === b) return true;
+    if (a.length !== b.length) return false;
+    return a.every((hotel, i) => hotel.hotel_id === b[i]?.hotel_id);
+}
+
 export function useInfiniteHotels(
     initialHotels: Hotel[],
     sessionId:     string,
@@ -17,11 +23,20 @@ export function useInfiniteHotels(
     const hasLoadedMore = useRef(false);
 
     // Resynchronise quand la recherche initiale arrive (results passe de undefined → data)
+    // ✅ FIX : on ne déclenche setState que si le contenu a réellement changé,
+    // ce qui évite la boucle quand `initialHotels` change de référence sans
+    // changer de contenu (ex: tableau vide recréé à chaque render parent).
     useEffect(() => {
         if (hasLoadedMore.current) return; // Ne pas écraser si déjà paginé
-        setHotels(initialHotels);
-        setToken(nextToken);
-        setHasMore(!!nextToken);
+
+        setHotels((prev) =>
+            areHotelListsEqual(prev, initialHotels) ? prev : initialHotels
+        );
+        setToken((prev) => (prev === nextToken ? prev : nextToken));
+        setHasMore((prev) => {
+            const next = !!nextToken;
+            return prev === next ? prev : next;
+        });
     }, [initialHotels, nextToken]);
 
     const mutation = useMutation({
@@ -46,7 +61,7 @@ export function useInfiniteHotels(
     const loadMore = useCallback(() => {
         if (!token || mutation.isPending) return;
         mutation.mutate();
-    }, [token, mutation]);
+    }, [token, mutation.isPending, mutation.mutate]);
 
     return {
         hotels,
