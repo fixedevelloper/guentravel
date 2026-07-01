@@ -10,6 +10,10 @@ type Props = {
     insurancePrice: number
     extraBaggage: number
     baggagePrice: number
+    // ── NOUVELLES PROPS AJOUTÉES ─────────────────────────────────────────────
+    selectedSeat?: string
+    seatPrice?: number
+    // ─────────────────────────────────────────────────────────────────────────
     totalFlightWithOptions: number
     bookingType: 'now' | 'hold'
     finalTotalPrice: number
@@ -23,6 +27,8 @@ export function FlightSummarySidebar({
                                          insurancePrice,
                                          extraBaggage,
                                          baggagePrice,
+                                         selectedSeat,         // <-- Injecté ici
+                                         seatPrice = 0,        // <-- Injecté ici avec 0 par défaut
                                          totalFlightWithOptions,
                                          bookingType,
                                          finalTotalPrice,
@@ -114,6 +120,15 @@ export function FlightSummarySidebar({
                             <span>{insurancePrice.toLocaleString()} F</span>
                         </div>
                     )}
+
+                    {/* ── AFFICHAGE DU SIÈGE SÉLECTIONNÉ ─────────────────────────── */}
+                    {selectedSeat && (
+                        <div className="flex justify-between text-indigo-600 font-medium bg-indigo-50/40 p-1.5 rounded text-xs">
+                            <span>Siège sélectionné ({selectedSeat})</span>
+                            <span>{seatPrice === 0 ? 'Gratuit' : `${seatPrice.toLocaleString()} F`}</span>
+                        </div>
+                    )}
+                    {/* ───────────────────────────────────────────────────────── */}
 
                     <hr className="border-zinc-100 my-2" />
 

@@ -2,21 +2,27 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "../api/axios-instance";
 import { toast } from "sonner";
 
-// Typage précis du payload attendu par l'API Laravel
+// Typage précis et enrichi pour inclure les services additionnels dynamiques
 export interface CheckoutPayload {
     session_identifier: string | null;
     booking_type: 'now' | 'hold';
     selected_flight: any;
     payment_method: 'momo' | 'om' | 'wave' | 'card';
     phone_number: string;
-    finalpricetopay:any;
-    insuranceSelected:any;
-    extraBaggage:any;
+    finalpricetopay: any;
+    insuranceSelected: boolean;
+    extraBaggage: number;
+    outboundMeal: string | null;
+    inboundMeal: string | null;
     contact_info: {
         email: string;
         phone: string;
     };
     passengers: any[];
+
+    // Signature d'index pour accepter les clés dynamiques générées par passager
+    // Exemple: ExtraServiceOutbound_1, SeatOutbound_1, SeatOutboundPrice_1, etc.
+    [key: string]: any;
 }
 
 // Typage de la réponse asynchrone de l'API Laravel
@@ -30,12 +36,14 @@ export interface CheckoutResponse {
 export function useFlightCheckout() {
     return useMutation<CheckoutResponse, Error, CheckoutPayload>({
         mutationFn: async (payload: CheckoutPayload): Promise<CheckoutResponse> => {
-            // Sécurisation du payload pour s'assurer que booking_type respecte le contrat
+            // Sécurisation et préparation du payload complet
             const securePayload = {
                 ...payload,
                 booking_type: payload.booking_type as 'now' | 'hold'
             };
-            console.log(securePayload)
+
+            console.log("Payload envoyé au serveur :", securePayload);
+
             // Appel de l'endpoint Laravel
             const { data } = await api.post("/flights/verify-and-pay", securePayload);
 

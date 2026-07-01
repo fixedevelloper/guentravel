@@ -21,7 +21,7 @@ function useFlightSearchParams() {
 
     const trip_type = (searchParams.get("trip_type") || "round_trip") as "one_way" | "round_trip" | "multi_city";
     const return_date = searchParams.get("return_date") || undefined;
-
+    const travel_class=searchParams.get("travel_class") || 'Economy';
     // 2. Extraction dynamique des segments
     const segments: Array<{ origin: string; destination: string; departure_date: string }> = [];
 
@@ -52,12 +52,10 @@ function useFlightSearchParams() {
         return_date,
         passengers: { adults, children, infants },
         segments,
-
-        // Racourcis conservés pour la compatibilité avec vos en-têtes d'affichage
         origin: segments[0]?.origin || "",
         destination: segments[0]?.destination || "",
-        departure_date: segments[0]?.departure_date || ""
-
+        departure_date: segments[0]?.departure_date || "",
+        travel_class
     };
 }
 
